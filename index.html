@@ -21,30 +21,42 @@
 </head>
 
 <body>
-	<!-- Center Everything -->
-	<div class = "center center-block">
-		<!-- Introduction -->
-		<div class = "intro margin-b-24">
-			<h1>Hello, I'm Choong</h1>
-			<p class="light-font">a <span class="identity">Student</span></p>
-		</div>
-		<!-- Skill -->
-		<div class = "skill margin-b-24">
-			<h2>I know </h2>
-			<p class="light-font">a little bit of <span class="tech"></span></p>
-		</div>
-		<!-- Personality -->
-		<div class = "personality margin-b-24">
-			<h2>I have </h2>
-			<p class="light-font">a sense of humour.</p>
-		</div>
-		<!-- Portfolio -->
-		<div class = "Portfolio margin-b-24">
-			<h2>I have built</h2>
-			<p class = "light-font">A Meaningless Web Application - <a target = "_blank" href = "https://inspiremee.herokuapp.com">INSPIRE-MEE</a></p>
-			<p class="light-font">A Counter iOS Application - <a target = "_blank" href = "https://itunes.apple.com/us/app/progressus/id1201084774?ls=1&mt=8">Progressus</a></p>
+	<nav class="nav-bar">
+		<ul>
+			<li><a href="#intro">Home</a></li>
+			<li><a href="#skill">Skill</a></li>
+			<li><a href="#project">Project</a></li>
+		</ul>
+	</nav>
 
+	<div class = "center-block">
+
+		<!-- Introduction -->
+		<div id="intro" class="dark vp-height-100">
+			<div class="center">
+				<h1>Hello, I'm Choong</h1>
+				<p>a <span class="identity">Student</span></p>
+			</div>
 		</div>
+
+
+		<!-- Skill -->
+		<div id="skill" class="light vp-height-100">
+			<div class="center">
+				<h2>I know </h2>
+				<p>a little bit of <span class="tech"></span></p>
+			</div>
+		</div>
+
+		<!-- Portfolio -->
+		<div id="project" class="dark vp-height-100">
+			<div class="center">
+				<h2>I have built</h2>
+				<p>A Meaningless Web Application: <a target = "_blank" href = "https://inspiremee.herokuapp.com">INSPIRE-MEE</a></p>
+				<p>A Counter iOS Application: <a target = "_blank" href = "https://itunes.apple.com/us/app/progressus/id1201084774?ls=1&mt=8">Progressus</a></p>
+			</div>
+		</div>
+
 		<!-- Credit -->
 		<footer>
 			<p>
@@ -55,7 +67,6 @@
 			</p>
 		</footer>
 	</div>
-	<!-- End of Center Everything -->
 </body>
 
 </html>

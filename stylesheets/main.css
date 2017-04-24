@@ -12,11 +12,6 @@
   box-sizing: border-box;
 }
 
-body {
-	background: #2C3E50; 	
-	color: white;
-}
-
 h1, h2, h3 {
 	font-family: "Hammersmith One",  sans-serif;	
 	margin-bottom: 12px;
@@ -28,40 +23,74 @@ p {
 }
 
 a {
-	color: white;
+	color: #488286;
 	text-decoration: none;
 }
 
 a:visited {
-	color: white;
+	color: #488286;
 }
 
 a:hover {
-	color: #DBE3E7;
+	color: #343E3D;
 }
 
 footer {
-	margin-top: 36px;
+	margin: 24px;
 }
 
 footer p {
 	font-size: 16px;
 }
 
-.light-font {
-	font-weight: 300;
+.nav-bar {
+  position: fixed;
+  z-index: 20;
+  background-color: white;
+  box-shadow: 0px 5px 8px rgba(0,0,0,0.2);
+  width : 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.nav-bar ul {  
+  list-style-type: none;
+  float: right;
+}
+
+.nav-bar ul li {
+  display: inline-block;
+  padding: 12px 15px;
+}
+
+.nav-bar ul li a {
+  font-family: "Hammersmith One",  sans-serif;
+  font-size: 18px;
 }
 
 .center {
-	position: absolute;
-	top: 50%; left: 50%;
-	transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .center-block {
 	text-align: center;
 }
 
-.margin-b-24 {
-	margin-bottom: 24px;
+.vp-height-100 {
+	min-height: 100vh;
+  position: relative;
 }
+
+.light {    
+  background-color: #E6E6E6;
+  color: #343E3D;
+}
+
+.dark {  
+  background-color: #9FC2CC;
+  color: #343E3D;
+}
+
