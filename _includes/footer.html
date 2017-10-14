@@ -1,0 +1,30 @@
+<footer class="footer">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        {% if site.github_username %}
+        <p>
+          {% include icon-github.html username=site.github_username %}
+        </p>
+        {% endif %}
+
+        {% if site.twitter_username %}
+        <p>
+          {% include icon-twitter.html username=site.twitter_username %}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="column">
+        <strong>
+          {% if site.author %}
+            {{ site.author | escape }}
+          {% else %}
+            {{ site.title | escape }}
+          {% endif %}
+        </strong>
+        <p>{{ site.description | escape }}</p>          
+      </div>
+    </div>
+  </div>
+</footer>

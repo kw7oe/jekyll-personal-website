@@ -1,0 +1,38 @@
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+    {% assign default_paths = site.pages | map: "path" %}
+    {% assign page_paths = site.header_pages | default: default_paths %}
+    
+  
+    {% if page_paths %}
+      <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+        <!-- Always Visible -->
+        <div class="navbar-brand">
+          <!-- Brand Name -->
+          <a class="navbar-item" href="{{ "/" | relative_url   }}">{{ site.title | escape }}</a>
+          
+          <!-- Hamburger -->
+          <div class="navbar-burger burger" data-target="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>         
+        </div>
+        
+        <!-- Hidden from Mobile -->
+        <div class="navbar-menu" id="navMenu">
+          <div class="navbar-end">
+            <!-- Page Link -->
+            {% for path in page_paths %}
+              {% assign my_page = site.pages | where: "path", path | first %}
+              {% if my_page.title %}
+              <a class="navbar-item" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
+              {% endif %}
+            {% endfor %} 
+          </div>         
+        </div>
+      </nav>
+    {% endif %}
+  </div>
+</header>
