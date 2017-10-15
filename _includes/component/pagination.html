@@ -1,0 +1,18 @@
+{% if paginator.total_pages > 1 %}
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+  
+  <!-- Previous Page -->
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="pagination-previous">&laquo; Prev</a>
+  {% else %}
+    <a class="pagination-previous" disabled>Prev</a>
+  {% endif %}
+  
+  <!-- Next Page -->
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="pagination-next">Next &raquo;</a>
+  {% else %}
+    <a class="pagination-next" disabled>Next</a>
+  {% endif %}
+</div>
+{% endif %}
