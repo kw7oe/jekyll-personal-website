@@ -1,18 +1,32 @@
 ---
-layout: default
+layout: base
 ---
+<section class="hero is-medium is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Hey, welcome to my blog. 
+      </h1>
+      <p class="subtitle">
+        Here I write about programming and random stuff.
+      </p>
+    </div>
+  </div>
+</section>
 
-<div class="home">
-  <p>
-    Hey, welcome to my blog. Here I write about programming and random stuff.
-  </p>
-  
-  <ul>
-  {% for post in site.posts %}
-    {% include component/post_title.html post=post %}
-  {% endfor %}
-  </ul>
+<section class="hero">
+  <div class="hero-body">
+    <div class="columns is-centered">
+      <div class="column is-8" aria-label="Content">
+        <h1 class="title">Posts</h1>
+        <table class="table">
+        {% for post in site.posts %}
+          {% include component/post_title.html post=post %}
+        {% endfor %}
+        </table>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>  
-</div>
-
+        <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p> 
+      </div>
+    </div>      
+  </div>
+</section>
