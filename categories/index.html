@@ -12,7 +12,7 @@ title: Categories
         <!-- Category title -->
         {% capture category_title %}{{ category | first }}{% endcapture %}
         <!-- Category url -->
-        {% capture category_url %}{{  site.url  }}/categories/{{ category_title }}{% endcapture %}
+        {% capture category_url %}{{  site.url  }}/categories/{{ category_title | slugify }}{% endcapture %}
 
         <li>
           <a href="{{ category_url }}">
