@@ -1,0 +1,25 @@
+---
+layout: default
+title: Categories
+---
+
+<div class="categories">
+  <h1 class="title">{{ page.title }}</h1>
+  <div class="content">
+    <ul>
+      {% for category in site.categories %}
+
+        <!-- Category title -->
+        {% capture category_title %}{{ category | first }}{% endcapture %}
+        <!-- Category url -->
+        {% capture category_url %}{{  site.url  }}/categories/{{ category_title }}{% endcapture %}
+
+        <li>
+          <a href="{{ category_url }}">
+            {{ category_title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>  
+</div>

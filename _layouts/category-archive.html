@@ -1,0 +1,12 @@
+---
+layout: default
+---
+
+<h1 class="title">
+  {{ page.type | capitalize }}: {{ page.title }}
+</h1>
+<table class="table">
+{% for post in site.posts %}
+  {% include component/post_title.html post=post %}
+{% endfor %}
+</table>

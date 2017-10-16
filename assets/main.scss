@@ -4,13 +4,20 @@
 
 @import "bulma/utilities/initial-variables";
 
-$primary: #457B9D;
+$primary: #70C1B3;
 
 // Table Variable
 $table-cell-border-width: 0 0 0;
 $table-cell-padding: 0.25em 0.25em;
 
 @import "bulma";
+
+$primary-invert: findColorInvert($primary);
+
+.navbar {
+  font-size: 18px;
+  font-weight: 500;
+}
 
 pre {
   margin-bottom: 1em;

@@ -7,26 +7,46 @@
   
     {% if page_paths %}
       <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-        <!-- Always Visible -->
-        <div class="navbar-brand">
-          <!-- Brand Name -->
-          <a class="navbar-item" href="{{ "/" | relative_url   }}">{{ site.title | escape }}</a>
+        <div class="container">
+          <!-- Always Visible -->
+          <div class="navbar-brand">
+            <!-- Brand Name -->
+            <a class="navbar-item" href="{{ "/" | relative_url   }}">
+              <img src="/assets/img/logo.png">
+            </a>
+            
+            <!-- Hamburger -->
+            <div class="navbar-burger burger" data-target="navMenu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>         
+          </div>
           
-          <!-- Hamburger -->
-          <div class="navbar-burger burger" data-target="navMenu">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>         
-        </div>
-        
-        <!-- Hidden from Mobile -->
-        <div class="navbar-menu" id="navMenu">
-          <div class="navbar-end">
-            <!-- Page Link -->
-            <a class="navbar-item" href="/about">About</a> 
-            <a class="navbar-item" href="/blog">Blog</a>
-          </div>         
+          <!-- Hidden from Mobile -->
+          <div class="navbar-menu" id="navMenu">
+            <div class="navbar-end">
+              <!-- Page Link -->
+              <a class="navbar-item" href="/about">About</a> 
+              <a class="navbar-item" href="/blog">Blog</a>
+              <div class="navbar-item has-dropdown is-hoverable">
+                  <a href ="/categories" class="navbar-link">
+                    Categories
+                  </a>
+
+                  <div class="navbar-dropdown">
+                    {% for category in site.categories %}
+                    <!-- Category title -->
+                    {% capture category_title %}{{ category | first }}{% endcapture %}
+                    <!-- Category url -->
+                    {% capture category_url %}{{  site.url  }}/categories/{{ category_title }}{% endcapture %}
+
+                      <a href="{{ category_url }}" class="navbar-item">{{ category_title }}</a>
+                    {% endfor %}
+                  </div>
+                </div>
+            </div>         
+          </div>
         </div>
       </nav>
     {% endif %}

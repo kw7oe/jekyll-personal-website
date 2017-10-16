@@ -2,7 +2,7 @@
 layout: post
 title: 'TIL: Ruby .() notation'
 date:   2017-10-15 18:12:19 +0800
-categories: ruby til
+categories: Ruby TIL
 ---
 
 In Ruby, `.()` is a syntatic sugar for `call` method. 
