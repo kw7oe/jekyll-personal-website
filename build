@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-
-`bundle exec jekyll build`
-`git checkout master`
-`git merge master`
-`set extended_glob`
-`rm -rf -- ^_site`
-`cd _site && mv * ..`
-`cd .. && rm -r _site`
