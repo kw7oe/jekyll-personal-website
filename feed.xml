@@ -1,4 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-10-17T21:34:06+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">TIL: Ruby .() notation</title><link href="/ruby/til/2017/10/15/til-ruby-dot-parentheses-notation.html" rel="alternate" type="text/html" title="TIL: Ruby .() notation" /><published>2017-10-15T18:12:19+08:00</published><updated>2017-10-15T18:12:19+08:00</updated><id>/ruby/til/2017/10/15/til-ruby-dot-parentheses-notation</id><content type="html" xml:base="/ruby/til/2017/10/15/til-ruby-dot-parentheses-notation.html">&lt;p&gt;In Ruby, &lt;code class=&quot;highlighter-rouge&quot;&gt;.()&lt;/code&gt; is a syntatic sugar for &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; method.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-10-17T23:14:16+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Vue.js: Add component on click</title><link href="/vue.js/2017/10/17/vue-js-add-component-on-click.html" rel="alternate" type="text/html" title="Vue.js: Add component on click" /><published>2017-10-17T23:00:00+08:00</published><updated>2017-10-17T23:00:00+08:00</updated><id>/vue.js/2017/10/17/vue-js-add-component-on-click</id><content type="html" xml:base="/vue.js/2017/10/17/vue-js-add-component-on-click.html">&lt;p&gt;I have been working on a project which uses &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt; for front end. I came across a scenario where we need to allow user to add more entry in their form.&lt;/p&gt;
+
+&lt;h4 id=&quot;initial-approach&quot;&gt;Initial Approach&lt;/h4&gt;
+&lt;p&gt;The first thought that come to my mind will be get the &lt;code class=&quot;highlighter-rouge&quot;&gt;div#id&lt;/code&gt; of the element and &lt;code class=&quot;highlighter-rouge&quot;&gt;append&lt;/code&gt; it dynamically through &lt;code class=&quot;highlighter-rouge&quot;&gt;javascript&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'parent'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;component&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Assuming this return an Node element&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;appendChild&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;component&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;However, since we are using &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt;, it doesn’t feel natural to approach it this way.&lt;/p&gt;
+
+&lt;h4 id=&quot;with-vuejs&quot;&gt;With Vue.js&lt;/h4&gt;
+
+&lt;p&gt;Instead, we can utilize the functionality of &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt;, by using &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;v-on:click&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;template&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;v-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index in count&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;:key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+      {{ index }}
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;v-on:click=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;addComponent&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Add&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/template&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;kr&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;addComponent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;Declare a counter
+    &lt;ul&gt;
+      &lt;li&gt;We first declare a data &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; with the initial value of 1.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Use &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; to generate components
+    &lt;ul&gt;
+      &lt;li&gt;In our &lt;code class=&quot;highlighter-rouge&quot;&gt;template&lt;/code&gt; tag, We loop through the component with &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for=&quot;index in count&quot;&lt;/code&gt;.&lt;/li&gt;
+      &lt;li&gt;With the &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; shorthands, &lt;code class=&quot;highlighter-rouge&quot;&gt;vue&lt;/code&gt; will generate from &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; times of the component. In this case, &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; act like range. For more detailed explanation, refer to the official documetation: &lt;a href=&quot;https://vuejs.org/v2/guide/list.html#v-for-with-a-Range&quot;&gt;v-for with a Range&lt;/a&gt;).&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Button to increase &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Then we create a &lt;code class=&quot;highlighter-rouge&quot;&gt;Add&lt;/code&gt; button that execute &lt;code class=&quot;highlighter-rouge&quot;&gt;addComponent&lt;/code&gt; on click. The &lt;code class=&quot;highlighter-rouge&quot;&gt;addComponent&lt;/code&gt; method is fairly straightforward, just increase the &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; by 1.&lt;/li&gt;
+      &lt;li&gt;When the user click the &lt;code class=&quot;highlighter-rouge&quot;&gt;Add&lt;/code&gt; button, the &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; will be increased by 1, thus cause &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt; to render additional component in our view.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h4&gt;
+&lt;p&gt;With the combination of, &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; act as counter. &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; to generate the components, and &lt;code class=&quot;highlighter-rouge&quot;&gt;addComponent&lt;/code&gt; method to increase the &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt;, we are able to render new component into our view when the user click the button.&lt;/p&gt;</content><author><name></name></author><summary type="html">I have been working on a project which uses Vue.js for front end. I came across a scenario where we need to allow user to add more entry in their form.</summary></entry><entry><title type="html">TIL: Ruby .() notation</title><link href="/ruby/til/2017/10/15/til-ruby-dot-parentheses-notation.html" rel="alternate" type="text/html" title="TIL: Ruby .() notation" /><published>2017-10-15T18:12:19+08:00</published><updated>2017-10-15T18:12:19+08:00</updated><id>/ruby/til/2017/10/15/til-ruby-dot-parentheses-notation</id><content type="html" xml:base="/ruby/til/2017/10/15/til-ruby-dot-parentheses-notation.html">&lt;p&gt;In Ruby, &lt;code class=&quot;highlighter-rouge&quot;&gt;.()&lt;/code&gt; is a syntatic sugar for &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; method.&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;
