@@ -7,6 +7,7 @@ group :jekyll_plugins do
   gem 'jekyll-paginate'
   gem 'jekyll-compose'
   gem 'jekyll-archives'
+  gem 'jemoji'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

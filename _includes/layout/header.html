@@ -3,8 +3,8 @@
   <div class="wrapper">
     {% assign default_paths = site.pages | map: "path" %}
     {% assign page_paths = site.header_pages | default: default_paths %}
-    
-  
+
+
     {% if page_paths %}
       <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <div class="container">
@@ -14,20 +14,21 @@
             <a class="navbar-item" href="{{ "/" | relative_url   }}">
               <img src="/assets/img/logo.png">
             </a>
-            
+
             <!-- Hamburger -->
             <div class="navbar-burger burger" data-target="navMenu">
               <span></span>
               <span></span>
               <span></span>
-            </div>         
+            </div>
           </div>
-          
+
           <!-- Hidden from Mobile -->
           <div class="navbar-menu" id="navMenu">
             <div class="navbar-end">
               <!-- Page Link -->
-              <a class="navbar-item" href="/about">About</a> 
+              <a class="navbar-item" href="/about">About</a>
+              <a class="navbar-item" href="/projects">Projects</a>
               <a class="navbar-item" href="/blog">Blog</a>
               <div class="navbar-item has-dropdown is-hoverable">
                   <a href ="/categories" class="navbar-link">
@@ -45,7 +46,7 @@
                     {% endfor %}
                   </div>
                 </div>
-            </div>         
+            </div>
           </div>
         </div>
       </nav>
