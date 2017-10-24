@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>TIL</title>
-  <meta name="description" content="To be figured out soon.">
+  <title>TIL: Register in Vim</title>
+  <meta name="description" content="For the past months, I have started to use vim in some occasions. One day, I came across a vim video, “Let Vim Do the Typing”, and discover the use of regist...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/categories/til/">
+  <link rel="canonical" href="/til/vim/2017/10/24/til-register-in-vim.html">
   <link rel="alternate" type="application/rss+xml" title="kw7oe" href="/feed.xml">
   
   
@@ -100,38 +100,44 @@
     <div class="section">
   <div class="columns is-centered">
     <main class="column is-8" aria-label="Content">
-      <h1 class="title">
-  Category: TIL
-</h1>
-<table class="table">
+      <article class="post content" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <tr>
-<td>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">TIL: Register in Vim</h1>
+    <small class="post-meta">
+      <time datetime="2017-10-24T22:05:00+08:00" itemprop="datePublished">
+        
+        Oct 24, 2017
+      </time>
+      </small>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>For the past months, I have started to use <code class="highlighter-rouge">vim</code> in some occasions. One day, I came across a vim video, <a href="https://www.youtube.com/watch?v=3TX3kV3TICU" target="_blank">“Let Vim Do the Typing”</a>, and discover the use of <strong>register</strong> in <code class="highlighter-rouge">vim</code>. Basically, the concept of register in <code class="highlighter-rouge">vim</code> is very similar to the register in our computer. It is a temporary memory space for <code class="highlighter-rouge">vim</code> to store text.</p>
+
+<h3 id="how-to-use-it">How to use it?</h3>
+<p>In normal mode, <code class="highlighter-rouge">"r</code> will allow us to select the register <code class="highlighter-rouge">r</code>. In the command, the charcter after <code class="highlighter-rouge">"</code> is the register you selected. You can choose any register you like from <code class="highlighter-rouge">a-z</code>. You can also check the content of every register with the command <code class="highlighter-rouge">:reg</code>, or specific registers providing the register name as arguments, e.g <code class="highlighter-rouge">:reg r</code>.</p>
+
+<p>In insert mode, you can insert the content of a register by <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">r</code>. You’ll notice the current cursor will turn into <code class="highlighter-rouge">"</code> when <code class="highlighter-rouge">Ctrl-r</code> is pressed.</p>
+
+<h3 id="basic-usage">Basic Usage</h3>
+<p>We can copy any text and save it to a specific register, which persists even after <code class="highlighter-rouge">vim</code> is quit. For example, we can yanked/copy current link and store to register <code class="highlighter-rouge">e</code> by <code class="highlighter-rouge">"eyy</code>.</p>
+
+<p>We can also paste the content of register <code class="highlighter-rouge">e</code> by <code class="highlighter-rouge">"ep</code>. Or, go into insert mode and <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">e</code> to paste the content of the selected register.</p>
+
+<h3 id="wrapping-up">Wrapping Up</h3>
+<p>This is just a very basic introduction of register in <code class="highlighter-rouge">vim</code>. There is still a lots of details and usage of register I haven’t cover in this post. To understand more, refer to the following material:</p>
+
+<ul>
+  <li><a href="http://www.brianstorti.com/vim-registers/" target="_blank">Vim registers: The basics and beyond</a></li>
+  <li><a href="https://stackoverflow.com/questions/1497958/how-do-i-use-vim-registers" target="_blank">How do I use vim registers?</a></li>
+</ul>
+
+  </div>
+
   
-  <span class="post-meta">Oct 24, 2017</span>
-</td>
+</article>
 
-<td>
-  <a class="post-link" href="/til/vim/2017/10/24/til-register-in-vim.html">TIL: Register in Vim</a>
-</td>
-</tr>
-
-
-
-  <tr>
-<td>
-  
-  <span class="post-meta">Oct 15, 2017</span>
-</td>
-
-<td>
-  <a class="post-link" href="/ruby/til/2017/10/15/til-ruby-dot-parentheses-notation.html">TIL: Ruby .() notation</a>
-</td>
-</tr>
-
-
-
-</table>
     </main>
   </div>
 </div>
