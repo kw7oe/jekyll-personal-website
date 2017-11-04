@@ -116,7 +116,7 @@
     <p>For the past months, I have started to use <code class="highlighter-rouge">vim</code> in some occasions. One day, I came across a vim video, <a href="https://www.youtube.com/watch?v=3TX3kV3TICU" target="_blank">“Let Vim Do the Typing”</a>, and discover the use of <strong>register</strong> in <code class="highlighter-rouge">vim</code>. Basically, the concept of register in <code class="highlighter-rouge">vim</code> is very similar to the register in our computer. It is a temporary memory space for <code class="highlighter-rouge">vim</code> to store text.</p>
 
 <h3 id="how-to-use-it">How to use it?</h3>
-<p>In normal mode, <code class="highlighter-rouge">"r</code> will allow us to select the register <code class="highlighter-rouge">r</code>. In the command, the charcter after <code class="highlighter-rouge">"</code> is the register you selected. You can choose any register you like from <code class="highlighter-rouge">a-z</code>. You can also check the content of every register with the command <code class="highlighter-rouge">:reg</code>, or specific registers providing the register name as arguments, e.g <code class="highlighter-rouge">:reg r</code>.</p>
+<p>In normal mode, <code class="highlighter-rouge">"r</code> will allow us to select the register <code class="highlighter-rouge">r</code>. The charcter after <code class="highlighter-rouge">"</code> is the register you selected. You can choose any register you like from <code class="highlighter-rouge">a-z</code>.To check the content of every register, use the command <code class="highlighter-rouge">:reg</code>. For specific registers, just provide the register name as arguments to the command, e.g <code class="highlighter-rouge">:reg r</code>.</p>
 
 <p>In insert mode, you can insert the content of a register by <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">r</code>. You’ll notice the current cursor will turn into <code class="highlighter-rouge">"</code> when <code class="highlighter-rouge">Ctrl-r</code> is pressed.</p>
 
@@ -126,7 +126,7 @@
 <p>We can also paste the content of register <code class="highlighter-rouge">e</code> by <code class="highlighter-rouge">"ep</code>. Or, go into insert mode and <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">e</code> to paste the content of the selected register.</p>
 
 <h3 id="wrapping-up">Wrapping Up</h3>
-<p>This is just a very basic introduction of register in <code class="highlighter-rouge">vim</code>. There is still a lots of details and usage of register I haven’t cover in this post. To understand more, refer to the following material:</p>
+<p>This is just a basic introduction of register in <code class="highlighter-rouge">vim</code>. There is still a lots of details and usage of register I didn’t cover in this post. For more details, feel free to refer to the resources below:</p>
 
 <ul>
   <li><a href="http://www.brianstorti.com/vim-registers/" target="_blank">Vim registers: The basics and beyond</a></li>

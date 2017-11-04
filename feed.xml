@@ -1,7 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-10-24T23:25:17+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">TIL: Register in Vim</title><link href="/til/vim/2017/10/24/til-register-in-vim.html" rel="alternate" type="text/html" title="TIL: Register in Vim" /><published>2017-10-24T22:05:00+08:00</published><updated>2017-10-24T22:05:00+08:00</updated><id>/til/vim/2017/10/24/til-register-in-vim</id><content type="html" xml:base="/til/vim/2017/10/24/til-register-in-vim.html">&lt;p&gt;For the past months, I have started to use &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; in some occasions. One day, I came across a vim video, &lt;a href=&quot;https://www.youtube.com/watch?v=3TX3kV3TICU&quot; target=&quot;_blank&quot;&gt;“Let Vim Do the Typing”&lt;/a&gt;, and discover the use of &lt;strong&gt;register&lt;/strong&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;. Basically, the concept of register in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; is very similar to the register in our computer. It is a temporary memory space for &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; to store text.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2017-11-05T00:48:15+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">TIL: Ruby `fetch`</title><link href="/ruby/til/2017/11/04/til-ruby-fetch.html" rel="alternate" type="text/html" title="TIL: Ruby `fetch`" /><published>2017-11-04T22:43:41+08:00</published><updated>2017-11-04T22:43:41+08:00</updated><id>/ruby/til/2017/11/04/til-ruby-fetch</id><content type="html" xml:base="/ruby/til/2017/11/04/til-ruby-fetch.html">&lt;p&gt;Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array. The initial approach I used is similar to:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nil?&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# =&amp;gt; true/false&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# So we can do this &lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;execute_something&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nil?&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;First, we fetch the value of the index in the array using &lt;code class=&quot;highlighter-rouge&quot;&gt;.[]&lt;/code&gt; operator. If the index exists, it will return the value of the index in that array. If it doesn’t exists, it will return &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;. Then, we check the return value if it is nil using &lt;code class=&quot;highlighter-rouge&quot;&gt;.nil?&lt;/code&gt; method, getting either &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt; as a result.&lt;/p&gt;
+
+&lt;p&gt;I’m thinking that there should be a method in &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; that check whether an index exists or not in the array.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Nope, there isn’t &lt;em&gt;(at the time of writing, I might be wrong too)&lt;/em&gt;.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Then, I came across &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt; while scrolling through the documetantion.&lt;/p&gt;
+
+&lt;h3 id=&quot;arrayfetch&quot;&gt;Array#fetch&lt;/h3&gt;
+
+&lt;p&gt;In Ruby &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; is a method that get the value at position &lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt; of an array. The difference between &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;.[]&lt;/code&gt; is &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; throws an &lt;code class=&quot;highlighter-rouge&quot;&gt;IndexError&lt;/code&gt; if the index doesn’t exists.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; 1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; IndexError: index 4 outside of array bounds: -3...3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If we take a look at the Ruby documentation of &lt;a href=&quot;https://ruby-doc.org/core-2.4.0/Array.html#method-i-fetch&quot;&gt;Array#fetch&lt;/a&gt;, we’ll see that &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; has the following definitions:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Which means, we can also provide a default value as the result if the index isn’t found. For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; false&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Or provide a block to be executed if the index is not found:&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;The index '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;' is not found&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;The index '4' is not found&quot; &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;possible-use-case&quot;&gt;Possible Use Case&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt; can be used when we need to provide a default value if the index is not found.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Peter'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Jane'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'John Wick'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'User not found'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;User not found&quot;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; nil&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For example, we have a method to allow to search other users &lt;em&gt;(which store in array)&lt;/em&gt; and print out the name as a response. To handle the scenario where the user is not found, we can implement it by providing a default value with &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt;. No additional handling code is required.&lt;/p&gt;
+
+&lt;p&gt;Another use case is to initialize the value if we access an index that is not found in the array.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; 0&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;stat&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; [15, 12, 14, nil, 0]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note that, the elements before the &lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt; will be initialize to 0 in this case.&lt;/p&gt;
+
+&lt;h3 id=&quot;after-thought&quot;&gt;After Thought&lt;/h3&gt;
+
+&lt;p&gt;After learning about &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt;, at first, I realised we can do something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Do Something&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;But, while I’m writting this post, I realise another thing. Isn’t that similar to this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Do Something&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In this case, if the index exists, &lt;code class=&quot;highlighter-rouge&quot;&gt;array[4]&lt;/code&gt; will return a value, which will be evaluated to &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt; as long as the value is not &lt;code class=&quot;highlighter-rouge&quot;&gt;falsy&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;My initial approach is also redundant. If I am using it in an conditional statement, &lt;code class=&quot;highlighter-rouge&quot;&gt;.nil?&lt;/code&gt; isn’t required too.&lt;/p&gt;
+
+&lt;p&gt;If you know the other possible use cases of &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt;, feel free to share it out.&lt;/p&gt;</content><author><name></name></author><summary type="html">Today, when I am refactoring a CLI I wrote, I came across a code block where I check whether an index exists in an array. The initial approach I used is similar to:</summary></entry><entry><title type="html">TIL: Register in Vim</title><link href="/til/vim/2017/10/24/til-register-in-vim.html" rel="alternate" type="text/html" title="TIL: Register in Vim" /><published>2017-10-24T22:05:00+08:00</published><updated>2017-10-24T22:05:00+08:00</updated><id>/til/vim/2017/10/24/til-register-in-vim</id><content type="html" xml:base="/til/vim/2017/10/24/til-register-in-vim.html">&lt;p&gt;For the past months, I have started to use &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; in some occasions. One day, I came across a vim video, &lt;a href=&quot;https://www.youtube.com/watch?v=3TX3kV3TICU&quot; target=&quot;_blank&quot;&gt;“Let Vim Do the Typing”&lt;/a&gt;, and discover the use of &lt;strong&gt;register&lt;/strong&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;. Basically, the concept of register in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; is very similar to the register in our computer. It is a temporary memory space for &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; to store text.&lt;/p&gt;
 
 &lt;h3 id=&quot;how-to-use-it&quot;&gt;How to use it?&lt;/h3&gt;
-&lt;p&gt;In normal mode, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;r&lt;/code&gt; will allow us to select the register &lt;code class=&quot;highlighter-rouge&quot;&gt;r&lt;/code&gt;. In the command, the charcter after &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&lt;/code&gt; is the register you selected. You can choose any register you like from &lt;code class=&quot;highlighter-rouge&quot;&gt;a-z&lt;/code&gt;. You can also check the content of every register with the command &lt;code class=&quot;highlighter-rouge&quot;&gt;:reg&lt;/code&gt;, or specific registers providing the register name as arguments, e.g &lt;code class=&quot;highlighter-rouge&quot;&gt;:reg r&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In normal mode, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;r&lt;/code&gt; will allow us to select the register &lt;code class=&quot;highlighter-rouge&quot;&gt;r&lt;/code&gt;. The charcter after &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&lt;/code&gt; is the register you selected. You can choose any register you like from &lt;code class=&quot;highlighter-rouge&quot;&gt;a-z&lt;/code&gt;.To check the content of every register, use the command &lt;code class=&quot;highlighter-rouge&quot;&gt;:reg&lt;/code&gt;. For specific registers, just provide the register name as arguments to the command, e.g &lt;code class=&quot;highlighter-rouge&quot;&gt;:reg r&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;In insert mode, you can insert the content of a register by &lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl-r&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;r&lt;/code&gt;. You’ll notice the current cursor will turn into &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&lt;/code&gt; when &lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl-r&lt;/code&gt; is pressed.&lt;/p&gt;
 
@@ -11,7 +112,7 @@
 &lt;p&gt;We can also paste the content of register &lt;code class=&quot;highlighter-rouge&quot;&gt;e&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;ep&lt;/code&gt;. Or, go into insert mode and &lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl-r&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;e&lt;/code&gt; to paste the content of the selected register.&lt;/p&gt;
 
 &lt;h3 id=&quot;wrapping-up&quot;&gt;Wrapping Up&lt;/h3&gt;
-&lt;p&gt;This is just a very basic introduction of register in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;. There is still a lots of details and usage of register I haven’t cover in this post. To understand more, refer to the following material:&lt;/p&gt;
+&lt;p&gt;This is just a basic introduction of register in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;. There is still a lots of details and usage of register I didn’t cover in this post. For more details, feel free to refer to the resources below:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.brianstorti.com/vim-registers/&quot; target=&quot;_blank&quot;&gt;Vim registers: The basics and beyond&lt;/a&gt;&lt;/li&gt;
