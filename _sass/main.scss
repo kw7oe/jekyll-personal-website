@@ -1,0 +1,85 @@
+@import "syntax-highlighting";
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+
+// General
+body, html {
+  font-family: 'Titillium Web', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+// Navigation Bar
+.navbar {
+  padding: 12px 0px;
+  display: flex;
+
+  .navbar-item {
+    padding: 8px;
+  }
+
+  .navbar-brand {
+    padding: 8px 8px 8px 0px;
+  }
+
+  a {
+    font-size: 18px;
+    color: black;
+    padding-bottom: 4px;
+    text-decoration: none;
+
+    &:visited {
+      color: black;
+    }
+
+    &:hover {
+      border-bottom: 1px solid black;
+    }
+  }
+}
+
+// Code Snippet
+pre {
+  background-color: #F2f2f2;
+  border-radius: 4px;
+  padding: 16px;
+  white-space: pre-wrap;
+}
+
+// Footer
+.footer {
+  padding-top: 24px;
+  padding-bottom: 48px;
+}
+
+.footer-link {
+  padding: 6px;
+  text-decoration: none;
+  color: black;
+
+  &:visited {
+    color: black;
+  }
+
+  &:hover {
+    .username {
+      border-bottom: 1px solid black;
+    }
+  }
+}
+
+// Layout
+.main-col {
+  width: 60%;
+  margin-left: 20%;
+}
+
+@media only screen and (max-width : 768px) {
+  .main-col {
+    width: 90%;
+    margin-left: 5%;
+  }
+}

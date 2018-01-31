@@ -1,52 +1,13 @@
 <header class="site-header" role="banner">
-
-  <div class="wrapper">
+  <div class="main-col">
     {% assign default_paths = site.pages | map: "path" %}
     {% assign page_paths = site.header_pages | default: default_paths %}
 
-
     {% if page_paths %}
-      <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-        <div class="container">
-          <!-- Always Visible -->
-          <div class="navbar-brand">
-            <!-- Brand Name -->
-            <a class="navbar-item" href="{{ "/" | relative_url   }}">
-              <img src="/assets/img/logo.png">
-            </a>
-
-            <!-- Hamburger -->
-            <div class="navbar-burger burger" data-target="navMenu">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-
-          <!-- Hidden from Mobile -->
-          <div class="navbar-menu" id="navMenu">
-            <div class="navbar-end">
-              <!-- Page Link -->
-              <a class="navbar-item" href="/blog">Blog</a>
-              <div class="navbar-item has-dropdown is-hoverable">
-                  <a href ="/categories" class="navbar-link">
-                    Categories
-                  </a>
-
-                  <div class="navbar-dropdown">
-                    {% for category in site.categories %}
-                    <!-- Category title -->
-                    {% capture category_title %}{{ category | first }}{% endcapture %}
-                    <!-- Category url -->
-                    {% capture category_url %}{{  site.url  }}/categories/{{ category_title | slugify }}{% endcapture %}
-
-                      <a href="{{ category_url }}" class="navbar-item">{{ category_title }}</a>
-                    {% endfor %}
-                  </div>
-                </div>
-            </div>
-          </div>
-        </div>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand"><a href="/">kw7oe</a></div>
+        <div class="navbar-item"><a href="/blog">Blog</a></div>
+        <div class="navbar-item"><a href ="/categories">Categories</a></div>
       </nav>
     {% endif %}
   </div>

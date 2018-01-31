@@ -1,32 +1,19 @@
 ---
 layout: base
 ---
-<section class="hero is-medium is-primary has-text-centered">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Hey, welcome to my blog.
-      </h1>
-      <p class="subtitle">
-        Here I write about programming and random stuff.
-      </p>
-    </div>
-  </div>
-</section>
+<div class="main-col" aria-label="Content">
+  <h2>Hi</h2>
+  <p>
+    Here I write about programming and random stuff.
+  </p>
 
-<section class="hero">
-  <div class="hero-body">
-    <div class="columns is-centered">
-      <div class="column is-8" aria-label="Content">
-        <h1 class="title has-text-centered">Posts</h1>
-        <table class="table">
-        {% for post in site.posts %}
-          {% include component/post_title.html post=post %}
-        {% endfor %}
-        </table>
+  <h1 class="title has-text-centered">Posts</h1>
+  <table class="table">
+  {% for post in site.posts %}
+    {% include component/post_title.html post=post %}
+  {% endfor %}
+  </table>
 
-        <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
-      </div>
-    </div>
-  </div>
-</section>
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
+</div>
+
