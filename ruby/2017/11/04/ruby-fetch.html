@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>TIL: Ruby `fetch`</title>
-  <meta name="description" content="Today, when I am refactoring a CLI I wrote, I came across a code block where I check whether an index exists in an array. The initial approach I used is simi...">
+  <title>Ruby `fetch`</title>
+  <meta name="description" content="Today, when I am refactoring a CLI I wrote, I came across a code block where I check whether an index exists in an array (turns out I don’t actually need it,...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="/ruby/til/2017/11/04/til-ruby-fetch.html">
+  <link rel="canonical" href="/ruby/2017/11/04/ruby-fetch.html">
   <link rel="alternate" type="application/rss+xml" title="kw7oe" href="/feed.xml">
   
   
@@ -40,7 +40,7 @@
     <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">TIL: Ruby `fetch`</h1>
+    <h1 class="post-title" itemprop="name headline">Ruby `fetch`</h1>
     <small class="post-meta">
       <time datetime="2017-11-04T22:43:41+08:00" itemprop="datePublished">
         
@@ -50,23 +50,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array. The initial approach I used is similar to:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="nf">nil?</span>
-<span class="c1"># =&gt; true/false</span>
-
-<span class="c1"># So we can do this </span>
-<span class="n">execute_something</span> <span class="k">if</span> <span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="nf">nil?</span>
-</code></pre>
-</div>
-
-<p>First, we fetch the value of the index in the array using <code class="highlighter-rouge">.[]</code> operator. If the index exists, it will return the value of the index in that array. If it doesn’t exists, it will return <code class="highlighter-rouge">nil</code>. Then, we check the return value if it is nil using <code class="highlighter-rouge">.nil?</code> method, getting either <code class="highlighter-rouge">true</code> or <code class="highlighter-rouge">false</code> as a result.</p>
-
-<p>I’m thinking that there should be a method in <code class="highlighter-rouge">Array</code> that check whether an index exists or not in the array.</p>
-
-<p><strong>Nope, there isn’t <em>(at the time of writing, I might be wrong too)</em>.</strong></p>
-
-<p>Then, I came across <code class="highlighter-rouge">Array#fetch</code> while scrolling through the documetantion.</p>
+    <p>Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array <em>(turns out I don’t actually need it, I can just access the array and check if the value is <code class="highlighter-rouge">nil</code>)</em>. I went to search of Ruby <code class="highlighter-rouge">Array</code> documentation to see if such method exists. Then, I came across <code class="highlighter-rouge">Array#fetch</code> while scrolling through the documetantion.</p>
 
 <h3 id="arrayfetch">Array#fetch</h3>
 
@@ -89,15 +73,15 @@
 <p>Which means, we can also provide a default value as the result if the index isn’t found. For example:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span>
-<span class="c1">#=&gt; false</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="c1">#=&gt; 0</span>
 </code></pre>
 </div>
 
 <p>Or provide a block to be executed if the index is not found:</p>
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="s2">"The index '</span><span class="si">#{</span><span class="n">index</span><span class="si">}</span><span class="s2">' is not found"</span> <span class="p">}</span>
-<span class="c1">#=&gt; "The index '4' is not found" </span>
+<span class="c1">#=&gt; "The index '4' is not found"</span>
 </code></pre>
 </div>
 
@@ -115,41 +99,6 @@
 </div>
 
 <p>For example, we have a method to allow to search other users <em>(which store in array)</em> and print out the name as a response. To handle the scenario where the user is not found, we can implement it by providing a default value with <code class="highlighter-rouge">Array#fetch</code>. No additional handling code is required.</p>
-
-<p>Another use case is to initialize the value if we access an index that is not found in the array.</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">stat</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">]</span>
-<span class="n">stat</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="n">stat</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span> <span class="p">}</span>
-<span class="c1">#=&gt; 0</span>
-<span class="n">stat</span>
-<span class="c1">#=&gt; [15, 12, 14, nil, 0]</span>
-</code></pre>
-</div>
-
-<p>Note that, the elements before the <code class="highlighter-rouge">index</code> will be initialize to 0 in this case.</p>
-
-<h3 id="after-thought">After Thought</h3>
-
-<p>After learning about <code class="highlighter-rouge">Array#fetch</code>, at first, I realised we can do something like this:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="k">if</span> <span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span>
-  <span class="c1"># Do Something</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-<p>But, while I’m writting this post, I realise another thing. Isn’t that similar to this:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="n">array</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-  <span class="c1"># Do Something</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-<p>In this case, if the index exists, <code class="highlighter-rouge">array[4]</code> will return a value, which will be evaluated to <code class="highlighter-rouge">true</code> as long as the value is not <code class="highlighter-rouge">falsy</code>.</p>
-
-<p>My initial approach is also redundant. If I am using it in an conditional statement, <code class="highlighter-rouge">.nil?</code> isn’t required too.</p>
 
 <p>If you know the other possible use cases of <code class="highlighter-rouge">Array#fetch</code>, feel free to share it out.</p>
 

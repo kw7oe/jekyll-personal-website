@@ -181,9 +181,17 @@
 .highlight .il { color: #666666; }
 
 /* Literal.Number.Integer.Long */
-body, html { font-family: 'Titillium Web', sans-serif; padding: 0; margin: 0; }
+body, html { font-family: "Titillium Web", sans-serif; padding: 0; margin: 0; }
 
 h1, h2, h3, h4, h5, h6 { margin: 0; }
+
+hr { border: none; background-color: #CCC; display: block; height: 1px; margin: 1.5rem 0; }
+
+a { color: #007EA7; text-decoration: none; }
+a:visited { color: #007EA7; }
+a:hover { color: #003459; }
+
+code.highlighter-rouge { background: #F2F2F2; padding: 4px; color: #FF7676; }
 
 .navbar { padding: 12px 0px; display: flex; }
 .navbar .navbar-item { padding: 8px; }
@@ -192,7 +200,7 @@ h1, h2, h3, h4, h5, h6 { margin: 0; }
 .navbar a:visited { color: black; }
 .navbar a:hover { border-bottom: 1px solid black; }
 
-pre { background-color: #F2f2f2; border-radius: 4px; padding: 16px; white-space: pre-wrap; }
+pre { background-color: #F2F2F2; border-radius: 4px; padding: 16px; white-space: pre-wrap; }
 
 .footer { padding-top: 24px; padding-bottom: 48px; }
 
