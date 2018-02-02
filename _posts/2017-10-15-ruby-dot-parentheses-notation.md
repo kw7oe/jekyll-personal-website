@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 'TIL: Ruby .() notation'
+title: 'Ruby .() notation'
 date:   2017-10-15 18:12:19 +0800
-categories: Ruby TIL
+categories: Ruby
 ---
 
-In Ruby, `.()` is a syntatic sugar for `call` method. 
+In Ruby, `.()` is a syntatic sugar for `call` method.
 
 ```ruby
 class Person
@@ -36,7 +36,7 @@ Person.()
 
 ```
 
-Some programming languages such as Python, Swift and Scala initalize object by `Person()`. In Ruby, we can't override the `()` operator to achieve the same effect _(see this [StackOverflow question](https://stackoverflow.com/questions/24351218/how-to-create-an-object-in-ruby-without-using-new?answertab=oldest#tab-top))_. However, we can use `.()` to achieve a similar result: 
+Some programming languages such as Python, Swift and Scala initalize object by `Person()`. In Ruby, we can't override the `()` operator to achieve the same effect _(see this [StackOverflow question](https://stackoverflow.com/questions/24351218/how-to-create-an-object-in-ruby-without-using-new?answertab=oldest#tab-top))_. However, we can use `.()` to achieve a similar result:
 
 ```ruby
 class Person

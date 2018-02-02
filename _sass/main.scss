@@ -4,8 +4,12 @@
 // Variable
 $font-family: 'Titillium Web', sans-serif;
 
+$code-background: #F2F2F2;
+$code-color: #FF7676;
+
 $hr-color: #CCC;
-$link-color: #007ea7;
+
+$link-color: #007EA7;
 $link-hover-color: #003459;
 
 // General
@@ -38,7 +42,12 @@ a {
   &:hover {
     color: $link-hover-color;
   }
+}
 
+code.highlighter-rouge {
+  background: $code-background;
+  padding: 4px;
+  color: $code-color;
 }
 
 // Navigation Bar
@@ -72,7 +81,7 @@ a {
 
 // Code Snippet
 pre {
-  background-color: #F2f2f2;
+  background-color: $code-background;
   border-radius: 4px;
   padding: 16px;
   white-space: pre-wrap;
