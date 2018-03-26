@@ -1,6 +1,17 @@
 ---
-# You don't need to edit this file, it's empty on purpose.
-# Edit theme's home layout instead if you wanna make some changes
-# See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-layout: home
+layout: base
 ---
+<div class="main-col" aria-label="Content">
+  <h2>Hi, I am Kai</h2>
+  <p>Here I write about programming and random stuff.</p>
+
+  <h1 class="title has-text-centered">Posts</h1>
+  <table class="table">
+  {% for post in site.posts %}
+    {% include component/post_title.html post=post %}
+  {% endfor %}
+  </table>
+
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
+</div>
+
