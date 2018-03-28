@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Ruby `fetch`'
+title: 'Ruby fetch'
 date: 2017-11-04 22:43:41 +0800
 categories: Ruby
 ---

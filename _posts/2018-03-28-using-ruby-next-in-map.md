@@ -4,7 +4,6 @@ title: 'Using Ruby next in #map'
 categories: Ruby
 ---
 
-
 While I was refactoring the code base of my client application,
 I came accross a code block, similar to this:
 
@@ -17,7 +16,7 @@ data.each do |d|
 end
 ```
 
-"Ha, I can replace `each` with `map` here."
+I think, "Ha, I can replace `each` with `map` here."
 
 I go ahead, and make the changes.
 
@@ -32,9 +31,9 @@ end
 _Little did I know that,
 this will  break the production system in the future._
 
-After the application was on production, after a few hours, my client
-reported that there were errors in the system, disrupting the user from
-using it normally.  After some investigation, I found out that it is
+After the application went live, after a few hours, my client
+reported that there were errors in the system disrupting the user from
+using it normally. After some investigation, I found out that it is
 caused by `nil`. I patched the error quickly by using `compact`.
 
 From something like this:
@@ -71,9 +70,8 @@ end
 Well, thanks myself for not writing test ahead before refactoring the
 code base, I get to learn this the hard way.
 
-
-
-
-
-
+### Lesson Learned
+1. Always write test before refactoring.
+2. Using `next` in a `map` return `nil`
+3. `Array#compact` can be used to remove `nil` elements.
 
