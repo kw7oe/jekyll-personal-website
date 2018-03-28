@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Using Ruby next in #map'
+title: 'Using Ruby next in map'
 categories: Ruby
 ---
 
