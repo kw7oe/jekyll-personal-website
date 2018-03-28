@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-02-02T23:35:48+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Ruby `fetch`</title><link href="/ruby/2017/11/04/ruby-fetch.html" rel="alternate" type="text/html" title="Ruby `fetch`" /><published>2017-11-04T22:43:41+08:00</published><updated>2017-11-04T22:43:41+08:00</updated><id>/ruby/2017/11/04/ruby-fetch</id><content type="html" xml:base="/ruby/2017/11/04/ruby-fetch.html">&lt;p&gt;Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array &lt;em&gt;(turns out I don’t actually need it, I can just access the array and check if the value is &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;)&lt;/em&gt;. I went to search of Ruby &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; documentation to see if such method exists. Then, I came across &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt; while scrolling through the documetantion.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-03-28T21:55:39+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Using Ruby next in map</title><link href="/ruby/2018/03/28/using-ruby-next-in-map.html" rel="alternate" type="text/html" title="Using Ruby next in map" /><published>2018-03-28T00:00:00+08:00</published><updated>2018-03-28T00:00:00+08:00</updated><id>/ruby/2018/03/28/using-ruby-next-in-map</id><content type="html" xml:base="/ruby/2018/03/28/using-ruby-next-in-map.html">&lt;p&gt;While I was refactoring the code base of my client application,
+I came accross a code block, similar to this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'status'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IGNORED_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I think, “Ha, I can replace &lt;code class=&quot;highlighter-rouge&quot;&gt;each&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt; here.”&lt;/p&gt;
+
+&lt;p&gt;I go ahead, and make the changes.&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'status'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IGNORED_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Little did I know that,
+this will  break the production system in the future.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;After the application went live, after a few hours, my client
+reported that there were errors in the system disrupting the user from
+using it normally. After some investigation, I found out that it is
+caused by &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;. I patched the error quickly by using &lt;code class=&quot;highlighter-rouge&quot;&gt;compact&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;From something like this:&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# [1, nil, 2, 3]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;to:&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;compact&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# [1, 2, 3]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Later on, diving into the source code, I found out that the &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;
+is introduced by my own refactored code. It turns out that, inside
+a &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt;, using &lt;code class=&quot;highlighter-rouge&quot;&gt;next&lt;/code&gt; will return &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt; instead of skipping it
+altogether. I only learn this when I came across this
+&lt;a href=&quot;http://code-worrier.com/blog/map-and-next/&quot;&gt;blog article&lt;/a&gt;.
+For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Return the value&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; return [1, nil, 3, nil, 5, nil]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; instead of [1, 3, 5]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Well, thanks myself for not writing test ahead before refactoring the
+code base, I get to learn this the hard way.&lt;/p&gt;
+
+&lt;h3 id=&quot;lesson-learned&quot;&gt;Lesson Learned&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;Always write test before refactoring.&lt;/li&gt;
+  &lt;li&gt;Using &lt;code class=&quot;highlighter-rouge&quot;&gt;next&lt;/code&gt; in a &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt; return &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Array#compact&lt;/code&gt; can be used to remove &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt; elements.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">While I was refactoring the code base of my client application, I came accross a code block, similar to this:</summary></entry><entry><title type="html">Ruby fetch</title><link href="/ruby/2017/11/04/ruby-fetch.html" rel="alternate" type="text/html" title="Ruby fetch" /><published>2017-11-04T22:43:41+08:00</published><updated>2017-11-04T22:43:41+08:00</updated><id>/ruby/2017/11/04/ruby-fetch</id><content type="html" xml:base="/ruby/2017/11/04/ruby-fetch.html">&lt;p&gt;Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array &lt;em&gt;(turns out I don’t actually need it, I can just access the array and check if the value is &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;)&lt;/em&gt;. I went to search of Ruby &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; documentation to see if such method exists. Then, I came across &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt; while scrolling through the documetantion.&lt;/p&gt;
 
 &lt;h3 id=&quot;arrayfetch&quot;&gt;Array#fetch&lt;/h3&gt;
 
