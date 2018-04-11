@@ -1,4 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-03-28T21:55:39+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Using Ruby next in map</title><link href="/ruby/2018/03/28/using-ruby-next-in-map.html" rel="alternate" type="text/html" title="Using Ruby next in map" /><published>2018-03-28T00:00:00+08:00</published><updated>2018-03-28T00:00:00+08:00</updated><id>/ruby/2018/03/28/using-ruby-next-in-map</id><content type="html" xml:base="/ruby/2018/03/28/using-ruby-next-in-map.html">&lt;p&gt;While I was refactoring the code base of my client application,
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-04-11T22:34:19+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">A note about using ‘fetch’ in JS</title><link href="/javascript/2018/04/11/a-note-about-using-fetch-in-js.html" rel="alternate" type="text/html" title="A note about using 'fetch' in JS" /><published>2018-04-11T00:00:00+08:00</published><updated>2018-04-11T00:00:00+08:00</updated><id>/javascript/2018/04/11/a-note-about-using-fetch-in-js</id><content type="html" xml:base="/javascript/2018/04/11/a-note-about-using-fetch-in-js.html">&lt;p&gt;Another story about fixing bug. This story is related to the native web
+API &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt;, which is used to make request.&lt;/p&gt;
+
+&lt;h3 id=&quot;backstory&quot;&gt;Backstory&lt;/h3&gt;
+&lt;p&gt;After serveral days of having my first production application online,
+my client inform me that, the application has a bug, &lt;em&gt;again&lt;/em&gt;.
+The button was not working as expected for one of the users.
+Long story short, we found out that the bug occurs in iOS 10.2.1.
+So, I downloaded the Simulator for iOS 10.2 to start debugging.&lt;/p&gt;
+
+&lt;h3 id=&quot;issue&quot;&gt;Issue&lt;/h3&gt;
+&lt;p&gt;It turns out that &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; is not supported in iOS 10.2. In this
+case, I can:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;replace &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;axios&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;use &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; polyfill&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;to solve the issue.&lt;/p&gt;
+
+&lt;h3 id=&quot;lesson-learned&quot;&gt;Lesson Learned&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; is not supported for iOS 10.2 and below.&lt;/li&gt;
+  &lt;li&gt;How to debug a web application using Simulator.&lt;/li&gt;
+  &lt;li&gt;Having more information about the environment when the bug occured
+is always helpful.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Another story about fixing bug. This story is related to the native web API fetch, which is used to make request.</summary></entry><entry><title type="html">Using Ruby next in map</title><link href="/ruby/2018/03/28/using-ruby-next-in-map.html" rel="alternate" type="text/html" title="Using Ruby next in map" /><published>2018-03-28T00:00:00+08:00</published><updated>2018-03-28T00:00:00+08:00</updated><id>/ruby/2018/03/28/using-ruby-next-in-map</id><content type="html" xml:base="/ruby/2018/03/28/using-ruby-next-in-map.html">&lt;p&gt;While I was refactoring the code base of my client application,
 I came accross a code block, similar to this:&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
