@@ -1,11 +1,14 @@
 @import "syntax-highlighting";
-@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+
+@import url('https://fonts.googleapis.com/css?family=Slabo+27px');
 
 // Variable
-$font-family: 'Titillium Web', sans-serif;
+// $font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+$font-family: 'Slabo 27px', serif;
+$font-size: 18px;
+$line-height: 1.5;
 
-$code-background: #F2F2F2;
-$code-color: #FF7676;
+$code-background: rgba(27,31,35,0.05);
 
 $hr-color: #CCC;
 
@@ -15,6 +18,7 @@ $link-hover-color: #003459;
 // General
 body, html {
   font-family: $font-family;
+  font-size: $font-size;
   padding: 0;
   margin: 0;
 }
@@ -45,9 +49,15 @@ a {
 }
 
 code.highlighter-rouge {
-  background: $code-background;
-  padding: 4px;
-  color: $code-color;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  background-color: $code-background;
+  border-radius: 3px;
+}
+
+tt, code {
+  font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  font-size: 14px;
 }
 
 // Navigation Bar
