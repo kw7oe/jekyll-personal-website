@@ -42,6 +42,128 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">Using AWK to extract generated file from jekyll-compose</h1>
+     <p class="post-meta">
+       <time datetime="2018-09-09T22:25:00+08:00" itemprop="datePublished">
+         
+         Sep 9, 2018
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>Recently, I have been using <code class="highlighter-rouge">jekyll</code> to make notes. I use <code class="highlighter-rouge">jekyll-compose</code>
+gem to create post using command line. However, the auto open generated file
+features isn’t working in my machine after the setup.</p>
+
+<p>After a few times on manually opening the generated files in <code class="highlighter-rouge">vim</code>, I decided
+to write a quick shell script to solve this issue.</p>
+
+<h2 id="scenario">Scenario</h2>
+
+<p>To generate a new post with <code class="highlighter-rouge">jekyll-compose</code>, we can run the following command:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec jekyll post &lt;TITLE&gt;
+</code></pre>
+</div>
+
+<p>and it will output the following:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Configuration file: /Users/kai/Desktop/notes/_config.yml
+New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;
+</code></pre>
+</div>
+
+<p>So, to generate and open the file involves the following steps:</p>
+
+<ul>
+  <li>Run the command to generate post</li>
+  <li>Extract the file path</li>
+  <li>Open the file using <code class="highlighter-rouge">vim</code></li>
+</ul>
+
+<h2 id="awk">awk</h2>
+
+<p>I came across <code class="highlighter-rouge">AWK</code> from <a href="https://twitter.com/b0rk/status/1000604334026055681">Julia Evans zine</a>. It came to my mind again when I want
+to extract the file path from the output of the command.</p>
+
+<p><code class="highlighter-rouge">AWK</code> is a programming language designed for text-processing. It has very basic
+yet important command <code class="highlighter-rouge">print</code> to output the text. What makes <code class="highlighter-rouge">AWK</code> different is
+it breaks each line into columns <em>(seperated by space, which can be configure)</em>, where:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>print $1
+</code></pre>
+</div>
+
+<p>means output the first column.</p>
+
+<p>We can also add in a specific condition in front of the <code class="highlighter-rouge">print</code> command so that
+it only execute if the condition is true.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>CONDITION {print $1}
+</code></pre>
+</div>
+
+<h2 id="implementation">Implementation</h2>
+<p>After knowing some basic of <code class="highlighter-rouge">AWK</code>, we can extract the file path with the
+following actions.</p>
+
+<h4 id="1-extraction">1. Extraction</h4>
+<p>Hence, to extract out the file path from the line <code class="highlighter-rouge">New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;</code>,
+we can use the following command:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>echo 'New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;' | awk '{print $5}'
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">$5</code> is used since the file path is the fifth column of the line.</p>
+
+<h4 id="2-only-extract-second-line">2. Only Extract Second Line</h4>
+<p>Since we just wanted to extract the second line of the command output, the
+command above is not enough. What we really wanted is to say:</p>
+
+<p><em>if the line is second row, then we extract it</em></p>
+
+<p>To achieve that in <code class="highlighter-rouge">AWK</code>, we can use <code class="highlighter-rouge">AWK</code> built-in variables <code class="highlighter-rouge">FNR</code>, which
+refers to the current line number of the file, to form a condition.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>echo -e "Configuration file: /Users/kai/Desktop/notes/_config.yml\nNew post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;" | awk 'FNR==2{ print $5 }'
+</code></pre>
+</div>
+
+<h2 id="summary">Summary</h2>
+<ol>
+  <li>You can use <code class="highlighter-rouge">AWK</code> to print specific column of lines with <code class="highlighter-rouge">awk {print $N}</code></li>
+  <li>You can add condition in front of the <code class="highlighter-rouge">print</code> command if needed.</li>
+  <li><code class="highlighter-rouge">AWK</code> contains a handful of built-in variables that are useful for
+text-processing.</li>
+  <li>Code snippet to generate and open the file.
+    <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="k">function </span>newpost<span class="o">()</span> <span class="o">{</span>
+  vim <span class="k">$(</span>
+ bundle <span class="nb">exec </span>jekyll post <span class="nv">$1</span> |
+ <span class="c"># substr is used to remove the ending '.' of the extracted string</span>
+ awk <span class="s1">'FNR == 2{print substr($5, 1, length($5) - 1)}'</span>
+  <span class="k">)</span>
+<span class="o">}</span>
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<hr />
+<ol>
+  <li>If you are interested in more command line tools, you can consider purchase
+<a href="https://twitter.com/b0rk">Julia Evans</a> <a href="https://gumroad.com/l/bite-size-command-line">Byte Size Command Line</a> zine series.</li>
+</ol>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">A note about using &#39;fetch&#39; in JS</h1>
      <p class="post-meta">
        <time datetime="2018-04-11T00:00:00+08:00" itemprop="datePublished">
@@ -281,95 +403,6 @@ code base, I get to learn this the hard way.</p>
   <li><a href="http://www.brianstorti.com/vim-registers/" target="_blank">Vim registers: The basics and beyond</a></li>
   <li><a href="https://stackoverflow.com/questions/1497958/how-do-i-use-vim-registers" target="_blank">How do I use vim registers?</a></li>
 </ul>
-
-   </div>
-</div>
-    <hr>
-  
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">Vue.js: Add component on click</h1>
-     <p class="post-meta">
-       <time datetime="2017-10-17T23:00:00+08:00" itemprop="datePublished">
-         
-         Oct 17, 2017
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>I have been working on a project which uses <code class="highlighter-rouge">Vue.js</code> for front end. I came across a scenario where we need to allow user to add more entry in their form.</p>
-
-<h3 id="initial-approach">Initial Approach</h3>
-<p>The first thought that come to my mind will be get the <code class="highlighter-rouge">div#id</code> of the element and <code class="highlighter-rouge">append</code> it dynamically through <code class="highlighter-rouge">javascript</code></p>
-
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'parent'</span><span class="p">)</span>
-<span class="kd">var</span> <span class="nx">component</span> <span class="o">=</span> <span class="nx">createComponent</span><span class="p">()</span> <span class="c1">// Assuming this return an Node element</span>
-
-<span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">component</span><span class="p">)</span>
-</code></pre>
-</div>
-
-<p>However, since we are using <code class="highlighter-rouge">Vue.js</code>, it doesn’t feel natural to approach it this way.</p>
-
-<h3 id="with-vuejs">With Vue.js</h3>
-
-<p>Instead, we can utilize the functionality of <code class="highlighter-rouge">Vue.js</code>, by using <code class="highlighter-rouge">v-for</code> and <code class="highlighter-rouge">v-on:click</code>.</p>
-
-<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
-  <span class="nt">&lt;div&gt;</span>
-    <span class="nt">&lt;p</span>
-      <span class="na">v-for=</span><span class="s">"index in count"</span>
-      <span class="na">:key=</span><span class="s">"index"</span><span class="nt">&gt;</span>
-      {{ index }}
-    <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;button</span> <span class="na">v-on:click=</span><span class="s">"addComponent"</span><span class="nt">&gt;</span>Add<span class="nt">&lt;/button&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/template&gt;</span>
-
-<span class="nt">&lt;script&gt;</span>
-<span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
-  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">{</span>
-      <span class="na">count</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
-  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nx">addComponent</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">count</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-<span class="nt">&lt;/script&gt;</span>
-</code></pre>
-</div>
-<ol>
-  <li>Declare a counter
-    <ul>
-      <li>We first declare a data <code class="highlighter-rouge">count</code> with the initial value of 1.</li>
-    </ul>
-  </li>
-  <li>Use <code class="highlighter-rouge">v-for</code> to generate components
-    <ul>
-      <li>In our <code class="highlighter-rouge">template</code> tag, We loop through the component with <code class="highlighter-rouge">v-for="index in count"</code>.</li>
-      <li>With the <code class="highlighter-rouge">v-for</code> shorthands, <code class="highlighter-rouge">vue</code> will generate from <code class="highlighter-rouge">count</code> times of the component. In this case, <code class="highlighter-rouge">count</code> act like range. For more detailed explanation, refer to the official documetation: <a href="https://vuejs.org/v2/guide/list.html#v-for-with-a-Range" target="_blank">v-for with a Range</a>).</li>
-    </ul>
-  </li>
-  <li>Button to increase <code class="highlighter-rouge">count</code>
-    <ul>
-      <li>Then we create a <code class="highlighter-rouge">Add</code> button that execute <code class="highlighter-rouge">addComponent</code> on click. The <code class="highlighter-rouge">addComponent</code> method is fairly straightforward, just increase the <code class="highlighter-rouge">count</code> by 1.</li>
-      <li>When the user click the <code class="highlighter-rouge">Add</code> button, the <code class="highlighter-rouge">count</code> will be increased by 1, thus cause <code class="highlighter-rouge">Vue.js</code> to render additional component in our view.</li>
-    </ul>
-  </li>
-</ol>
-
-<h3 id="conclusion">Conclusion</h3>
-<p>With the combination of, <code class="highlighter-rouge">count</code> act as counter. <code class="highlighter-rouge">v-for</code> to generate the components, and <code class="highlighter-rouge">addComponent</code> method to increase the <code class="highlighter-rouge">count</code>, we are able to render new component into our view when the user click the button.</p>
-
-<p>P.S. The solution is inspired by this <a href="https://forum-archive.vuejs.org/topic/747/clone-component-when-click-add-more/3" target="_blank">forum post</a></p>
-
 
    </div>
 </div>

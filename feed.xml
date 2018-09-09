@@ -1,4 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-04-11T22:34:19+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">A note about using ‘fetch’ in JS</title><link href="/javascript/2018/04/11/a-note-about-using-fetch-in-js.html" rel="alternate" type="text/html" title="A note about using 'fetch' in JS" /><published>2018-04-11T00:00:00+08:00</published><updated>2018-04-11T00:00:00+08:00</updated><id>/javascript/2018/04/11/a-note-about-using-fetch-in-js</id><content type="html" xml:base="/javascript/2018/04/11/a-note-about-using-fetch-in-js.html">&lt;p&gt;Another story about fixing bug. This story is related to the native web
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-09-09T22:48:04+08:00</updated><id>/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Using AWK to extract generated file from jekyll-compose</title><link href="/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose.html" rel="alternate" type="text/html" title="Using AWK to extract generated file from jekyll-compose" /><published>2018-09-09T22:25:00+08:00</published><updated>2018-09-09T22:25:00+08:00</updated><id>/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose</id><content type="html" xml:base="/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose.html">&lt;p&gt;Recently, I have been using &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll&lt;/code&gt; to make notes. I use &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-compose&lt;/code&gt;
+gem to create post using command line. However, the auto open generated file
+features isn’t working in my machine after the setup.&lt;/p&gt;
+
+&lt;p&gt;After a few times on manually opening the generated files in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;, I decided
+to write a quick shell script to solve this issue.&lt;/p&gt;
+
+&lt;h2 id=&quot;scenario&quot;&gt;Scenario&lt;/h2&gt;
+
+&lt;p&gt;To generate a new post with &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-compose&lt;/code&gt;, we can run the following command:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec jekyll post &amp;lt;TITLE&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and it will output the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Configuration file: /Users/kai/Desktop/notes/_config.yml
+New post created at _posts/&amp;lt;DATE&amp;gt;-&amp;lt;TITLE&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So, to generate and open the file involves the following steps:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Run the command to generate post&lt;/li&gt;
+  &lt;li&gt;Extract the file path&lt;/li&gt;
+  &lt;li&gt;Open the file using &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;awk&quot;&gt;awk&lt;/h2&gt;
+
+&lt;p&gt;I came across &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; from &lt;a href=&quot;https://twitter.com/b0rk/status/1000604334026055681&quot;&gt;Julia Evans zine&lt;/a&gt;. It came to my mind again when I want
+to extract the file path from the output of the command.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; is a programming language designed for text-processing. It has very basic
+yet important command &lt;code class=&quot;highlighter-rouge&quot;&gt;print&lt;/code&gt; to output the text. What makes &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; different is
+it breaks each line into columns &lt;em&gt;(seperated by space, which can be configure)&lt;/em&gt;, where:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;print $1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;means output the first column.&lt;/p&gt;
+
+&lt;p&gt;We can also add in a specific condition in front of the &lt;code class=&quot;highlighter-rouge&quot;&gt;print&lt;/code&gt; command so that
+it only execute if the condition is true.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONDITION {print $1}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+&lt;p&gt;After knowing some basic of &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt;, we can extract the file path with the
+following actions.&lt;/p&gt;
+
+&lt;h4 id=&quot;1-extraction&quot;&gt;1. Extraction&lt;/h4&gt;
+&lt;p&gt;Hence, to extract out the file path from the line &lt;code class=&quot;highlighter-rouge&quot;&gt;New post created at _posts/&amp;lt;DATE&amp;gt;-&amp;lt;TITLE&amp;gt;&lt;/code&gt;,
+we can use the following command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo 'New post created at _posts/&amp;lt;DATE&amp;gt;-&amp;lt;TITLE&amp;gt;' | awk '{print $5}'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$5&lt;/code&gt; is used since the file path is the fifth column of the line.&lt;/p&gt;
+
+&lt;h4 id=&quot;2-only-extract-second-line&quot;&gt;2. Only Extract Second Line&lt;/h4&gt;
+&lt;p&gt;Since we just wanted to extract the second line of the command output, the
+command above is not enough. What we really wanted is to say:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;if the line is second row, then we extract it&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;To achieve that in &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt;, we can use &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; built-in variables &lt;code class=&quot;highlighter-rouge&quot;&gt;FNR&lt;/code&gt;, which
+refers to the current line number of the file, to form a condition.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo -e &quot;Configuration file: /Users/kai/Desktop/notes/_config.yml\nNew post created at _posts/&amp;lt;DATE&amp;gt;-&amp;lt;TITLE&amp;gt;&quot; | awk 'FNR==2{ print $5 }'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; to print specific column of lines with &lt;code class=&quot;highlighter-rouge&quot;&gt;awk {print $N}&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;You can add condition in front of the &lt;code class=&quot;highlighter-rouge&quot;&gt;print&lt;/code&gt; command if needed.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; contains a handful of built-in variables that are useful for
+text-processing.&lt;/li&gt;
+  &lt;li&gt;Code snippet to generate and open the file.
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;newpost&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  vim &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;
+ bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll post &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; |
+ &lt;span class=&quot;c&quot;&gt;# substr is used to remove the ending '.' of the extracted string&lt;/span&gt;
+ awk &lt;span class=&quot;s1&quot;&gt;'FNR == 2{print substr($5, 1, length($5) - 1)}'&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+&lt;ol&gt;
+  &lt;li&gt;If you are interested in more command line tools, you can consider purchase
+&lt;a href=&quot;https://twitter.com/b0rk&quot;&gt;Julia Evans&lt;/a&gt; &lt;a href=&quot;https://gumroad.com/l/bite-size-command-line&quot;&gt;Byte Size Command Line&lt;/a&gt; zine series.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Recently, I have been using jekyll to make notes. I use jekyll-compose gem to create post using command line. However, the auto open generated file features isn’t working in my machine after the setup.</summary></entry><entry><title type="html">A note about using ‘fetch’ in JS</title><link href="/javascript/2018/04/11/a-note-about-using-fetch-in-js.html" rel="alternate" type="text/html" title="A note about using 'fetch' in JS" /><published>2018-04-11T00:00:00+08:00</published><updated>2018-04-11T00:00:00+08:00</updated><id>/javascript/2018/04/11/a-note-about-using-fetch-in-js</id><content type="html" xml:base="/javascript/2018/04/11/a-note-about-using-fetch-in-js.html">&lt;p&gt;Another story about fixing bug. This story is related to the native web
 API &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt;, which is used to make request.&lt;/p&gt;
 
 &lt;h3 id=&quot;backstory&quot;&gt;Backstory&lt;/h3&gt;
