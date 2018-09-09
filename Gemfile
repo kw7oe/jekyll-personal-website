@@ -1,14 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'github-pages', group: :jekyll_plugins
+gem 'jekyll'
+gem 'jekyll-feed'
+gem 'jekyll-archives'
+gem 'jekyll-paginate'
 
-group :jekyll_plugins do
-  gem 'jekyll-feed', '~> 0.6'
-  gem 'jekyll-paginate'
-  gem 'jekyll-compose'
-  gem 'jekyll-archives'
-  gem 'jemoji'
-end
+gem 'jekyll-compose', group: [:jekyll_plugins]
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 

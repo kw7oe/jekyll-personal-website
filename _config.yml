@@ -6,6 +6,15 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: kw7oe
 github_username:  kw7oe
 
+plugins:
+  - jekyll-archives
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-compose
+
+jekyll-compose:
+  auto_open: true
+
 # Build settings
 markdown: kramdown
 
@@ -21,6 +30,7 @@ jekyll-archives:
     category: category-archive
   permalinks:
     category: '/categories/:name/'
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
