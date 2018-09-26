@@ -2,6 +2,7 @@
 layout: post
 title: A note about using 'fetch' in JS
 categories: JavaScript
+comments: true
 ---
 
 Another story about fixing bug. This story is related to the native web

@@ -2,6 +2,7 @@
 layout: post
 title: 'Ruby .() notation'
 date:   2017-10-15 18:12:19 +0800
+comments: true
 categories: Ruby
 ---
 

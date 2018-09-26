@@ -2,6 +2,7 @@
 layout: post
 title: 'Using Ruby next in map'
 categories: Ruby
+comments: true
 ---
 
 While I was refactoring the code base of my client application,

@@ -3,6 +3,7 @@ layout: post
 title: Using AWK to extract generated file from jekyll-compose
 date: 2018-09-09 22:25 +0800
 categories: AWK
+comments: true
 ---
 
 Recently, I have been using `jekyll` to make notes. I use `jekyll-compose`

@@ -3,6 +3,7 @@ layout: post
 title: 'Vue.js: Add component on click'
 date:   2017-10-17 23:00:00 +0800
 categories: Vue.js
+comments: true
 ---
 
 I have been working on a project which uses `Vue.js` for front end. I came across a scenario where we need to allow user to add more entry in their form.
@@ -18,7 +19,7 @@ var component = createComponent() // Assuming this return an Node element
 parent.appendChild(component)
 ```
 
-However, since we are using `Vue.js`, it doesn't feel natural to approach it this way. 
+However, since we are using `Vue.js`, it doesn't feel natural to approach it this way.
 
 
 ### With Vue.js
@@ -53,12 +54,12 @@ export default {
 </script>
 ```
 1. Declare a counter
-  - We first declare a data `count` with the initial value of 1. 
+  - We first declare a data `count` with the initial value of 1.
 2. Use `v-for` to generate components
-  - In our `template` tag, We loop through the component with ```v-for="index in count"```. 
-  - With the `v-for` shorthands, `vue` will generate from `count` times of the component. In this case, `count` act like range. For more detailed explanation, refer to the official documetation: [v-for with a Range](https://vuejs.org/v2/guide/list.html#v-for-with-a-Range){:target="_blank"}). 
+  - In our `template` tag, We loop through the component with ```v-for="index in count"```.
+  - With the `v-for` shorthands, `vue` will generate from `count` times of the component. In this case, `count` act like range. For more detailed explanation, refer to the official documetation: [v-for with a Range](https://vuejs.org/v2/guide/list.html#v-for-with-a-Range){:target="_blank"}).
 3. Button to increase `count`
-  - Then we create a `Add` button that execute `addComponent` on click. The `addComponent` method is fairly straightforward, just increase the `count` by 1. 
+  - Then we create a `Add` button that execute `addComponent` on click. The `addComponent` method is fairly straightforward, just increase the `count` by 1.
   - When the user click the `Add` button, the `count` will be increased by 1, thus cause `Vue.js` to render additional component in our view.
 
 ### Conclusion

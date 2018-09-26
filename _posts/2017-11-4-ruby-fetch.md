@@ -3,6 +3,7 @@ layout: post
 title: 'Ruby fetch'
 date: 2017-11-04 22:43:41 +0800
 categories: Ruby
+comemnts: true
 ---
 
 Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array _(turns out I don't actually need it, I can just access the array and check if the value is `nil`)_. I went to search of Ruby `Array` documentation to see if such method exists. Then, I came across `Array#fetch` while scrolling through the documetantion.
