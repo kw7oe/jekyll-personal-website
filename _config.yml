@@ -15,7 +15,7 @@ plugins:
   - jekyll-paginate
   - jekyll-compose
 
-jekyll-compose:
+jekyll_compose:
   auto_open: true
 
 # Build settings

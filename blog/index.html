@@ -3,11 +3,11 @@ layout: default
 title: Blog
 ---
 
-<div class="blog content">
+<article class="blog">
   {% for post in paginator.posts %}
     {% include component/post.html post=post %}
     <hr>
   {% endfor %}
-  
+
   {% include component/pagination.html %}
-</div>
+</article>
