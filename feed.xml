@@ -1,12 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-09-26T22:39:23+08:00</updated><id>https://kw7oe.github.io/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Using AWK to extract generated file from jekyll-compose</title><link href="https://kw7oe.github.io/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose.html" rel="alternate" type="text/html" title="Using AWK to extract generated file from jekyll-compose" /><published>2018-09-09T22:25:00+08:00</published><updated>2018-09-09T22:25:00+08:00</updated><id>https://kw7oe.github.io/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose</id><content type="html" xml:base="https://kw7oe.github.io/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose.html">&lt;p&gt;Recently, I have been using &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll&lt;/code&gt; to make notes. I use &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-compose&lt;/code&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-10-03T23:08:37+08:00</updated><id>https://kw7oe.github.io/</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">A note on`application` in mix.exs starting from Elixir 1.4</title><link href="https://kw7oe.github.io/elixir/2018/10/03/a-note-on-in-mix-exs-starting-from-elixir-1-4.html" rel="alternate" type="text/html" title="A note on`application` in mix.exs starting from Elixir 1.4" /><published>2018-10-03T21:45:00+08:00</published><updated>2018-10-03T21:45:00+08:00</updated><id>https://kw7oe.github.io/elixir/2018/10/03/a-note-on-in-mix-exs-starting-from-elixir-1-4</id><content type="html" xml:base="https://kw7oe.github.io/elixir/2018/10/03/a-note-on-in-mix-exs-starting-from-elixir-1-4.html">&lt;p&gt;Starting from Elixir 1.4, we don’t need to specify our application lists in
+&lt;code class=&quot;highlighter-rouge&quot;&gt;application&lt;/code&gt;. It is automatically inferred from our dependencies. &lt;em&gt;(Check the
+release notes &lt;a href=&quot;https://elixir-lang.org/blog/2017/01/05/elixir-v1-4-0-released/&quot;&gt;here&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Do note that &lt;strong&gt;it only automatically infer the application lists if the
+&lt;code class=&quot;highlighter-rouge&quot;&gt;:applications&lt;/code&gt; key is empty.&lt;/strong&gt; If you had already declared your it in your
+&lt;code class=&quot;highlighter-rouge&quot;&gt;mix.exs&lt;/code&gt; like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;application&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Will be automatically inferred starting&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# from Elixir 1.4, if it is empty.&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;applications:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cowboy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:plug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Be sure to clear it to utilize this feature.&lt;/p&gt;
+
+&lt;p&gt;Below are the detailed story on how I came across this.&lt;/p&gt;
+
+&lt;p&gt;&lt;small&gt;&lt;em&gt;Disclaimer: The point of this article is summed up above, skip the part below if you’re busy.&lt;/em&gt;&lt;/small&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;the-story&quot;&gt;The Story&lt;/h3&gt;
+
+&lt;p&gt;Recently, I have been writing a simple Plug web application and came across the
+need to use an external database.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Ecto&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;PostgreSQl&lt;/code&gt; is the thing that come up to my mind.&lt;/p&gt;
+
+&lt;p&gt;Hence, I went over the &lt;a href=&quot;https://hexdocs.pm/ecto/getting-started.html#content&quot;&gt;Ecto documentation&lt;/a&gt; and run through the setup in the
+application. After going through the steps, and finally run &lt;code class=&quot;highlighter-rouge&quot;&gt;iex -S mix&lt;/code&gt;, an
+error arise.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...failed to start child: App.Repo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I check my &lt;code class=&quot;highlighter-rouge&quot;&gt;config.exs&lt;/code&gt;. Nothing wrong.&lt;/p&gt;
+
+&lt;p&gt;So, I go through the documentation again and again, to check if I miss out anything.
+No, nothing wrong. The documentation didn’t mentioned the need to add &lt;code class=&quot;highlighter-rouge&quot;&gt;ecto&lt;/code&gt;
+and &lt;code class=&quot;highlighter-rouge&quot;&gt;postgrex&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;application&lt;/code&gt;.  After googling around, someone mentioned
+that adding it solve the issues.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I tried, it worked.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;But I don’t know why. &lt;em&gt;The documentation can’t be wrong right?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;So, I create a new test application and follow the documentation again.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;And, it works.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;So, I delete this line of code in my &lt;code class=&quot;highlighter-rouge&quot;&gt;mix.exs&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;ss&quot;&gt;applications:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cowboy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:plug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;And, it works.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;the-why&quot;&gt;The Why&lt;/h3&gt;
+&lt;p&gt;Hence, I guess that Mix actaully automatically start the applications needed
+for us. So, I search through the documentations of different version of Mix
+&lt;em&gt;(&lt;a href=&quot;https://hexdocs.pm/mix/1.3.4/Mix.Tasks.Compile.App.html#content&quot;&gt;1.4.5&lt;/a&gt; vs &lt;a href=&quot;https://hexdocs.pm/mix/1.3.4/Mix.Tasks.Compile.App.html#content&quot;&gt;1.3.4&lt;/a&gt;)&lt;/em&gt;, and finally found out that since Elixir 1.4,
+Mix has this new feature. It is also mentioned in the &lt;a href=&quot;https://elixir-lang.org/blog/2017/01/05/elixir-v1-4-0-released/&quot;&gt;release notes of Elixir 1.4&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However there is one condition. &lt;strong&gt;It only automatically infer the applications list if the
+&lt;code class=&quot;highlighter-rouge&quot;&gt;:applications&lt;/code&gt; key is empty.&lt;/strong&gt; That explains why it didn’t work in my
+application because I already declared the list manually, as shown below:&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;application&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;mod:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]},&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;extra_applications:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:logger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Can be removed for Elixir &amp;gt;= 1.4.&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Since it is automatically inferred.&lt;/span&gt;
+    &lt;span class=&quot;ss&quot;&gt;applications:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cowboy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:plug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;the-lessons&quot;&gt;The Lessons&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Application lists can be automatically inferred in for Elixir &amp;gt;= 1.4&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Documentation can be wrong. But, most of the time, you might be the one who
+are in fault.&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;Read release notes.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thanks for reading through it.&lt;/p&gt;</content><author><name></name></author><summary type="html">Starting from Elixir 1.4, we don’t need to specify our application lists in application. It is automatically inferred from our dependencies. (Check the release notes here)</summary></entry><entry><title type="html">Using AWK to extract generated file from jekyll-compose</title><link href="https://kw7oe.github.io/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose.html" rel="alternate" type="text/html" title="Using AWK to extract generated file from jekyll-compose" /><published>2018-09-09T22:25:00+08:00</published><updated>2018-09-09T22:25:00+08:00</updated><id>https://kw7oe.github.io/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose</id><content type="html" xml:base="https://kw7oe.github.io/awk/2018/09/09/using-awk-to-extract-generated-file-from-jekyll-compose.html">&lt;p&gt;Recently, I have been using &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll&lt;/code&gt; to make notes. I use &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-compose&lt;/code&gt;
 gem to create post using command line. However, the auto open generated file
 features isn’t working in my machine after the setup.&lt;/p&gt;
 
 &lt;p&gt;After a few times on manually opening the generated files in &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;, I decided
 to write a quick shell script to solve this issue.&lt;/p&gt;
 
-&lt;h2 id=&quot;scenario&quot;&gt;Scenario&lt;/h2&gt;
-
+&lt;h3 id=&quot;scenario&quot;&gt;Scenario&lt;/h3&gt;
 &lt;p&gt;To generate a new post with &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-compose&lt;/code&gt;, we can run the following command:&lt;/p&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec jekyll post &amp;lt;TITLE&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
@@ -27,8 +120,7 @@ New post created at _posts/&amp;lt;DATE&amp;gt;-&amp;lt;TITLE&amp;gt;
   &lt;li&gt;Open the file using &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;awk&quot;&gt;awk&lt;/h2&gt;
-
+&lt;h3 id=&quot;awk&quot;&gt;awk&lt;/h3&gt;
 &lt;p&gt;I came across &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; from &lt;a href=&quot;https://twitter.com/b0rk/status/1000604334026055681&quot;&gt;Julia Evans zine&lt;/a&gt;. It came to my mind again when I want
 to extract the file path from the output of the command.&lt;/p&gt;
 
@@ -49,7 +141,7 @@ it only execute if the condition is true.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+&lt;h3 id=&quot;implementation&quot;&gt;Implementation&lt;/h3&gt;
 &lt;p&gt;After knowing some basic of &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt;, we can extract the file path with the
 following actions.&lt;/p&gt;
 
@@ -76,7 +168,7 @@ refers to the current line number of the file, to form a condition.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;You can use &lt;code class=&quot;highlighter-rouge&quot;&gt;AWK&lt;/code&gt; to print specific column of lines with &lt;code class=&quot;highlighter-rouge&quot;&gt;awk {print $N}&lt;/code&gt;&lt;/li&gt;
   &lt;li&gt;You can add condition in front of the &lt;code class=&quot;highlighter-rouge&quot;&gt;print&lt;/code&gt; command if needed.&lt;/li&gt;
@@ -97,8 +189,25 @@ text-processing.&lt;/li&gt;
 
 &lt;hr /&gt;
 &lt;ol&gt;
-  &lt;li&gt;If you are interested in more command line tools, you can consider purchase
-&lt;a href=&quot;https://twitter.com/b0rk&quot;&gt;Julia Evans&lt;/a&gt; &lt;a href=&quot;https://gumroad.com/l/bite-size-command-line&quot;&gt;Byte Size Command Line&lt;/a&gt; zine series.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If you are interested in more command line tools, you can consider purchase
+&lt;a href=&quot;https://twitter.com/b0rk&quot;&gt;Julia Evans&lt;/a&gt; &lt;a href=&quot;https://gumroad.com/l/bite-size-command-line&quot;&gt;Byte Size Command Line&lt;/a&gt; zine series.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It turns out the reason why my &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-compose&lt;/code&gt; configuration doesn’t work is
+  because of a single typo of &lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt;. Instead of:&lt;/p&gt;
+    &lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# The correct one&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;jekyll_compose&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;auto_open&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;p&gt;I use:&lt;/p&gt;
+    &lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# The wrong one&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;jekyll-compose&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;auto_open&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;</content><author><name></name></author><summary type="html">Recently, I have been using jekyll to make notes. I use jekyll-compose gem to create post using command line. However, the auto open generated file features isn’t working in my machine after the setup.</summary></entry><entry><title type="html">A note about using ‘fetch’ in JS</title><link href="https://kw7oe.github.io/javascript/2018/04/11/a-note-about-using-fetch-in-js.html" rel="alternate" type="text/html" title="A note about using 'fetch' in JS" /><published>2018-04-11T00:00:00+08:00</published><updated>2018-04-11T00:00:00+08:00</updated><id>https://kw7oe.github.io/javascript/2018/04/11/a-note-about-using-fetch-in-js</id><content type="html" xml:base="https://kw7oe.github.io/javascript/2018/04/11/a-note-about-using-fetch-in-js.html">&lt;p&gt;Another story about fixing bug. This story is related to the native web
 API &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt;, which is used to make request.&lt;/p&gt;
 

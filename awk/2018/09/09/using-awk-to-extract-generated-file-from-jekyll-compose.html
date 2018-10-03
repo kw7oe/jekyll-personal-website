@@ -57,8 +57,7 @@ features isn’t working in my machine after the setup.</p>
 <p>After a few times on manually opening the generated files in <code class="highlighter-rouge">vim</code>, I decided
 to write a quick shell script to solve this issue.</p>
 
-<h2 id="scenario">Scenario</h2>
-
+<h3 id="scenario">Scenario</h3>
 <p>To generate a new post with <code class="highlighter-rouge">jekyll-compose</code>, we can run the following command:</p>
 <div class="highlighter-rouge"><pre class="highlight"><code>bundle exec jekyll post &lt;TITLE&gt;
 </code></pre>
@@ -79,8 +78,7 @@ New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;
   <li>Open the file using <code class="highlighter-rouge">vim</code></li>
 </ul>
 
-<h2 id="awk">awk</h2>
-
+<h3 id="awk">awk</h3>
 <p>I came across <code class="highlighter-rouge">AWK</code> from <a href="https://twitter.com/b0rk/status/1000604334026055681">Julia Evans zine</a>. It came to my mind again when I want
 to extract the file path from the output of the command.</p>
 
@@ -101,7 +99,7 @@ it only execute if the condition is true.</p>
 </code></pre>
 </div>
 
-<h2 id="implementation">Implementation</h2>
+<h3 id="implementation">Implementation</h3>
 <p>After knowing some basic of <code class="highlighter-rouge">AWK</code>, we can extract the file path with the
 following actions.</p>
 
@@ -128,7 +126,7 @@ refers to the current line number of the file, to form a condition.</p>
 </code></pre>
 </div>
 
-<h2 id="summary">Summary</h2>
+<h3 id="summary">Summary</h3>
 <ol>
   <li>You can use <code class="highlighter-rouge">AWK</code> to print specific column of lines with <code class="highlighter-rouge">awk {print $N}</code></li>
   <li>You can add condition in front of the <code class="highlighter-rouge">print</code> command if needed.</li>
@@ -149,8 +147,25 @@ text-processing.</li>
 
 <hr />
 <ol>
-  <li>If you are interested in more command line tools, you can consider purchase
-<a href="https://twitter.com/b0rk">Julia Evans</a> <a href="https://gumroad.com/l/bite-size-command-line">Byte Size Command Line</a> zine series.</li>
+  <li>
+    <p>If you are interested in more command line tools, you can consider purchase
+<a href="https://twitter.com/b0rk">Julia Evans</a> <a href="https://gumroad.com/l/bite-size-command-line">Byte Size Command Line</a> zine series.</p>
+  </li>
+  <li>
+    <p>It turns out the reason why my <code class="highlighter-rouge">jekyll-compose</code> configuration doesn’t work is
+  because of a single typo of <code class="highlighter-rouge">-</code>. Instead of:</p>
+    <div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="c1"># The correct one</span>
+<span class="s">jekyll_compose</span><span class="pi">:</span>
+  <span class="s">auto_open</span><span class="pi">:</span> <span class="s">true</span>
+</code></pre>
+    </div>
+    <p>I use:</p>
+    <div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="c1"># The wrong one</span>
+<span class="s">jekyll-compose</span><span class="pi">:</span>
+  <span class="s">auto_open</span><span class="pi">:</span> <span class="s">true</span>
+</code></pre>
+    </div>
+  </li>
 </ol>
 
 
