@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Minimal Web Application with Plug and Cowboy
+title: Minimal Elixir Web Application with Plug and Cowboy
 date: 2018-10-14 15:32 +0800
 categories: Elixir
 ---
