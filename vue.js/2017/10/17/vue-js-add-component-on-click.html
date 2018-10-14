@@ -27,8 +27,7 @@
     
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand"><a href="/">kw7oe</a></div>
-        <div class="navbar-item"><a href="/blog">Blog</a></div>
-        <div class="navbar-item"><a href ="/categories">Categories</a></div>
+        <div class="navbar-item"><a href="/categories">Categories</a></div>
       </nav>
     
   </div>
@@ -55,12 +54,11 @@
 <h3 id="initial-approach">Initial Approach</h3>
 <p>The first thought that come to my mind will be get the <code class="highlighter-rouge">div#id</code> of the element and <code class="highlighter-rouge">append</code> it dynamically through <code class="highlighter-rouge">javascript</code></p>
 
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'parent'</span><span class="p">)</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'parent'</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">component</span> <span class="o">=</span> <span class="nx">createComponent</span><span class="p">()</span> <span class="c1">// Assuming this return an Node element</span>
 
 <span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">component</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>However, since we are using <code class="highlighter-rouge">Vue.js</code>, it doesn’t feel natural to approach it this way.</p>
 
@@ -68,7 +66,7 @@
 
 <p>Instead, we can utilize the functionality of <code class="highlighter-rouge">Vue.js</code>, by using <code class="highlighter-rouge">v-for</code> and <code class="highlighter-rouge">v-on:click</code>.</p>
 
-<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
   <span class="nt">&lt;div&gt;</span>
     <span class="nt">&lt;p</span>
       <span class="na">v-for=</span><span class="s">"index in count"</span>
@@ -80,7 +78,7 @@
 <span class="nt">&lt;/template&gt;</span>
 
 <span class="nt">&lt;script&gt;</span>
-<span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
   <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
       <span class="na">count</span><span class="p">:</span> <span class="mi">1</span>
@@ -93,8 +91,7 @@
   <span class="p">}</span>
 <span class="p">}</span>
 <span class="nt">&lt;/script&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <ol>
   <li>Declare a counter
     <ul>

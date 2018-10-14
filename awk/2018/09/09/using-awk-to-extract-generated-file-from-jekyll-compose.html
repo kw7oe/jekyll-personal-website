@@ -27,8 +27,7 @@
     
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand"><a href="/">kw7oe</a></div>
-        <div class="navbar-item"><a href="/blog">Blog</a></div>
-        <div class="navbar-item"><a href ="/categories">Categories</a></div>
+        <div class="navbar-item"><a href="/categories">Categories</a></div>
       </nav>
     
   </div>
@@ -59,16 +58,14 @@ to write a quick shell script to solve this issue.</p>
 
 <h3 id="scenario">Scenario</h3>
 <p>To generate a new post with <code class="highlighter-rouge">jekyll-compose</code>, we can run the following command:</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec jekyll post &lt;TITLE&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec jekyll post &lt;TITLE&gt;
+</code></pre></div></div>
 
 <p>and it will output the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Configuration file: /Users/kai/Desktop/notes/_config.yml
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Configuration file: /Users/kai/Desktop/notes/_config.yml
 New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So, to generate and open the file involves the following steps:</p>
 
@@ -86,18 +83,16 @@ to extract the file path from the output of the command.</p>
 yet important command <code class="highlighter-rouge">print</code> to output the text. What makes <code class="highlighter-rouge">AWK</code> different is
 it breaks each line into columns <em>(seperated by space, which can be configure)</em>, where:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>print $1
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print $1
+</code></pre></div></div>
 
 <p>means output the first column.</p>
 
 <p>We can also add in a specific condition in front of the <code class="highlighter-rouge">print</code> command so that
 it only execute if the condition is true.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CONDITION {print $1}
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONDITION {print $1}
+</code></pre></div></div>
 
 <h3 id="implementation">Implementation</h3>
 <p>After knowing some basic of <code class="highlighter-rouge">AWK</code>, we can extract the file path with the
@@ -107,9 +102,8 @@ following actions.</p>
 <p>Hence, to extract out the file path from the line <code class="highlighter-rouge">New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;</code>,
 we can use the following command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo 'New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;' | awk '{print $5}'
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;' | awk '{print $5}'
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">$5</code> is used since the file path is the fifth column of the line.</p>
 
@@ -122,9 +116,8 @@ command above is not enough. What we really wanted is to say:</p>
 <p>To achieve that in <code class="highlighter-rouge">AWK</code>, we can use <code class="highlighter-rouge">AWK</code> built-in variables <code class="highlighter-rouge">FNR</code>, which
 refers to the current line number of the file, to form a condition.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo -e "Configuration file: /Users/kai/Desktop/notes/_config.yml\nNew post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;" | awk 'FNR==2{ print $5 }'
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo -e "Configuration file: /Users/kai/Desktop/notes/_config.yml\nNew post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;" | awk 'FNR==2{ print $5 }'
+</code></pre></div></div>
 
 <h3 id="summary">Summary</h3>
 <ol>
@@ -133,15 +126,14 @@ refers to the current line number of the file, to form a condition.</p>
   <li><code class="highlighter-rouge">AWK</code> contains a handful of built-in variables that are useful for
 text-processing.</li>
   <li>Code snippet to generate and open the file.
-    <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="k">function </span>newpost<span class="o">()</span> <span class="o">{</span>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>newpost<span class="o">()</span> <span class="o">{</span>
   vim <span class="k">$(</span>
  bundle <span class="nb">exec </span>jekyll post <span class="nv">$1</span> |
  <span class="c"># substr is used to remove the ending '.' of the extracted string</span>
- awk <span class="s1">'FNR == 2{print substr($5, 1, length($5) - 1)}'</span>
+ <span class="nb">awk</span> <span class="s1">'FNR == 2{print substr($5, 1, length($5) - 1)}'</span>
   <span class="k">)</span>
 <span class="o">}</span>
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
 </ol>
 
@@ -154,17 +146,15 @@ text-processing.</li>
   <li>
     <p>It turns out the reason why my <code class="highlighter-rouge">jekyll-compose</code> configuration doesn’t work is
   because of a single typo of <code class="highlighter-rouge">-</code>. Instead of:</p>
-    <div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="c1"># The correct one</span>
-<span class="s">jekyll_compose</span><span class="pi">:</span>
-  <span class="s">auto_open</span><span class="pi">:</span> <span class="s">true</span>
-</code></pre>
-    </div>
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The correct one</span>
+<span class="na">jekyll_compose</span><span class="pi">:</span>
+  <span class="na">auto_open</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>    </div>
     <p>I use:</p>
-    <div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="c1"># The wrong one</span>
-<span class="s">jekyll-compose</span><span class="pi">:</span>
-  <span class="s">auto_open</span><span class="pi">:</span> <span class="s">true</span>
-</code></pre>
-    </div>
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The wrong one</span>
+<span class="na">jekyll-compose</span><span class="pi">:</span>
+  <span class="na">auto_open</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>    </div>
   </li>
 </ol>
 

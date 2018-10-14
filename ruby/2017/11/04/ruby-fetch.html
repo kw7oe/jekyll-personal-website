@@ -27,8 +27,7 @@
     
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand"><a href="/">kw7oe</a></div>
-        <div class="navbar-item"><a href="/blog">Blog</a></div>
-        <div class="navbar-item"><a href ="/categories">Categories</a></div>
+        <div class="navbar-item"><a href="/categories">Categories</a></div>
       </nav>
     
   </div>
@@ -56,47 +55,42 @@
 
 <p>In Ruby <code class="highlighter-rouge">Array</code>, <code class="highlighter-rouge">fetch</code> is a method that get the value at position <code class="highlighter-rouge">index</code> of an array. The difference between <code class="highlighter-rouge">fetch</code> and <code class="highlighter-rouge">.[]</code> is <code class="highlighter-rouge">fetch</code> throws an <code class="highlighter-rouge">IndexError</code> if the index doesn’t exists.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#=&gt; 1</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; IndexError: index 4 outside of array bounds: -3...3</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If we take a look at the Ruby documentation of <a href="https://ruby-doc.org/core-2.4.0/Array.html#method-i-fetch">Array#fetch</a>, we’ll see that <code class="highlighter-rouge">fetch</code> has the following definitions:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">fetch</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="no">Object</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fetch</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="no">Object</span>
 <span class="n">fetch</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="no">Object</span>
 <span class="n">fetch</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="n">block</span> <span class="p">}</span> <span class="o">-&gt;</span> <span class="no">Object</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Which means, we can also provide a default value as the result if the index isn’t found. For example:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="c1">#=&gt; 0</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Or provide a block to be executed if the index is not found:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="s2">"The index '</span><span class="si">#{</span><span class="n">index</span><span class="si">}</span><span class="s2">' is not found"</span> <span class="p">}</span>
 <span class="c1">#=&gt; "The index '4' is not found"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="possible-use-case">Possible Use Case</h3>
 
 <p><code class="highlighter-rouge">Array#fetch</code> can be used when we need to provide a default value if the index is not found.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Peter'</span><span class="p">,</span> <span class="s1">'Jane'</span><span class="p">,</span> <span class="s1">'John Wick'</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Peter'</span><span class="p">,</span> <span class="s1">'Jane'</span><span class="p">,</span> <span class="s1">'John Wick'</span><span class="p">]</span>
 <span class="nb">name</span> <span class="o">=</span> <span class="n">users</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'User not found'</span><span class="p">)</span>
 
 <span class="nb">puts</span> <span class="nb">name</span>
 <span class="s2">"User not found"</span>
 <span class="c1">#=&gt; nil</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>For example, we have a method to allow to search other users <em>(which store in array)</em> and print out the name as a response. To handle the scenario where the user is not found, we can implement it by providing a default value with <code class="highlighter-rouge">Array#fetch</code>. No additional handling code is required.</p>
 

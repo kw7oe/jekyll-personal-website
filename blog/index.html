@@ -27,8 +27,7 @@
     
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand"><a href="/">kw7oe</a></div>
-        <div class="navbar-item"><a href="/blog">Blog</a></div>
-        <div class="navbar-item"><a href ="/categories">Categories</a></div>
+        <div class="navbar-item"><a href="/categories">Categories</a></div>
       </nav>
     
   </div>
@@ -38,6 +37,216 @@
     <div class="section">
   <main class="main-col" aria-label="Content">
     <article class="blog">
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">Minimal Elixir Web Application with Plug and Cowboy</h1>
+     <p class="post-meta">
+       <time datetime="2018-10-14T15:32:00+08:00" itemprop="datePublished">
+         
+         Oct 14, 2018
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>It is interesting to learn things from scratch. Coming from Ruby
+background, I was curious what is the equivalent of Sinatra in
+Elixir. It’s called Plug. It is what Phoenix build on top of.</p>
+
+<p>Using Sinatra, we can write a quick and simple web server with the following
+code:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'sinatra'</span>
+<span class="nb">require</span> <span class="s1">'json'</span>
+
+<span class="n">get</span> <span class="s1">'/'</span> <span class="k">do</span>
+  <span class="n">content_type</span> <span class="ss">:json</span>
+  <span class="no">JSON</span><span class="p">({</span><span class="ss">message: </span><span class="s2">"Hello World"</span><span class="p">})</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>How can we achive that in Elixir? With <code class="highlighter-rouge">Plug</code> and <code class="highlighter-rouge">Cowboy</code>.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p><em><strong>NOTE</strong>: This article is based on Elixir v1.7.3</em></p>
+
+<p>First of all, let’s create a <code class="highlighter-rouge">mix</code> project and change directory into it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix new sample_app
+<span class="nb">cd </span>sample_app
+</code></pre></div></div>
+
+<p>Open <code class="highlighter-rouge">mix.exs</code> file with your favourite editor. And add the dependencies as
+follow:</p>
+
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defp</span> <span class="n">deps</span> <span class="k">do</span>
+  <span class="p">[</span>
+    <span class="p">{</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="sd">"</span><span class="s2">~&gt; 2.0"</span><span class="p">},</span>
+    <span class="p">{</span><span class="ss">:plug</span><span class="p">,</span> <span class="sd">"</span><span class="s2">~&gt; 1.0"</span><span class="p">}</span>
+    <span class="c1"># {:dep_from_hexpm, "~&gt; 0.3.0"},</span>
+    <span class="c1"># {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>We add <code class="highlighter-rouge">Plug</code> and <code class="highlighter-rouge">Cowboy</code> as dependencies because <code class="highlighter-rouge">Cowboy</code> act as  a web server and
+<code class="highlighter-rouge">Plug</code> on the other hand, act as a connection adapter to the web server.</p>
+
+<p>Before we proceed, let’s get all the dependencies first by running the
+following command:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix deps.get
+</code></pre></div></div>
+
+<h2 id="using-plug">Using Plug</h2>
+<p><code class="highlighter-rouge">Plug</code> can be complicated if we don’t understand it. The
+best way to understand it, is to, read the <a href="https://github.com/elixir-plug/plug#hello-world">documentation</a> <em>(In fact, all the
+steps mentioned above and below are already available in the documentation)</em>.</p>
+
+<p>So to get a taste of how <code class="highlighter-rouge">Plug</code> works, let’s just copy and paste the code from
+the documentation and make some changes. Let’s create <code class="highlighter-rouge">lib/my_plug.ex</code> and
+and add in the code.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch lib/my_plug.ex
+</code></pre></div></div>
+
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defmodule</span> <span class="no">SampleApp</span><span class="o">.</span><span class="no">MyPlug</span> <span class="k">do</span>
+  <span class="kn">import</span> <span class="no">Plug</span><span class="o">.</span><span class="no">Conn</span>
+
+  <span class="k">def</span> <span class="n">init</span><span class="p">(</span><span class="n">options</span><span class="p">)</span> <span class="k">do</span>
+    <span class="c1"># initialize options</span>
+
+    <span class="n">options</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="n">call</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_opts</span><span class="p">)</span> <span class="k">do</span>
+    <span class="n">conn</span>
+    <span class="o">|&gt;</span> <span class="n">put_resp_content_type</span><span class="p">(</span><span class="sd">"</span><span class="s2">text/plain"</span><span class="p">)</span>
+    <span class="o">|&gt;</span> <span class="n">send_resp</span><span class="p">(</span><span class="m">200</span><span class="p">,</span> <span class="sd">"</span><span class="s2">Hello world"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Let’s try to run the code.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex -S mix
+
+iex(1)&gt; {:ok, _} = Plug.Adapters.Cowboy2.http SampleApp.MyPlug, []
+</code></pre></div></div>
+
+<p>Now let’s go and visit <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>.
+You should be able to see a “Hello World” on your browser.
+We just start the <code class="highlighter-rouge">cowboy</code> web server in <code class="highlighter-rouge">iex</code>, by passing it our <code class="highlighter-rouge">Plug</code> and <code class="highlighter-rouge">[]</code>
+empty arguments.</p>
+
+<h2 id="thats-all">That’s all</h2>
+<p>Yes, you have wrote a simple web server using Elixir.</p>
+
+<p><em>Wait, wait, but how can I run my server through command line? I have to run
+<code class="highlighter-rouge">iex -S mix</code> and start the <code class="highlighter-rouge">Cowboy</code> server manually every time?</em></p>
+
+<p><strong>Nope.</strong> We can make it an OTP application. So that we just need to run <code class="highlighter-rouge">mix
+run --no-halt</code> or <code class="highlighter-rouge">iex -S mix</code> and the <code class="highlighter-rouge">cowboy</code> server will boot up itself.</p>
+
+<h2 id="basic-of-otp-application">Basic of OTP Application</h2>
+
+<p>OTP application is basically a component that has predefined behaviour. It can
+be started, loaded or stopped. To create an OTP application in Elixir, we
+use the <code class="highlighter-rouge">Application</code> module and implements some of the expected behavior. For
+more you can always refer to the documentation of <a href="https://hexdocs.pm/elixir/Application.html">Application</a>.</p>
+
+<p>So let’s create a simple application first.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch lib/app.ex
+</code></pre></div></div>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defmodule</span> <span class="no">SampleApp</span><span class="o">.</span><span class="no">App</span> <span class="k">do</span>
+  <span class="kn">use</span> <span class="no">Application</span>
+  <span class="k">def</span> <span class="n">start</span><span class="p">(</span><span class="n">_type</span><span class="p">,</span> <span class="n">_args</span><span class="p">)</span> <span class="k">do</span>
+    <span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="sd">"</span><span class="s2">Starting application"</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="no">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="ss">strategy:</span> <span class="ss">:one_for_one</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Now if you run <code class="highlighter-rouge">mix run --no-halt</code>, you still won’t see the “Starting
+application” output yet. This is because we haven’t configure our <code class="highlighter-rouge">mix.exs</code>
+yet.</p>
+
+<p>To make <code class="highlighter-rouge">mix</code> run our application, we have to add the following code into
+<code class="highlighter-rouge">mix.exs</code>:</p>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
+  <span class="p">[</span>
+    <span class="ss">extra_applications:</span> <span class="p">[</span><span class="ss">:logger</span><span class="p">],</span>
+    <span class="ss">mod:</span> <span class="p">{</span><span class="no">SampleApp</span><span class="o">.</span><span class="no">App</span><span class="p">,</span> <span class="p">[]}</span> <span class="c1"># Add in this line of code</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Now, if we run <code class="highlighter-rouge">mix run --no-halt</code>, we can finally see the “Starting
+application…” output. It also means we have sucessfully start an OTP
+application.</p>
+
+<h2 id="starting-cowboy-server-automatically">Starting Cowboy Server automatically</h2>
+
+<p>Remember how we run our <code class="highlighter-rouge">cowboy</code> server in <code class="highlighter-rouge">iex</code>?</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex -S mix
+
+iex(1)&gt; {:ok, _} = Plug.Adapters.Cowboy2.http SampleApp.MyPlug, []
+</code></pre></div></div>
+
+<p>Now after knowing how to start our OTP application with <code class="highlighter-rouge">mix run --no-halt</code> or
+<code class="highlighter-rouge">iex -S mix</code>, we need to start our <code class="highlighter-rouge">cowboy</code> server after our application is
+started.</p>
+
+<p>To do this, we need to modify the <code class="highlighter-rouge">start/2</code> method in the <code class="highlighter-rouge">app.ex</code>.</p>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">start</span><span class="p">(</span><span class="n">_type</span><span class="p">,</span> <span class="n">_args</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">children</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Define workers and child supervisors to be supervised</span>
+    <span class="no">Plug</span><span class="o">.</span><span class="no">Adapters</span><span class="o">.</span><span class="no">Cowboy2</span><span class="o">.</span><span class="n">child_spec</span><span class="p">(</span><span class="ss">scheme:</span> <span class="ss">:http</span><span class="p">,</span> <span class="ss">plug:</span> <span class="no">SampleApp</span><span class="o">.</span><span class="no">MyPlug</span><span class="p">,</span> <span class="ss">options:</span> <span class="p">[</span><span class="ss">port:</span> <span class="m">4000</span><span class="p">])</span>
+  <span class="p">]</span>
+
+  <span class="no">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="ss">strategy:</span> <span class="ss">:one_for_one</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>What we are doing here is to specify the child spec of the child process, which
+is our <code class="highlighter-rouge">cowboy</code>. A child specification basically tell the supervisor how to
+start, restart or shutdown the child process. The above code is also mentioned
+in the documentation of Plug under <a href="https://hexdocs.pm/plug/readme.html#supervised-handlers">Supervised handlers</a>.</p>
+
+<p>Now, if we run the <code class="highlighter-rouge">mix run --no-halt</code>, and visit <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>.</p>
+
+<p>Our web application is now online.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>If you’re a beginner to OTP or Elixir, there are a lots of stuff underneath
+that I didn’t cover well. This is my first blog post on Elixir. It might be lacking.
+So here are some other resources you can refer to:</p>
+
+<ul>
+  <li><a href="https://elixirschool.com/en/lessons/specifics/plug/">Elixir School Plug</a><a href="#one"><sup>1</sup></a></li>
+  <li><a href="https://hexdocs.pm/plug/readme.html">Plug documentation</a></li>
+  <li><a href="https://hexdocs.pm/elixir/Application.html">Application documentation</a></li>
+  <li><a href="https://hexdocs.pm/elixir/Supervisor.html">Supervisor documentation</a></li>
+</ul>
+
+<p><em>The source code of the project is available at <a href="https://github.com/kw7oe/plug_sample_app">GitHub</a>.</em></p>
+
+<hr />
+<ol>
+  <li><small id="one">To be honest, <strong>Elixir School does a better job in explaining this topic</strong>.
+The way I’m writing is based on how my thought process flow, so it might be
+different and unstructured. This post also covers less topics about using
+Plug compared to Elixir School.
+</small></li>
+</ol>
+
+
+   </div>
+</div>
+    <hr>
   
     <div class="post">
   <!-- Headeer -->
@@ -61,15 +270,14 @@ release notes <a href="https://elixir-lang.org/blog/2017/01/05/elixir-v1-4-0-rel
 <code class="highlighter-rouge">:applications</code> key is empty.</strong> If you had already declared your it in your
 <code class="highlighter-rouge">mix.exs</code> like this:</p>
 
-<div class="language-elixir highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
   <span class="p">[</span>
     <span class="c1"># Will be automatically inferred starting</span>
     <span class="c1"># from Elixir 1.4, if it is empty.</span>
     <span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
   <span class="p">]</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>Be sure to clear it to utilize this feature.</p>
 
 <p>Below are the detailed story on how I came across this.</p>
@@ -89,9 +297,8 @@ need to use an external database.</p>
 application. After going through the steps, and finally run <code class="highlighter-rouge">iex -S mix</code>, an
 error arise.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>...failed to start child: App.Repo
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...failed to start child: App.Repo
+</code></pre></div></div>
 
 <p>I check my <code class="highlighter-rouge">config.exs</code>. Nothing wrong.</p>
 
@@ -110,9 +317,8 @@ that adding it solve the issues.</p>
 
 <p>So, I delete this line of code in my <code class="highlighter-rouge">mix.exs</code>:</p>
 
-<div class="language-elixir highlighter-rouge"><pre class="highlight"><code><span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
-</code></pre>
-</div>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
+</code></pre></div></div>
 
 <p><em>And, it works.</em></p>
 
@@ -126,7 +332,7 @@ Mix has this new feature. It is also mentioned in the <a href="https://elixir-la
 <code class="highlighter-rouge">:applications</code> key is empty.</strong> That explains why it didn’t work in my
 application because I already declared the list manually, as shown below:</p>
 
-<div class="language-elixir highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
   <span class="p">[</span>
     <span class="ss">mod:</span> <span class="p">{</span><span class="no">App</span><span class="o">.</span><span class="no">App</span><span class="p">,</span> <span class="p">[]},</span>
     <span class="ss">extra_applications:</span> <span class="p">[</span><span class="ss">:logger</span><span class="p">],</span>
@@ -135,8 +341,7 @@ application because I already declared the list manually, as shown below:</p>
     <span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
   <span class="p">]</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="the-lessons">The Lessons</h3>
 
@@ -177,16 +382,14 @@ to write a quick shell script to solve this issue.</p>
 
 <h3 id="scenario">Scenario</h3>
 <p>To generate a new post with <code class="highlighter-rouge">jekyll-compose</code>, we can run the following command:</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec jekyll post &lt;TITLE&gt;
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec jekyll post &lt;TITLE&gt;
+</code></pre></div></div>
 
 <p>and it will output the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Configuration file: /Users/kai/Desktop/notes/_config.yml
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Configuration file: /Users/kai/Desktop/notes/_config.yml
 New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So, to generate and open the file involves the following steps:</p>
 
@@ -204,18 +407,16 @@ to extract the file path from the output of the command.</p>
 yet important command <code class="highlighter-rouge">print</code> to output the text. What makes <code class="highlighter-rouge">AWK</code> different is
 it breaks each line into columns <em>(seperated by space, which can be configure)</em>, where:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>print $1
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print $1
+</code></pre></div></div>
 
 <p>means output the first column.</p>
 
 <p>We can also add in a specific condition in front of the <code class="highlighter-rouge">print</code> command so that
 it only execute if the condition is true.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CONDITION {print $1}
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONDITION {print $1}
+</code></pre></div></div>
 
 <h3 id="implementation">Implementation</h3>
 <p>After knowing some basic of <code class="highlighter-rouge">AWK</code>, we can extract the file path with the
@@ -225,9 +426,8 @@ following actions.</p>
 <p>Hence, to extract out the file path from the line <code class="highlighter-rouge">New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;</code>,
 we can use the following command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo 'New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;' | awk '{print $5}'
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'New post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;' | awk '{print $5}'
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">$5</code> is used since the file path is the fifth column of the line.</p>
 
@@ -240,9 +440,8 @@ command above is not enough. What we really wanted is to say:</p>
 <p>To achieve that in <code class="highlighter-rouge">AWK</code>, we can use <code class="highlighter-rouge">AWK</code> built-in variables <code class="highlighter-rouge">FNR</code>, which
 refers to the current line number of the file, to form a condition.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo -e "Configuration file: /Users/kai/Desktop/notes/_config.yml\nNew post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;" | awk 'FNR==2{ print $5 }'
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo -e "Configuration file: /Users/kai/Desktop/notes/_config.yml\nNew post created at _posts/&lt;DATE&gt;-&lt;TITLE&gt;" | awk 'FNR==2{ print $5 }'
+</code></pre></div></div>
 
 <h3 id="summary">Summary</h3>
 <ol>
@@ -251,15 +450,14 @@ refers to the current line number of the file, to form a condition.</p>
   <li><code class="highlighter-rouge">AWK</code> contains a handful of built-in variables that are useful for
 text-processing.</li>
   <li>Code snippet to generate and open the file.
-    <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="k">function </span>newpost<span class="o">()</span> <span class="o">{</span>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>newpost<span class="o">()</span> <span class="o">{</span>
   vim <span class="k">$(</span>
  bundle <span class="nb">exec </span>jekyll post <span class="nv">$1</span> |
  <span class="c"># substr is used to remove the ending '.' of the extracted string</span>
- awk <span class="s1">'FNR == 2{print substr($5, 1, length($5) - 1)}'</span>
+ <span class="nb">awk</span> <span class="s1">'FNR == 2{print substr($5, 1, length($5) - 1)}'</span>
   <span class="k">)</span>
 <span class="o">}</span>
-</code></pre>
-    </div>
+</code></pre></div>    </div>
   </li>
 </ol>
 
@@ -272,17 +470,15 @@ text-processing.</li>
   <li>
     <p>It turns out the reason why my <code class="highlighter-rouge">jekyll-compose</code> configuration doesn’t work is
   because of a single typo of <code class="highlighter-rouge">-</code>. Instead of:</p>
-    <div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="c1"># The correct one</span>
-<span class="s">jekyll_compose</span><span class="pi">:</span>
-  <span class="s">auto_open</span><span class="pi">:</span> <span class="s">true</span>
-</code></pre>
-    </div>
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The correct one</span>
+<span class="na">jekyll_compose</span><span class="pi">:</span>
+  <span class="na">auto_open</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>    </div>
     <p>I use:</p>
-    <div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="c1"># The wrong one</span>
-<span class="s">jekyll-compose</span><span class="pi">:</span>
-  <span class="s">auto_open</span><span class="pi">:</span> <span class="s">true</span>
-</code></pre>
-    </div>
+    <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The wrong one</span>
+<span class="na">jekyll-compose</span><span class="pi">:</span>
+  <span class="na">auto_open</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div>    </div>
   </li>
 </ol>
 
@@ -355,26 +551,24 @@ is always helpful.</li>
      <p>While I was refactoring the code base of my client application,
 I came accross a code block, similar to this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">data</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
   <span class="n">status</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">'status'</span><span class="p">]</span>
   <span class="k">next</span> <span class="k">if</span> <span class="no">IGNORED_STATUS</span><span class="p">.</span><span class="nf">include?</span> <span class="n">status</span>
   <span class="n">arr</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I think, “Ha, I can replace <code class="highlighter-rouge">each</code> with <code class="highlighter-rouge">map</code> here.”</p>
 
 <p>I go ahead, and make the changes.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
   <span class="n">status</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">'status'</span><span class="p">]</span>
   <span class="k">next</span> <span class="k">if</span> <span class="no">IGNORED_STATUS</span><span class="p">.</span><span class="nf">include?</span> <span class="n">status</span>
   <span class="n">d</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><em>Little did I know that,
 this will  break the production system in the future.</em></p>
@@ -385,16 +579,14 @@ using it normally. After some investigation, I found out that it is
 caused by <code class="highlighter-rouge">nil</code>. I patched the error quickly by using <code class="highlighter-rouge">compact</code>.</p>
 
 <p>From something like this:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">timeslots</span> <span class="o">=</span> <span class="n">get_timeslots</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="c1"># [1, nil, 2, 3]</span>
-<span class="n">timeslots</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="p">.</span><span class="nf">.</span><span class="o">.</span> <span class="p">}</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeslots</span> <span class="o">=</span> <span class="n">get_timeslots</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="c1"># [1, nil, 2, 3]</span>
+<span class="n">timeslots</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="o">...</span> <span class="p">}</span>
+</code></pre></div></div>
 
 <p>to:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">timeslots</span> <span class="o">=</span> <span class="n">get_timeslots</span><span class="p">(</span><span class="n">params</span><span class="p">).</span><span class="nf">compact</span> <span class="c1"># [1, 2, 3]</span>
-<span class="n">timeslots</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="p">.</span><span class="nf">.</span><span class="o">.</span> <span class="p">}</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeslots</span> <span class="o">=</span> <span class="n">get_timeslots</span><span class="p">(</span><span class="n">params</span><span class="p">).</span><span class="nf">compact</span> <span class="c1"># [1, 2, 3]</span>
+<span class="n">timeslots</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="o">...</span> <span class="p">}</span>
+</code></pre></div></div>
 
 <p>Later on, diving into the source code, I found out that the <code class="highlighter-rouge">nil</code>
 is introduced by my own refactored code. It turns out that, inside
@@ -403,7 +595,7 @@ altogether. I only learn this when I came across this
 <a href="http://code-worrier.com/blog/map-and-next/">blog article</a>.
 For example:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
 <span class="n">arr</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
   <span class="k">next</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
   <span class="n">i</span> <span class="c1"># Return the value</span>
@@ -411,8 +603,7 @@ For example:</p>
 
 <span class="c1">#=&gt; return [1, nil, 3, nil, 5, nil]</span>
 <span class="c1">#=&gt; instead of [1, 3, 5]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Well, thanks myself for not writing test ahead before refactoring the
 code base, I get to learn this the hard way.</p>
@@ -423,77 +614,6 @@ code base, I get to learn this the hard way.</p>
   <li>Using <code class="highlighter-rouge">next</code> in a <code class="highlighter-rouge">map</code> return <code class="highlighter-rouge">nil</code></li>
   <li><code class="highlighter-rouge">Array#compact</code> can be used to remove <code class="highlighter-rouge">nil</code> elements.</li>
 </ol>
-
-
-   </div>
-</div>
-    <hr>
-  
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">Ruby fetch</h1>
-     <p class="post-meta">
-       <time datetime="2017-11-04T22:43:41+08:00" itemprop="datePublished">
-         
-         Nov 4, 2017
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array <em>(turns out I don’t actually need it, I can just access the array and check if the value is <code class="highlighter-rouge">nil</code>)</em>. I went to search of Ruby <code class="highlighter-rouge">Array</code> documentation to see if such method exists. Then, I came across <code class="highlighter-rouge">Array#fetch</code> while scrolling through the documetantion.</p>
-
-<h3 id="arrayfetch">Array#fetch</h3>
-
-<p>In Ruby <code class="highlighter-rouge">Array</code>, <code class="highlighter-rouge">fetch</code> is a method that get the value at position <code class="highlighter-rouge">index</code> of an array. The difference between <code class="highlighter-rouge">fetch</code> and <code class="highlighter-rouge">.[]</code> is <code class="highlighter-rouge">fetch</code> throws an <code class="highlighter-rouge">IndexError</code> if the index doesn’t exists.</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#=&gt; 1</span>
-<span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; IndexError: index 4 outside of array bounds: -3...3</span>
-</code></pre>
-</div>
-
-<p>If we take a look at the Ruby documentation of <a href="https://ruby-doc.org/core-2.4.0/Array.html#method-i-fetch">Array#fetch</a>, we’ll see that <code class="highlighter-rouge">fetch</code> has the following definitions:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">fetch</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="no">Object</span>
-<span class="n">fetch</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="no">Object</span>
-<span class="n">fetch</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="n">block</span> <span class="p">}</span> <span class="o">-&gt;</span> <span class="no">Object</span>
-</code></pre>
-</div>
-
-<p>Which means, we can also provide a default value as the result if the index isn’t found. For example:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="c1">#=&gt; 0</span>
-</code></pre>
-</div>
-
-<p>Or provide a block to be executed if the index is not found:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="n">array</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="s2">"The index '</span><span class="si">#{</span><span class="n">index</span><span class="si">}</span><span class="s2">' is not found"</span> <span class="p">}</span>
-<span class="c1">#=&gt; "The index '4' is not found"</span>
-</code></pre>
-</div>
-
-<h3 id="possible-use-case">Possible Use Case</h3>
-
-<p><code class="highlighter-rouge">Array#fetch</code> can be used when we need to provide a default value if the index is not found.</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Peter'</span><span class="p">,</span> <span class="s1">'Jane'</span><span class="p">,</span> <span class="s1">'John Wick'</span><span class="p">]</span>
-<span class="nb">name</span> <span class="o">=</span> <span class="n">users</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'User not found'</span><span class="p">)</span>
-
-<span class="nb">puts</span> <span class="nb">name</span>
-<span class="s2">"User not found"</span>
-<span class="c1">#=&gt; nil</span>
-</code></pre>
-</div>
-
-<p>For example, we have a method to allow to search other users <em>(which store in array)</em> and print out the name as a response. To handle the scenario where the user is not found, we can implement it by providing a default value with <code class="highlighter-rouge">Array#fetch</code>. No additional handling code is required.</p>
-
-<p>If you know the other possible use cases of <code class="highlighter-rouge">Array#fetch</code>, feel free to share it out.</p>
 
 
    </div>
