@@ -1,0 +1,82 @@
+name: Kai Wern Choong
+email: choongkwern@gmail.com
+github: kw7oe
+programming_languages: Ruby, Elixir, JavaScript, Swift, Scala, Java
+framework: Rails, Phoenix, React, Vue, iOS Development, Jekyll, GatsbyJS, Akka, Scala Play
+languages: Chinese, English, Malay
+works:
+  - title: Software Developer
+    company: Mindworks Interactive
+    timeframe: "Sep 2018 - Present"
+    descriptions:
+      - Develop Caffebene Malaysia website using GatsbyJS and NetlifyCMS
+  - title: Freelancer
+    company: Self-Employed
+    timeframe: "April 2018 - June 2018"
+    descriptions:
+      - Develop Sunway University Student Council Election website with Jekyll
+      - Develop website for a Interior Design company using Jekyll and NetlifyCMS
+  - title: Web Developer Intern
+    company: FixSensei
+    timeframe: "December 2017 - March 2018"
+    descriptions:
+      - Refactor codebase
+      - Add in Skylight to profile Rails application performance
+      - Replace the front end of the booking Rails application with React
+      - Add in Admin Settings API endpoint to allow customization of the booking application
+      - Add in coupon features
+  - title: Freelancer
+    company: Self-Employed
+    timeframe: "March 2017 - December 2017"
+    descriptions:
+      - Use static site generator to create static websites for client
+      - Develop a mobile-first application integrated with Paypal Payment Gateway
+projects:
+  - title: Expendere
+    stack: Rails, Bulma, Preact, Sass, JavaScript
+    descriptions:
+      - An expense tracking application.
+      - Launch beta during October 2018 on <a href="https://expendere.herokuapp.com" target="_blank">heroku</a>
+  - title: Student Performance Evaluation System
+    stack: Scala, Play, Bootstrap Material UI
+    descriptions:
+      - A student performance evaluations system developed as my Final Year Project in Sunway University.
+      - The system helps lecturers to evaluate student performance based on their attedance and marks in test, assignment and examination.
+  - title: Mittere
+    stack: Scala, Akka, ScalaFX
+    descriptions:
+      - A chat application devleoped for Distributed System Group Assignment.
+      - Source code available on <a href="https://github.com/kw7oe/mittere" target="_blank">GitHub</a>
+  - title: Darkous
+    stack: HTML, CSS, Javascript
+    descriptions:
+      - A simple weather application using OpenWeatherMap API.
+      - Available on <a href="https://kw7oe.github.io/darkous/" target="_blank">GitHub Pages</a>
+  - title: Progressus
+    stack: iOS, Swift
+    descriptions:
+      - A counter iOS mobile application to track your streak, whether isto break a habit or form a good one.
+      - Published on App Store from August 2017 to February 2018.
+      - Taken down from App Store due to expired Apple Developer Program membership.
+
+educations:
+  - title: BSc (Hons) in Computer Science
+    school: Sunway University
+    timeframe: "August 2015 - August 2018"
+    descriptions:
+      - <strong>CGPA:</strong> 3.89
+      - <strong>Overall Average:</strong> 77.56%
+      - Graduate with first-class honours
+  - title: New South Wales Higher School Certificate (HSC)
+    school: INTI International College Penang
+    timeframe: "January 2014 - November 2014"
+    descriptions:
+      - <strong>ATAR:</strong> 89.85
+  - title: High School
+    school: Chung Ling High School
+    timeframe: "2009 - 2013"
+    descriptions:
+      - <strong>SPM:</strong>10A
+
+
+
