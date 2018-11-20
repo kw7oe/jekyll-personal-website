@@ -4,11 +4,14 @@
     {% assign page_paths = site.header_pages | default: default_paths %}
 
     {% if page_paths %}
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand"><a href="/">kw7oe</a></div>
-        <div class="navbar-item"><a href="/categories">Categories</a></div>
-        <div class="navbar-item"><a href="/resume">Resume</a></div>
+      <nav class="navbar" role="navigation"
+        aria-label="main navigation">
+        {% include component/nav_item.html title="Home" url="" %}
+        {% include component/nav_item.html title="Categories"
+          url="categories" %}
+        {% include component/nav_item.html title="About" url="about" %}
+        {% include component/nav_item.html title="Resume" url="resume" %}
       </nav>
-    {% endif %}
+      {% endif %}
   </div>
 </header>

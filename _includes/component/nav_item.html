@@ -1,0 +1,12 @@
+{% if include.url != "" %}
+  {% assign class="item" %}
+{% else %}
+  {% assign class="brand" %}
+{% endif %}
+
+<div class="navbar-{{ class }}">
+<a href="/{{ include.url }}"
+   {% if page.title == include.title %} class="is-active" {% endif %}>
+  {{ include.title }}
+</a>
+</div>
