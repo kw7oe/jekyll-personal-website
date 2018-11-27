@@ -1,4 +1,200 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-11-20T14:30:37+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Minimal Elixir Web Application with Plug and Cowboy</title><link href="https://kw7oe.github.io/elixir/2018/10/14/minimal-web-application-with-plug-and-cowboy.html" rel="alternate" type="text/html" title="Minimal Elixir Web Application with Plug and Cowboy" /><published>2018-10-14T15:32:00+08:00</published><updated>2018-10-14T15:32:00+08:00</updated><id>https://kw7oe.github.io/elixir/2018/10/14/minimal-web-application-with-plug-and-cowboy</id><content type="html" xml:base="https://kw7oe.github.io/elixir/2018/10/14/minimal-web-application-with-plug-and-cowboy.html">&lt;p&gt;It is interesting to learn things from scratch. Coming from Ruby
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-11-27T22:08:02+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Using Markdown for Static Pages in Rails</title><link href="https://kw7oe.github.io/2018/11/27/using-markdown-for-static-pages-in-rails.html" rel="alternate" type="text/html" title="Using Markdown for Static Pages in Rails" /><published>2018-11-27T22:04:00+08:00</published><updated>2018-11-27T22:04:00+08:00</updated><id>https://kw7oe.github.io/2018/11/27/using-markdown-for-static-pages-in-rails</id><content type="html" xml:base="https://kw7oe.github.io/2018/11/27/using-markdown-for-static-pages-in-rails.html">&lt;p&gt;Markdown is great for formatting our writing to be publish as HTML. If you’re a
+developer, you probably used Markdown before. &lt;code class=&quot;highlighter-rouge&quot;&gt;README&lt;/code&gt; of &lt;a href=&quot;https://github.com&quot;&gt;GitHub&lt;/a&gt; repositories
+are mostly written in Markdown.&lt;/p&gt;
+
+&lt;p&gt;While developing web applications, there will be static pages such as
+about page and FAQ page. Most of the time, we have to write it in HTML, which can
+be unpleasant.&lt;/p&gt;
+
+&lt;p&gt;Luckily, we can still  use Markdown to write the static pages in Rails application
+and compile it into HTML.&lt;/p&gt;
+
+&lt;h2 id=&quot;general-steps&quot;&gt;General Steps&lt;/h2&gt;
+
+&lt;p&gt;The steps involved are straightforward.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Write Markdown&lt;/li&gt;
+  &lt;li&gt;Compile the Markdown&lt;/li&gt;
+  &lt;li&gt;Rails use the compiled HTML to serve the user.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There are two approaches:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Compile the Markdown file on runtime, which means, the file is only compiled when
+there is a request.&lt;/li&gt;
+  &lt;li&gt;Precompile the Markdown file into &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;filename&amp;gt;.html.erb&lt;/code&gt; first.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;compilation-of-markdown-during-runtime&quot;&gt;Compilation of Markdown during runtime&lt;/h2&gt;
+
+&lt;p&gt;To compile a Markdown file during runtime in Rails, we need to know how to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Compile Markdown file in &lt;code class=&quot;highlighter-rouge&quot;&gt;ruby&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Render the compiled HTML as views&lt;/li&gt;
+  &lt;li&gt;Bind ERB environment if instance variables &lt;code class=&quot;highlighter-rouge&quot;&gt;@variable&lt;/code&gt; is used in the view&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To compile a Markdown file is fairly straighforward in &lt;code class=&quot;highlighter-rouge&quot;&gt;ruby&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# gem install kramdown if not found&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kramdown'&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'about.md'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Kramdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;input: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GFM&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_html&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Configuring {input: &quot;GFM&quot;} to set kramdown to use GFM parser&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# instead of the defaut one. GFM parser can parse Github Flavour Markdown.&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;html&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &amp;lt;html&amp;gt;...&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To use it in a Rails application:&lt;/p&gt;
+
+&lt;p&gt;Add &lt;code class=&quot;highlighter-rouge&quot;&gt;kramdown&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kramdown'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;require: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# require: false since we are going to require it only&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# when we need it&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;highlighter-rouge&quot;&gt;app/views/pages/about.md&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;### Hi, &amp;lt;%= @name %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;highlighter-rouge&quot;&gt;app/views/pages/about.html.erb&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;raw&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@content&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+# We want the raw output of the @content instead of escaped
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;highlighter-rouge&quot;&gt;app/controllers/pages_controller.rb&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kramdown'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PagesController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;about&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;file_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lookup_context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find_template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;controller_path&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;.html.erb&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;.md&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Kai&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# Compiled with ERB&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ERB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;binding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# Convert MD to HTML&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Kramdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;input: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GFM&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_html&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;All the views file are self-explanatory, so let’s just focus on the controller.&lt;/p&gt;
+
+&lt;p&gt;First of all, we need to get the &lt;code class=&quot;highlighter-rouge&quot;&gt;md&lt;/code&gt; file in our controller. We can achieive
+it by hardcoding it like &lt;code class=&quot;highlighter-rouge&quot;&gt;file_path = &quot;../views/pages/about.md&quot;&lt;/code&gt;. But it is
+better to make it dynamically look up the right &lt;code class=&quot;highlighter-rouge&quot;&gt;md&lt;/code&gt; file depending on the
+action of the controller.&lt;/p&gt;
+
+&lt;p&gt;So we use:&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lookup_context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;find_template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;controller_path&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; app/views/pages/about.html.erb&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;identifier&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;/Users/.../app/views/pages/about.html.erb&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;identifier&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;.html.erb&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;.md&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;/Users/.../app/views/pages/about.md&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;How I know I should use this method to lookup for the file? Google search leads me to this &lt;a href=&quot;https://stackoverflow.com/questions/34126212/get-path-of-corresponding-controller-action-view-file&quot;&gt;Stackoverflow&lt;/a&gt; question and answer.&lt;/p&gt;
+
+&lt;p&gt;After that, we need to compile the &lt;code class=&quot;highlighter-rouge&quot;&gt;md&lt;/code&gt; file first with &lt;code class=&quot;highlighter-rouge&quot;&gt;ERB&lt;/code&gt; since we are &lt;code class=&quot;highlighter-rouge&quot;&gt;erb&lt;/code&gt; syntax. After that, we just need to convert the result to HTML using &lt;code class=&quot;highlighter-rouge&quot;&gt;kramdown&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The benefit of this approach is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Don’t need to manually compile the &lt;code class=&quot;highlighter-rouge&quot;&gt;md&lt;/code&gt; files.&lt;/li&gt;
+  &lt;li&gt;Can be used to compile dynamic Markdown files.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;precompile-the-markdown-file&quot;&gt;Precompile the Markdown file&lt;/h2&gt;
+
+&lt;p&gt;Another approach, is more troublesome, but has less overhead, since the server don’t need to recompile the same Markdown file everytime someone visit to the page.&lt;/p&gt;
+
+&lt;p&gt;Instead of compile during runtime, we compile manually everytime after we
+update our Markdown file. Rails just serve the &lt;code class=&quot;highlighter-rouge&quot;&gt;.html.erb&lt;/code&gt; that we
+converted from the Markdown files to the visitors.&lt;/p&gt;
+
+&lt;p&gt;The steps taken are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find all the &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files in &lt;code class=&quot;highlighter-rouge&quot;&gt;app/views/pages&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Compile every &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files to &lt;code class=&quot;highlighter-rouge&quot;&gt;.html.erb&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To do that, we can write a &lt;code class=&quot;highlighter-rouge&quot;&gt;rake&lt;/code&gt; task. Add the following code into your
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Rakefile&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Get all files in /app/views/page ending with md&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;SOURCE_FILES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Rake&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;FileList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;app/views/pages/*md&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Define a task&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:compile_md&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;SOURCE_FILES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pathmap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;%X.html.erb&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Define rule for the task&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rule&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'.html.erb'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;SOURCE_FILES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kramdown'&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Kramdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;input: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;GFM&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_html&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This code block is a bit tricky. To summarize, what it does is scan through all
+the &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files located in &lt;code class=&quot;highlighter-rouge&quot;&gt;/app/views/page&lt;/code&gt; and compile it into &lt;code class=&quot;highlighter-rouge&quot;&gt;.html.erb&lt;/code&gt; if
+any changes is made.&lt;/p&gt;
+
+&lt;p&gt;We can then run &lt;code class=&quot;highlighter-rouge&quot;&gt;rake compile_md&lt;/code&gt; to manually compile our Markdown file into
+&lt;code class=&quot;highlighter-rouge&quot;&gt;erb&lt;/code&gt; file after we updated our Markdown file.&lt;/p&gt;
+
+&lt;p&gt;With this approach, do note that we did not handle &lt;code class=&quot;highlighter-rouge&quot;&gt;erb&lt;/code&gt; syntax. Hence, there
+is a gotcha. If you need to use &lt;code class=&quot;highlighter-rouge&quot;&gt;erb&lt;/code&gt; syntax, you need to write plain &lt;code class=&quot;highlighter-rouge&quot;&gt;html&lt;/code&gt;
+instead. To demonstrate:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;### Hello
+
+This is my first sentence.
+
+Total view:
+{::nomarkdown}
+&amp;lt;span&amp;gt;&amp;lt;%= view_count %&amp;gt;&amp;lt;/span&amp;gt;
+{:/nomarkdown}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The benefits of this approach is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Compilation of Markdown does not happen during runtime. Hence, save some
+computation time.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;That’s all. I know there are a lot of magic happening on the &lt;code class=&quot;highlighter-rouge&quot;&gt;rake&lt;/code&gt; task I wrote above.&lt;/p&gt;
+
+&lt;p&gt;To further understand the &lt;code class=&quot;highlighter-rouge&quot;&gt;rake&lt;/code&gt; task, I would suggest these tutorials from Avdi
+Grimm’s rake series as suggested in &lt;code class=&quot;highlighter-rouge&quot;&gt;rake&lt;/code&gt; README:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.virtuouscode.com/2014/04/21/rake-part-1-basics/&quot;&gt;Rake Basics&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.virtuouscode.com/2014/04/22/rake-part-2-file-lists/&quot;&gt;Rake File Lists&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.virtuouscode.com/2014/04/23/rake-part-3-rules/&quot;&gt;Rake Rules&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A sample application for this post can be found at my &lt;a href=&quot;https://github.com/kw7oe/sample-md-static-pages&quot;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Footnote&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;small&gt;I am sorry if this post is a bit messy. I am still not quite good at writing and structuring lengthy tutorial.&lt;/small&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Markdown is great for formatting our writing to be publish as HTML. If you’re a developer, you probably used Markdown before. README of GitHub repositories are mostly written in Markdown.</summary></entry><entry><title type="html">Minimal Elixir Web Application with Plug and Cowboy</title><link href="https://kw7oe.github.io/elixir/2018/10/14/minimal-web-application-with-plug-and-cowboy.html" rel="alternate" type="text/html" title="Minimal Elixir Web Application with Plug and Cowboy" /><published>2018-10-14T15:32:00+08:00</published><updated>2018-10-14T15:32:00+08:00</updated><id>https://kw7oe.github.io/elixir/2018/10/14/minimal-web-application-with-plug-and-cowboy</id><content type="html" xml:base="https://kw7oe.github.io/elixir/2018/10/14/minimal-web-application-with-plug-and-cowboy.html">&lt;p&gt;It is interesting to learn things from scratch. Coming from Ruby
 background, I was curious what is the equivalent of Sinatra in
 Elixir. It’s called Plug. It is what Phoenix build on top of.&lt;/p&gt;
 
@@ -181,6 +377,8 @@ So here are some other resources you can refer to:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;The source code of the project is available at &lt;a href=&quot;https://github.com/kw7oe/plug_sample_app&quot;&gt;GitHub&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;Footnote&lt;/strong&gt;&lt;/p&gt;
+
 &lt;ol&gt;
   &lt;li&gt;&lt;small id=&quot;one&quot;&gt;To be honest, &lt;strong&gt;Elixir School does a better job in explaining this topic&lt;/strong&gt;.
 The way I’m writing is based on how my thought process flow, so it might be

@@ -76,6 +76,92 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">Using Ruby next in map</h1>
+     <p class="post-meta">
+       <time datetime="2018-03-28T00:00:00+08:00" itemprop="datePublished">
+         
+         Mar 28, 2018
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>While I was refactoring the code base of my client application,
+I came accross a code block, similar to this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">data</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
+  <span class="n">status</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">'status'</span><span class="p">]</span>
+  <span class="k">next</span> <span class="k">if</span> <span class="no">IGNORED_STATUS</span><span class="p">.</span><span class="nf">include?</span> <span class="n">status</span>
+  <span class="n">arr</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>I think, “Ha, I can replace <code class="highlighter-rouge">each</code> with <code class="highlighter-rouge">map</code> here.”</p>
+
+<p>I go ahead, and make the changes.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">d</span><span class="o">|</span>
+  <span class="n">status</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">'status'</span><span class="p">]</span>
+  <span class="k">next</span> <span class="k">if</span> <span class="no">IGNORED_STATUS</span><span class="p">.</span><span class="nf">include?</span> <span class="n">status</span>
+  <span class="n">d</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><em>Little did I know that,
+this will  break the production system in the future.</em></p>
+
+<p>After the application went live, after a few hours, my client
+reported that there were errors in the system disrupting the user from
+using it normally. After some investigation, I found out that it is
+caused by <code class="highlighter-rouge">nil</code>. I patched the error quickly by using <code class="highlighter-rouge">compact</code>.</p>
+
+<p>From something like this:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeslots</span> <span class="o">=</span> <span class="n">get_timeslots</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="c1"># [1, nil, 2, 3]</span>
+<span class="n">timeslots</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="o">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>to:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">timeslots</span> <span class="o">=</span> <span class="n">get_timeslots</span><span class="p">(</span><span class="n">params</span><span class="p">).</span><span class="nf">compact</span> <span class="c1"># [1, 2, 3]</span>
+<span class="n">timeslots</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="o">...</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Later on, diving into the source code, I found out that the <code class="highlighter-rouge">nil</code>
+is introduced by my own refactored code. It turns out that, inside
+a <code class="highlighter-rouge">map</code>, using <code class="highlighter-rouge">next</code> will return <code class="highlighter-rouge">nil</code> instead of skipping it
+altogether. I only learn this when I came across this
+<a href="http://code-worrier.com/blog/map-and-next/">blog article</a>.
+For example:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">arr</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+  <span class="k">next</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+  <span class="n">i</span> <span class="c1"># Return the value</span>
+<span class="k">end</span>
+
+<span class="c1">#=&gt; return [1, nil, 3, nil, 5, nil]</span>
+<span class="c1">#=&gt; instead of [1, 3, 5]</span>
+</code></pre></div></div>
+
+<p>Well, thanks myself for not writing test ahead before refactoring the
+code base, I get to learn this the hard way.</p>
+
+<h3 id="lesson-learned">Lesson Learned</h3>
+<ol>
+  <li>Always write test before refactoring.</li>
+  <li>Using <code class="highlighter-rouge">next</code> in a <code class="highlighter-rouge">map</code> return <code class="highlighter-rouge">nil</code></li>
+  <li><code class="highlighter-rouge">Array#compact</code> can be used to remove <code class="highlighter-rouge">nil</code> elements.</li>
+</ol>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">Ruby fetch</h1>
      <p class="post-meta">
        <time datetime="2017-11-04T22:43:41+08:00" itemprop="datePublished">
