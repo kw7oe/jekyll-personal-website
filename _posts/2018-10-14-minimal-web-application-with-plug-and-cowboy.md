@@ -199,6 +199,8 @@ So here are some other resources you can refer to:
 _The source code of the project is available at [GitHub][10]._
 
 ---
+**Footnote**
+
 1. <small id="one">To be honest, **Elixir School does a better job in explaining this topic**.
 The way I'm writing is based on how my thought process flow, so it might be
 different and unstructured. This post also covers less topics about using
