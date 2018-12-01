@@ -76,6 +76,93 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">Vue.js: Add component on click</h1>
+     <p class="post-meta">
+       <time datetime="2017-10-17T23:00:00+08:00" itemprop="datePublished">
+         
+         Oct 17, 2017
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>I have been working on a project which uses <code class="highlighter-rouge">Vue.js</code> for front end. I came across a scenario where we need to allow user to add more entry in their form.</p>
+
+<h3 id="initial-approach">Initial Approach</h3>
+<p>The first thought that come to my mind will be get the <code class="highlighter-rouge">div#id</code> of the element and <code class="highlighter-rouge">append</code> it dynamically through <code class="highlighter-rouge">javascript</code></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'parent'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">component</span> <span class="o">=</span> <span class="nx">createComponent</span><span class="p">()</span> <span class="c1">// Assuming this return an Node element</span>
+
+<span class="nx">parent</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">component</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>However, since we are using <code class="highlighter-rouge">Vue.js</code>, it doesn’t feel natural to approach it this way.</p>
+
+<h3 id="with-vuejs">With Vue.js</h3>
+
+<p>Instead, we can utilize the functionality of <code class="highlighter-rouge">Vue.js</code>, by using <code class="highlighter-rouge">v-for</code> and <code class="highlighter-rouge">v-on:click</code>.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;template&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p</span>
+      <span class="na">v-for=</span><span class="s">"index in count"</span>
+      <span class="na">:key=</span><span class="s">"index"</span><span class="nt">&gt;</span>
+      {{ index }}
+    <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">v-on:click=</span><span class="s">"addComponent"</span><span class="nt">&gt;</span>Add<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+<span class="k">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="nx">data</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">count</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="na">methods</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">addComponent</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+<ol>
+  <li>Declare a counter
+    <ul>
+      <li>We first declare a data <code class="highlighter-rouge">count</code> with the initial value of 1.</li>
+    </ul>
+  </li>
+  <li>Use <code class="highlighter-rouge">v-for</code> to generate components
+    <ul>
+      <li>In our <code class="highlighter-rouge">template</code> tag, We loop through the component with <code class="highlighter-rouge">v-for="index in count"</code>.</li>
+      <li>With the <code class="highlighter-rouge">v-for</code> shorthands, <code class="highlighter-rouge">vue</code> will generate from <code class="highlighter-rouge">count</code> times of the component. In this case, <code class="highlighter-rouge">count</code> act like range. For more detailed explanation, refer to the official documetation: <a href="https://vuejs.org/v2/guide/list.html#v-for-with-a-Range" target="_blank">v-for with a Range</a>).</li>
+    </ul>
+  </li>
+  <li>Button to increase <code class="highlighter-rouge">count</code>
+    <ul>
+      <li>Then we create a <code class="highlighter-rouge">Add</code> button that execute <code class="highlighter-rouge">addComponent</code> on click. The <code class="highlighter-rouge">addComponent</code> method is fairly straightforward, just increase the <code class="highlighter-rouge">count</code> by 1.</li>
+      <li>When the user click the <code class="highlighter-rouge">Add</code> button, the <code class="highlighter-rouge">count</code> will be increased by 1, thus cause <code class="highlighter-rouge">Vue.js</code> to render additional component in our view.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>With the combination of, <code class="highlighter-rouge">count</code> act as counter. <code class="highlighter-rouge">v-for</code> to generate the components, and <code class="highlighter-rouge">addComponent</code> method to increase the <code class="highlighter-rouge">count</code>, we are able to render new component into our view when the user click the button.</p>
+
+<p>P.S. The solution is inspired by this <a href="https://forum-archive.vuejs.org/topic/747/clone-component-when-click-add-more/3" target="_blank">forum post</a></p>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">Ruby .() notation</h1>
      <p class="post-meta">
        <time datetime="2017-10-15T18:12:19+08:00" itemprop="datePublished">

@@ -1,9 +1,304 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-12-01T22:10:09+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Advent of Code 2018: Day 1 Part 1</title><link href="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html" rel="alternate" type="text/html" title="Advent of Code 2018: Day 1 Part 1" /><published>2018-12-01T21:47:00+08:00</published><updated>2018-12-01T21:47:00+08:00</updated><id>https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1</id><content type="html" xml:base="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html">&lt;p&gt;Advent of Code (AOC) 2018 has finally arrived. This is the first time I participated
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-12-01T23:55:13+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x faster</title><link href="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html" rel="alternate" type="text/html" title="Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x faster" /><published>2018-12-01T22:10:00+08:00</published><updated>2018-12-01T22:10:00+08:00</updated><id>https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2</id><content type="html" xml:base="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html">&lt;p&gt;In the &lt;a href=&quot;/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html&quot;&gt;previous post&lt;/a&gt;, we had briefly discuss about the solution of Part 1. It
+is fairly straightforward. I thought Part 2 is going to be easy too. But man,
+I was wrong. It is a bit tricky.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;My initial solution takes around 17 seconds to compute the answer&lt;/strong&gt;.  I
+&lt;strong&gt;made it 34x faster&lt;/strong&gt; by changing the data structure. In the end,
+the improved solution solves the puzzle in just &lt;strong&gt;0.5 seconds&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Code is available at &lt;a href=&quot;https://github.com/kw7oe/advent-of-code-2018&quot;&gt;GitHub&lt;/a&gt;. For those who just want to know how the solution
+improved by 34x faster, see &lt;a href=&quot;#three&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Okay, that’s the end of some irrelavant stuff. Let’s jump straight to the puzzle of Part 2.&lt;/p&gt;
+
+&lt;h2 id=&quot;part-2&quot;&gt;Part 2&lt;/h2&gt;
+
+&lt;p&gt;Part 2 still use the same inputs as Part 1.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-9
++7 +5
+-13
++6
+...
+-23
+-46
+-27
+-11
+-75223
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;But this time the questions and scenario is abit different, which make it
+tricky.&lt;/p&gt;
+
+&lt;p&gt;The problem descriptions states that:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;You notice that the device repeats the same frequency change list over and over. To calibrate the device, you need to find the first frequency it reaches twice.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;For example:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Here are other examples:
+
+    +1, -1 first reaches 0 twice.
+    +3, +3, +4, -2, -4 first reaches 10 twice.
+    -6, +3, +8, +5, -6 first reaches 5 twice.
+    +7, +7, -2, -7, -4 first reaches 14 twice.
+
+Note that your device might need to repeat its list of frequency changes many times before a duplicate frequency is found, and that duplicates might be found while in the middle of processing the list.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And the question is:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;What is the first frequency your device reaches twice?
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;problem-breakdown&quot;&gt;Problem Breakdown&lt;/h3&gt;
+
+&lt;p&gt;So the question is asking for the first frequency that reaches twice. But, do
+note that &lt;strong&gt;the frequency list can be repeated many times before an asnwer is
+found&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;If after the first interation of the frequency list, there is no duplicate
+found, the frequency list will go through the second interation again. This
+only stops until a duplicate frequency found.&lt;/p&gt;
+
+&lt;p&gt;To summarize:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find first duplicate of frequency.&lt;/li&gt;
+  &lt;li&gt;Repeat the frequency list if no duplicate frequency found. &lt;a href=&quot;#one&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;The initial frequency is 0.&lt;/li&gt;
+  &lt;li&gt;Upon second iteration, the current frequency will be resumed from the previosu
+iteration. &lt;a href=&quot;#two&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;initial-solution&quot;&gt;Initial Solution&lt;/h3&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Finder&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is_duplicate?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Check if the frequency is duplicate in appeared_frequencies&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;member?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# Return :halt to halt the reduce_while loop&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# and the duplicate&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:halt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Update the appeared_frequencies to include the new frequency&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# Prepend [ element_to_add | rest_of_list ] is used since it&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# has a constant time of adding element to list.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# Return :cont to continue the reduce_while loop&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# with the frequency and updated appeared_frequencies&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cont&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accumulate_and_find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;
+     &lt;span class=&quot;c1&quot;&gt;# The accumulator for reduce_while is:&lt;/span&gt;
+
+     &lt;span class=&quot;c1&quot;&gt;#   initial/prev_frequency -&amp;gt; Initial/Previous Frequency,&lt;/span&gt;
+     &lt;span class=&quot;c1&quot;&gt;#   past_frequencies/appeared_frequencies -&amp;gt; Past Appeared Frequencies /&lt;/span&gt;
+     &lt;span class=&quot;c1&quot;&gt;#                                            Appeared Frequencies&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reduce_while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prev_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;# Calculate the new frequency.&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;new_frequency&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev_frequency&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;# Check if the new frequency is a duplicate&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;# Halt if it is.&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Continue the reduce_while if it is not.&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;is_duplicate?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;find_first_duplicate_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accumulate_and_find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# No duplicates found&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Recursively call this method&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# by passing in the frequencies again.&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;# However, the next iteration `initial` frequency will be the previous&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# iteration frequency, which is the value of `result`.&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;# The `appeared_frequencies in the previous iteration will be pass&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# forward to the next iteration too.&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;find_first_duplicate_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+      &lt;span class=&quot;c1&quot;&gt;# Duplicate found&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Return duplicate and end recursive call.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;input.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;
+                  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;no&quot;&gt;Finder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_first_duplicate_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inspect&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Error opening files&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If the comments in the code is not sufficient, here are the more detailed
+explanation to help you understand the code &lt;em&gt;(hopefully)&lt;/em&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First, same as Part 1, we read the content from the file, split it and
+conver every element into integer first.&lt;/li&gt;
+  &lt;li&gt;Then, we pass it into &lt;code class=&quot;highlighter-rouge&quot;&gt;Finder.find_first_duplicate_frequency/3&lt;/code&gt; method,
+with the &lt;code class=&quot;highlighter-rouge&quot;&gt;frequencies&lt;/code&gt;, initial frequency, and appeared frequencies.&lt;/li&gt;
+  &lt;li&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;ind_first_duplicate_frequency&lt;/code&gt;, it will delegate the finding
+duplicate job to &lt;code class=&quot;highlighter-rouge&quot;&gt;accumulate_and_find/3&lt;/code&gt; and check if the return result
+is a found duplicate or not.
+    &lt;ul&gt;
+      &lt;li&gt;If there is no duplicate found, it will call itself recursively, with the same &lt;code class=&quot;highlighter-rouge&quot;&gt;frequencies&lt;/code&gt;,
+to start the next iteration.&lt;/li&gt;
+      &lt;li&gt;The initial frequency will be replaced with the last frequency from the previous iteration.&lt;/li&gt;
+      &lt;li&gt;The appeared frequencies from the previous iteration will also be pass forward
+to the next iteration.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;accumulate_and_find/3&lt;/code&gt;, we use &lt;code class=&quot;highlighter-rouge&quot;&gt;Map.reduce_while/3&lt;/code&gt; to map through each
+elements in the &lt;code class=&quot;highlighter-rouge&quot;&gt;frequencies&lt;/code&gt; and keep track of the previous frequency and
+appeared frequencies.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;reduce_while/3&lt;/code&gt; is used so that we can control when to &lt;code class=&quot;highlighter-rouge&quot;&gt;halt&lt;/code&gt; the
+ looping.&lt;/li&gt;
+      &lt;li&gt;It accepts an accumulator, which in this case is our &lt;code class=&quot;highlighter-rouge&quot;&gt;{ initial,
+past_frequencies }&lt;/code&gt;, which indicates the state we want to keep track of
+while mapping through the elements&lt;/li&gt;
+      &lt;li&gt;It also accepts a function, which in this case, will be used to calculate
+the new frequency, by &lt;code class=&quot;highlighter-rouge&quot;&gt;new_frequency = x + prev_frequency&lt;/code&gt; and check
+if it is a duplicate using &lt;code class=&quot;highlighter-rouge&quot;&gt;is_duplicate?/2&lt;/code&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;is_duplicate?/2&lt;/code&gt;, it basically check if the element already existed
+by &lt;code class=&quot;highlighter-rouge&quot;&gt;Enum.member/2?&lt;/code&gt;.
+    &lt;ul&gt;
+      &lt;li&gt;If it exists, it return &lt;code class=&quot;highlighter-rouge&quot;&gt;:halt&lt;/code&gt; and the duplicate to the &lt;code class=&quot;highlighter-rouge&quot;&gt;reduce_while&lt;/code&gt;
+code block. Thus, ending the loop.&lt;/li&gt;
+      &lt;li&gt;Else, it return &lt;code class=&quot;highlighter-rouge&quot;&gt;:cont&lt;/code&gt; with the current frequency and the new appeared
+frequencies to the &lt;code class=&quot;highlighter-rouge&quot;&gt;reduce_while/3&lt;/code&gt; code block.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Performance:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ time elixir part-2.ex
+
+real	0m17.047s
+user	0m16.978s
+sys	0m0.184s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;At first, I thought I am having a infinity loop and was kind of disappointed as
+it was my forth time I fix my code bug. Then after awhile, I just realized, it
+just take so long to compute the answer.&lt;/p&gt;
+
+&lt;p&gt;After a few hours I solved the problem, while resting, I thought about how to
+improve the performance. Only then I realized why it took so long.&lt;/p&gt;
+
+&lt;h3 id=&quot;improved-solution&quot;&gt;Improved Solution&lt;/h3&gt;
+&lt;p&gt;It is beacuse of the use of &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;Enum.member?/2&lt;/code&gt; will iterate through every
+single element until it find the member. So, when there is a new element
+added to &lt;code class=&quot;highlighter-rouge&quot;&gt;appeared_frequency&lt;/code&gt;, it has to loop through additional element in the
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Enum.member?/2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Looping through the &lt;code class=&quot;highlighter-rouge&quot;&gt;frequencies&lt;/code&gt; itself is already an &lt;em&gt;O(n)&lt;/em&gt; operation. With,
+ &lt;code class=&quot;highlighter-rouge&quot;&gt;Enum.member?/2&lt;/code&gt;, that’s another &lt;em&gt;O(n)&lt;/em&gt; operation.Thus, resulting in a &lt;em&gt;O(n^2)&lt;/em&gt;
+ solution.&lt;/p&gt;
+
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Finder&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is_duplicate?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# Use Map.has_key?/2 to check if the frequency already existed&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;has_key?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:halt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# Use Map.put/3 to add the new frequency in to the map.&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:cont&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accumulate_and_find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reduce_while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;fn&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prev_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;new_frequency&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;prev_frequency&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;is_duplicate?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;find_first_duplicate_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accumulate_and_find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initial&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;past_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;find_first_duplicate_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;appeared_frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;input.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;
+                  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# Subsitute [0] to %{0 =&amp;gt; 0} to represent the appeared frequencies.&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;Finder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_first_duplicate_frequency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frequencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;%{&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inspect&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Error opening files&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The second solution is just to switch the data structure we used to store the
+&lt;code class=&quot;highlighter-rouge&quot;&gt;appeared_frequencies&lt;/code&gt;. Instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt;, we use a &lt;code class=&quot;highlighter-rouge&quot;&gt;Map&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;Map&lt;/code&gt; has a
+constant look up time &lt;em&gt;O(1)&lt;/em&gt; to access the element. Hence, it improve the
+performance of the solution.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;By using the right data structure, with a change of 3 lines of code,
+we successfully improve the execution speed of our program by &lt;strong&gt;34x&lt;/strong&gt; faster.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Performance:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ time elixir part-2.ex
+
+real	0m0.517s
+user	0m0.481s
+sys	0m0.188s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Day 1 Part 2, Done.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;Footnote&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;small id=&quot;one&quot;&gt;
+At first, I didn’t notice this and submitted the wrong answer.
+&lt;/small&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;small id=&quot;two&quot;&gt;
+Then I submitted the wrong answer again, as I didn’t use the last frequency
+from the previous iteration while starting the next iteration…
+&lt;/small&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;small id=&quot;three&quot;&gt;I replace the data structure to keep track
+of the appeared frequencies &lt;em&gt;(which required lookup)&lt;/em&gt; from &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;Map&lt;/code&gt;.
+&lt;/small&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">In the previous post, we had briefly discuss about the solution of Part 1. It is fairly straightforward. I thought Part 2 is going to be easy too. But man, I was wrong. It is a bit tricky.</summary></entry><entry><title type="html">Advent of Code 2018: Day 1 Part 1</title><link href="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html" rel="alternate" type="text/html" title="Advent of Code 2018: Day 1 Part 1" /><published>2018-12-01T21:47:00+08:00</published><updated>2018-12-01T21:47:00+08:00</updated><id>https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1</id><content type="html" xml:base="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html">&lt;p&gt;Advent of Code (AOC) 2018 has finally arrived. This is the first time I participate
 in AOC. Last year, when I first heard of AOC, I wanted to participate in it.
 But due to heavy workload from university, I just give up on doing it.&lt;/p&gt;
 
 &lt;p&gt;This year, it’s different, I had graduated and working remotely. Hence, this
-yaer, I can schedule some time to work on this event. I am going to use
+year, I can schedule some time to work on this event. I am going to use
 &lt;code class=&quot;highlighter-rouge&quot;&gt;Elixir&lt;/code&gt; to solve the puzzles this year. The codes will be available to
 my &lt;a href=&quot;https://github.com/kw7oe/advent-of-code-2018&quot;&gt;GitHub repo&lt;/a&gt;.&lt;/p&gt;
 
@@ -77,7 +372,10 @@ user	0m0.321s
 sys	0m0.155s
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Part 1, Done.&lt;/p&gt;</content><author><name></name></author><summary type="html">Advent of Code (AOC) 2018 has finally arrived. This is the first time I participated in AOC. Last year, when I first heard of AOC, I wanted to participate in it. But due to heavy workload from university, I just give up on doing it.</summary></entry><entry><title type="html">Using Markdown for Static Pages in Rails</title><link href="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html" rel="alternate" type="text/html" title="Using Markdown for Static Pages in Rails" /><published>2018-11-27T22:04:00+08:00</published><updated>2018-11-27T22:04:00+08:00</updated><id>https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails</id><content type="html" xml:base="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html">&lt;p&gt;Markdown is great for formatting our writing to be publish as HTML. If you’re a
+&lt;p&gt;Day 1 Part 1, Done.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;Read Part 2 &lt;a href=&quot;/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html&quot;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Advent of Code (AOC) 2018 has finally arrived. This is the first time I participate in AOC. Last year, when I first heard of AOC, I wanted to participate in it. But due to heavy workload from university, I just give up on doing it.</summary></entry><entry><title type="html">Using Markdown for Static Pages in Rails</title><link href="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html" rel="alternate" type="text/html" title="Using Markdown for Static Pages in Rails" /><published>2018-11-27T22:04:00+08:00</published><updated>2018-11-27T22:04:00+08:00</updated><id>https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails</id><content type="html" xml:base="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html">&lt;p&gt;Markdown is great for formatting our writing to be publish as HTML. If you’re a
 developer, you probably used Markdown before. &lt;code class=&quot;highlighter-rouge&quot;&gt;README&lt;/code&gt; of &lt;a href=&quot;https://github.com&quot;&gt;GitHub&lt;/a&gt; repositories
 are mostly written in Markdown.&lt;/p&gt;
 
@@ -815,70 +1113,4 @@ code base, I get to learn this the hard way.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.brianstorti.com/vim-registers/&quot; target=&quot;_blank&quot;&gt;Vim registers: The basics and beyond&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/1497958/how-do-i-use-vim-registers&quot; target=&quot;_blank&quot;&gt;How do I use vim registers?&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name></name></author><summary type="html">For the past months, I have started to use vim in some occasions. One day, I came across a vim video, “Let Vim Do the Typing”, and discover the use of register in vim. Basically, the concept of register in vim is very similar to the register in our computer. It is a temporary memory space for vim to store text.</summary></entry><entry><title type="html">Vue.js: Add component on click</title><link href="https://kw7oe.github.io/vue.js/2017/10/17/vue-js-add-component-on-click.html" rel="alternate" type="text/html" title="Vue.js: Add component on click" /><published>2017-10-17T23:00:00+08:00</published><updated>2017-10-17T23:00:00+08:00</updated><id>https://kw7oe.github.io/vue.js/2017/10/17/vue-js-add-component-on-click</id><content type="html" xml:base="https://kw7oe.github.io/vue.js/2017/10/17/vue-js-add-component-on-click.html">&lt;p&gt;I have been working on a project which uses &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt; for front end. I came across a scenario where we need to allow user to add more entry in their form.&lt;/p&gt;
-
-&lt;h3 id=&quot;initial-approach&quot;&gt;Initial Approach&lt;/h3&gt;
-&lt;p&gt;The first thought that come to my mind will be get the &lt;code class=&quot;highlighter-rouge&quot;&gt;div#id&lt;/code&gt; of the element and &lt;code class=&quot;highlighter-rouge&quot;&gt;append&lt;/code&gt; it dynamically through &lt;code class=&quot;highlighter-rouge&quot;&gt;javascript&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'parent'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;component&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createComponent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Assuming this return an Node element&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;parent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;appendChild&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;component&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;However, since we are using &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt;, it doesn’t feel natural to approach it this way.&lt;/p&gt;
-
-&lt;h3 id=&quot;with-vuejs&quot;&gt;With Vue.js&lt;/h3&gt;
-
-&lt;p&gt;Instead, we can utilize the functionality of &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt;, by using &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;v-on:click&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;template&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;v-for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index in count&quot;&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;:key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;index&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-      {{ index }}
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;v-on:click=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;addComponent&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Add&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/template&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;addComponent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ol&gt;
-  &lt;li&gt;Declare a counter
-    &lt;ul&gt;
-      &lt;li&gt;We first declare a data &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; with the initial value of 1.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Use &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; to generate components
-    &lt;ul&gt;
-      &lt;li&gt;In our &lt;code class=&quot;highlighter-rouge&quot;&gt;template&lt;/code&gt; tag, We loop through the component with &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for=&quot;index in count&quot;&lt;/code&gt;.&lt;/li&gt;
-      &lt;li&gt;With the &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; shorthands, &lt;code class=&quot;highlighter-rouge&quot;&gt;vue&lt;/code&gt; will generate from &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; times of the component. In this case, &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; act like range. For more detailed explanation, refer to the official documetation: &lt;a href=&quot;https://vuejs.org/v2/guide/list.html#v-for-with-a-Range&quot; target=&quot;_blank&quot;&gt;v-for with a Range&lt;/a&gt;).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Button to increase &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Then we create a &lt;code class=&quot;highlighter-rouge&quot;&gt;Add&lt;/code&gt; button that execute &lt;code class=&quot;highlighter-rouge&quot;&gt;addComponent&lt;/code&gt; on click. The &lt;code class=&quot;highlighter-rouge&quot;&gt;addComponent&lt;/code&gt; method is fairly straightforward, just increase the &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; by 1.&lt;/li&gt;
-      &lt;li&gt;When the user click the &lt;code class=&quot;highlighter-rouge&quot;&gt;Add&lt;/code&gt; button, the &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; will be increased by 1, thus cause &lt;code class=&quot;highlighter-rouge&quot;&gt;Vue.js&lt;/code&gt; to render additional component in our view.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
-&lt;p&gt;With the combination of, &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; act as counter. &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; to generate the components, and &lt;code class=&quot;highlighter-rouge&quot;&gt;addComponent&lt;/code&gt; method to increase the &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt;, we are able to render new component into our view when the user click the button.&lt;/p&gt;
-
-&lt;p&gt;P.S. The solution is inspired by this &lt;a href=&quot;https://forum-archive.vuejs.org/topic/747/clone-component-when-click-add-more/3&quot; target=&quot;_blank&quot;&gt;forum post&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">I have been working on a project which uses Vue.js for front end. I came across a scenario where we need to allow user to add more entry in their form.</summary></entry></feed>
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">For the past months, I have started to use vim in some occasions. One day, I came across a vim video, “Let Vim Do the Typing”, and discover the use of register in vim. Basically, the concept of register in vim is very similar to the register in our computer. It is a temporary memory space for vim to store text.</summary></entry></feed>
