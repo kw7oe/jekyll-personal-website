@@ -89,6 +89,10 @@ sys	0m0.155s
 
 Day 1 Part 1, Done.
 
+---
+_Read Part 2 [here][3]._
+
 
 [1]: https://adventofcode.com/2018/day/1
 [2]: https://github.com/kw7oe/advent-of-code-2018
+[3]: /aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html

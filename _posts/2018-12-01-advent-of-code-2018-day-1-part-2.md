@@ -5,13 +5,15 @@ date: 2018-12-01 22:10 +0800
 categories: AOC Elixir
 ---
 
-In the previous post, we had briefly discuss about the solution of Part 1. It
+In the [previous post][1], we had briefly discuss about the solution of Part 1. It
 is fairly straightforward. I thought Part 2 will going to be easy to. But man,
 I was wrong. It is a bit tricky.
 
 **My initial solution takes around 17 seconds to compute the answer**. Thanks
 to some knowledge on Data Strucutre, I manage to **improve it by 42x**. The
 second solution solves the puzzle in just **0.5 seconds**.
+
+_Code is available at [GitHub][2]._
 
 ## Part 2
 
@@ -280,6 +282,8 @@ sys	0m0.188s
 Day 1 Part 2, Done.
 
 ---
+**Footnote**
+
 1.  <small id="one">
 At first, I didn't notice this and submitted the wrong answer.
 </small>
@@ -287,3 +291,6 @@ At first, I didn't notice this and submitted the wrong answer.
 Then I submitted the wrong answer again, as I didn't use the last frequency
 from the previous iteration while starting the next iteration...
 </small>
+
+[1]: /aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html
+[2]: https://github.com/kw7oe/advent-of-code-2018
