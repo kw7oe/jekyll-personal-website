@@ -5,12 +5,12 @@ date: 2018-12-01 21:47 +0800
 categories: AOC Elixir
 ---
 
-Advent of Code (AOC) 2018 has finally arrived. This is the first time I participated
+Advent of Code (AOC) 2018 has finally arrived. This is the first time I participate
 in AOC. Last year, when I first heard of AOC, I wanted to participate in it.
 But due to heavy workload from university, I just give up on doing it.
 
 This year, it's different, I had graduated and working remotely. Hence, this
-yaer, I can schedule some time to work on this event. I am going to use
+year, I can schedule some time to work on this event. I am going to use
 `Elixir` to solve the puzzles this year. The codes will be available to
 my [GitHub repo][2].
 
@@ -87,7 +87,7 @@ user	0m0.321s
 sys	0m0.155s
 ```
 
-Part 1, Done.
+Day 1 Part 1, Done.
 
 
 [1]: https://adventofcode.com/2018/day/1
