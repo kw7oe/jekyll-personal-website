@@ -76,6 +76,53 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">A note about using &#39;fetch&#39; in JS</h1>
+     <p class="post-meta">
+       <time datetime="2018-04-11T00:00:00+08:00" itemprop="datePublished">
+         
+         Apr 11, 2018
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>Another story about fixing bug. This story is related to the native web
+API <code class="highlighter-rouge">fetch</code>, which is used to make request.</p>
+
+<h3 id="backstory">Backstory</h3>
+<p>After serveral days of having my first production application online,
+my client inform me that, the application has a bug, <em>again</em>.
+The button was not working as expected for one of the users.
+Long story short, we found out that the bug occurs in iOS 10.2.1.
+So, I downloaded the Simulator for iOS 10.2 to start debugging.</p>
+
+<h3 id="issue">Issue</h3>
+<p>It turns out that <code class="highlighter-rouge">fetch</code> is not supported in iOS 10.2. In this
+case, I can:</p>
+<ul>
+  <li>replace <code class="highlighter-rouge">fetch</code> with <code class="highlighter-rouge">axios</code></li>
+  <li>use <code class="highlighter-rouge">fetch</code> polyfill</li>
+</ul>
+
+<p>to solve the issue.</p>
+
+<h3 id="lesson-learned">Lesson Learned</h3>
+<ol>
+  <li><code class="highlighter-rouge">fetch</code> is not supported for iOS 10.2 and below.</li>
+  <li>How to debug a web application using Simulator.</li>
+  <li>Having more information about the environment when the bug occured
+is always helpful.</li>
+</ol>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">Using Ruby next in map</h1>
      <p class="post-meta">
        <time datetime="2018-03-28T00:00:00+08:00" itemprop="datePublished">
@@ -350,72 +397,6 @@ code base, I get to learn this the hard way.</p>
 </div>
     <hr>
   
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">Ruby .() notation</h1>
-     <p class="post-meta">
-       <time datetime="2017-10-15T18:12:19+08:00" itemprop="datePublished">
-         
-         Oct 15, 2017
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>In Ruby, <code class="highlighter-rouge">.()</code> is a syntatic sugar for <code class="highlighter-rouge">call</code> method.</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nf">call</span>
-    <span class="s2">"Hello World"</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="o">.</span><span class="p">()</span>
-<span class="c1">#=&gt; Hello World</span>
-</code></pre></div></div>
-
-<p>In this example, we declare a <code class="highlighter-rouge">Person</code> class and <code class="highlighter-rouge">call</code> method in the class. With this, we can later execute <code class="highlighter-rouge">Person.new.()</code> to call the <code class="highlighter-rouge">call</code> method.</p>
-
-<p>Note that, we need to initialize the <code class="highlighter-rouge">Person</code> object first by calling <code class="highlighter-rouge">new</code>, since the <code class="highlighter-rouge">call</code> is a instance method.</p>
-
-<p>If we wanted to just call by <code class="highlighter-rouge">Person.()</code>, we can do it this way:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span>
-    <span class="s2">"Hello World"</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="no">Person</span><span class="o">.</span><span class="p">()</span>
-<span class="c1">#=&gt; "Hello World"</span>
-
-</code></pre></div></div>
-
-<p>Some programming languages such as Python, Swift and Scala initalize object by <code class="highlighter-rouge">Person()</code>. In Ruby, we can’t override the <code class="highlighter-rouge">()</code> operator to achieve the same effect <em>(see this <a href="https://stackoverflow.com/questions/24351218/how-to-create-an-object-in-ruby-without-using-new?answertab=oldest#tab-top">StackOverflow question</a>)</em>. However, we can use <code class="highlighter-rouge">.()</code> to achieve a similar result:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span>
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
-    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
-    <span class="vi">@age</span> <span class="o">=</span> <span class="n">age</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="nb">name</span><span class="p">:,</span> <span class="n">age</span><span class="p">:)</span>
-    <span class="nb">self</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="no">Person</span><span class="o">.</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Peter"</span><span class="p">,</span> <span class="ss">age: </span><span class="mi">12</span><span class="p">)</span>
-<span class="c1">#=&gt; #&lt;Person:0x00007f991b80b8d8 @name="Peter", @age=12&gt;</span>
-</code></pre></div></div>
-
-<p>Another way is to use metaprogramming in Ruby. Take a look at this <a href="https://stackoverflow.com/a/24356542">StackOverflow answer</a> to find out how.</p>
-
-   </div>
-</div>
-    <hr>
-  
 
   
 <nav class="pagination is-centered" role="navigation" aria-label="pagination">
@@ -427,7 +408,7 @@ code base, I get to learn this the hard way.</p>
   
   <!-- Next Page -->
   
-    <a class="pagination-next" disabled>Next</a>
+    <a href="/blog/page-3" class="pagination-next">Next &raquo;</a>
   
 </div>
 

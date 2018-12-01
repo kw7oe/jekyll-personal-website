@@ -1,4 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-11-27T22:21:57+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Using Markdown for Static Pages in Rails</title><link href="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html" rel="alternate" type="text/html" title="Using Markdown for Static Pages in Rails" /><published>2018-11-27T22:04:00+08:00</published><updated>2018-11-27T22:04:00+08:00</updated><id>https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails</id><content type="html" xml:base="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html">&lt;p&gt;Markdown is great for formatting our writing to be publish as HTML. If you’re a
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-12-01T22:10:09+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Advent of Code 2018: Day 1 Part 1</title><link href="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html" rel="alternate" type="text/html" title="Advent of Code 2018: Day 1 Part 1" /><published>2018-12-01T21:47:00+08:00</published><updated>2018-12-01T21:47:00+08:00</updated><id>https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1</id><content type="html" xml:base="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html">&lt;p&gt;Advent of Code (AOC) 2018 has finally arrived. This is the first time I participated
+in AOC. Last year, when I first heard of AOC, I wanted to participate in it.
+But due to heavy workload from university, I just give up on doing it.&lt;/p&gt;
+
+&lt;p&gt;This year, it’s different, I had graduated and working remotely. Hence, this
+yaer, I can schedule some time to work on this event. I am going to use
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Elixir&lt;/code&gt; to solve the puzzles this year. The codes will be available to
+my &lt;a href=&quot;https://github.com/kw7oe/advent-of-code-2018&quot;&gt;GitHub repo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If things go well, I might continue writing down my journey on solving
+the puzzles of AOC 2018.&lt;/p&gt;
+
+&lt;p&gt;Without further ado, let’s start discussing the &lt;a href=&quot;https://adventofcode.com/2018/day/1&quot;&gt;puzzles of Day 1&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;part-1&quot;&gt;Part 1&lt;/h2&gt;
+
+&lt;p&gt;Part 1 is straightforward. A list of frequencies will given, and we have to sum up
+the frequencies. For example, from the problem descriptions:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Here are other example situations:
+
+    +1, +1, +1 results in  3
+    +1, +1, -2 results in  0
+    -1, -2, -3 results in -6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So, the question of part 1 is:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Starting with a frequency of zero, what is the resulting frequency after all of the changes in frequency have been applied?
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Straight forward and easy right?&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;So here is the puzzle inputs:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-9
++7
++5
+-13
++6
+...
+-23
+-46
+-27
+-11
+-75223
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Solution:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;input.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sum&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inspect&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Error opening files&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First, we read in the input from &lt;code class=&quot;highlighter-rouge&quot;&gt;input.txt&lt;/code&gt; using &lt;code class=&quot;highlighter-rouge&quot;&gt;File.read/1&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Next, we split the content by newline using &lt;code class=&quot;highlighter-rouge&quot;&gt;String.split/1&lt;/code&gt;.
+Now, we have a list of string representing the frequency.&lt;/li&gt;
+  &lt;li&gt;Then, we map through the list with &lt;code class=&quot;highlighter-rouge&quot;&gt;Enum.map/2&lt;/code&gt; and convert the string
+to integer using &lt;code class=&quot;highlighter-rouge&quot;&gt;String.to_integer/1&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Lastly, we call &lt;code class=&quot;highlighter-rouge&quot;&gt;Enum.sum/2&lt;/code&gt; to sum frequencies, which loops through every
+element in the list and add it up.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Performance:&lt;/strong&gt;
+It takes around 0.3 seconds to compute the answer.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ time elixir part-1.ex
+
+real	0m0.350s
+user	0m0.321s
+sys	0m0.155s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Part 1, Done.&lt;/p&gt;</content><author><name></name></author><summary type="html">Advent of Code (AOC) 2018 has finally arrived. This is the first time I participated in AOC. Last year, when I first heard of AOC, I wanted to participate in it. But due to heavy workload from university, I just give up on doing it.</summary></entry><entry><title type="html">Using Markdown for Static Pages in Rails</title><link href="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html" rel="alternate" type="text/html" title="Using Markdown for Static Pages in Rails" /><published>2018-11-27T22:04:00+08:00</published><updated>2018-11-27T22:04:00+08:00</updated><id>https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails</id><content type="html" xml:base="https://kw7oe.github.io/ruby/rails/2018/11/27/using-markdown-for-static-pages-in-rails.html">&lt;p&gt;Markdown is great for formatting our writing to be publish as HTML. If you’re a
 developer, you probably used Markdown before. &lt;code class=&quot;highlighter-rouge&quot;&gt;README&lt;/code&gt; of &lt;a href=&quot;https://github.com&quot;&gt;GitHub&lt;/a&gt; repositories
 are mostly written in Markdown.&lt;/p&gt;
 
@@ -802,50 +881,4 @@ code base, I get to learn this the hard way.&lt;/p&gt;
 &lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
 &lt;p&gt;With the combination of, &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt; act as counter. &lt;code class=&quot;highlighter-rouge&quot;&gt;v-for&lt;/code&gt; to generate the components, and &lt;code class=&quot;highlighter-rouge&quot;&gt;addComponent&lt;/code&gt; method to increase the &lt;code class=&quot;highlighter-rouge&quot;&gt;count&lt;/code&gt;, we are able to render new component into our view when the user click the button.&lt;/p&gt;
 
-&lt;p&gt;P.S. The solution is inspired by this &lt;a href=&quot;https://forum-archive.vuejs.org/topic/747/clone-component-when-click-add-more/3&quot; target=&quot;_blank&quot;&gt;forum post&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">I have been working on a project which uses Vue.js for front end. I came across a scenario where we need to allow user to add more entry in their form.</summary></entry><entry><title type="html">Ruby .() notation</title><link href="https://kw7oe.github.io/ruby/2017/10/15/ruby-dot-parentheses-notation.html" rel="alternate" type="text/html" title="Ruby .() notation" /><published>2017-10-15T18:12:19+08:00</published><updated>2017-10-15T18:12:19+08:00</updated><id>https://kw7oe.github.io/ruby/2017/10/15/ruby-dot-parentheses-notation</id><content type="html" xml:base="https://kw7oe.github.io/ruby/2017/10/15/ruby-dot-parentheses-notation.html">&lt;p&gt;In Ruby, &lt;code class=&quot;highlighter-rouge&quot;&gt;.()&lt;/code&gt; is a syntatic sugar for &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; method.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;Hello World&quot;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; Hello World&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In this example, we declare a &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt; class and &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; method in the class. With this, we can later execute &lt;code class=&quot;highlighter-rouge&quot;&gt;Person.new.()&lt;/code&gt; to call the &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; method.&lt;/p&gt;
-
-&lt;p&gt;Note that, we need to initialize the &lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt; object first by calling &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt;, since the &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; is a instance method.&lt;/p&gt;
-
-&lt;p&gt;If we wanted to just call by &lt;code class=&quot;highlighter-rouge&quot;&gt;Person.()&lt;/code&gt;, we can do it this way:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;Hello World&quot;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;Hello World&quot;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Some programming languages such as Python, Swift and Scala initalize object by &lt;code class=&quot;highlighter-rouge&quot;&gt;Person()&lt;/code&gt;. In Ruby, we can’t override the &lt;code class=&quot;highlighter-rouge&quot;&gt;()&lt;/code&gt; operator to achieve the same effect &lt;em&gt;(see this &lt;a href=&quot;https://stackoverflow.com/questions/24351218/how-to-create-an-object-in-ruby-without-using-new?answertab=oldest#tab-top&quot;&gt;StackOverflow question&lt;/a&gt;)&lt;/em&gt;. However, we can use &lt;code class=&quot;highlighter-rouge&quot;&gt;.()&lt;/code&gt; to achieve a similar result:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:)&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Person&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;name: &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Peter&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;age: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; #&amp;lt;Person:0x00007f991b80b8d8 @name=&quot;Peter&quot;, @age=12&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Another way is to use metaprogramming in Ruby. Take a look at this &lt;a href=&quot;https://stackoverflow.com/a/24356542&quot;&gt;StackOverflow answer&lt;/a&gt; to find out how.&lt;/p&gt;</content><author><name></name></author><summary type="html">In Ruby, .() is a syntatic sugar for call method.</summary></entry></feed>
+&lt;p&gt;P.S. The solution is inspired by this &lt;a href=&quot;https://forum-archive.vuejs.org/topic/747/clone-component-when-click-add-more/3&quot; target=&quot;_blank&quot;&gt;forum post&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">I have been working on a project which uses Vue.js for front end. I came across a scenario where we need to allow user to add more entry in their form.</summary></entry></feed>

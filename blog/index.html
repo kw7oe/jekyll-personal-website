@@ -76,6 +76,106 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">Advent of Code 2018: Day 1 Part 1</h1>
+     <p class="post-meta">
+       <time datetime="2018-12-01T21:47:00+08:00" itemprop="datePublished">
+         
+         Dec 1, 2018
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>Advent of Code (AOC) 2018 has finally arrived. This is the first time I participated
+in AOC. Last year, when I first heard of AOC, I wanted to participate in it.
+But due to heavy workload from university, I just give up on doing it.</p>
+
+<p>This year, it’s different, I had graduated and working remotely. Hence, this
+yaer, I can schedule some time to work on this event. I am going to use
+<code class="highlighter-rouge">Elixir</code> to solve the puzzles this year. The codes will be available to
+my <a href="https://github.com/kw7oe/advent-of-code-2018">GitHub repo</a>.</p>
+
+<p>If things go well, I might continue writing down my journey on solving
+the puzzles of AOC 2018.</p>
+
+<p>Without further ado, let’s start discussing the <a href="https://adventofcode.com/2018/day/1">puzzles of Day 1</a>.</p>
+
+<h2 id="part-1">Part 1</h2>
+
+<p>Part 1 is straightforward. A list of frequencies will given, and we have to sum up
+the frequencies. For example, from the problem descriptions:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Here are other example situations:
+
+    +1, +1, +1 results in  3
+    +1, +1, -2 results in  0
+    -1, -2, -3 results in -6
+</code></pre></div></div>
+
+<p>So, the question of part 1 is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Starting with a frequency of zero, what is the resulting frequency after all of the changes in frequency have been applied?
+</code></pre></div></div>
+
+<p>Straight forward and easy right?</p>
+
+<p><strong>So here is the puzzle inputs:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-9
++7
++5
+-13
++6
+...
+-23
+-46
+-27
+-11
+-75223
+</code></pre></div></div>
+
+<p><strong>Solution:</strong></p>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="sd">"</span><span class="s2">input.txt"</span><span class="p">)</span> <span class="k">do</span>
+  <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">content</span><span class="p">}</span> <span class="o">-&gt;</span>
+    <span class="n">content</span>
+    <span class="o">|&gt;</span> <span class="no">String</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="o">|&gt;</span> <span class="no">Enum</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="no">String</span><span class="o">.</span><span class="n">to_integer</span><span class="o">/</span><span class="m">1</span><span class="p">)</span>
+    <span class="o">|&gt;</span> <span class="no">Enum</span><span class="o">.</span><span class="n">sum</span>
+    <span class="o">|&gt;</span> <span class="no">IO</span><span class="o">.</span><span class="n">inspect</span>
+  <span class="p">{</span><span class="ss">:error</span><span class="p">,</span> <span class="n">_</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="sd">"</span><span class="s2">Error opening files"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<ol>
+  <li>First, we read in the input from <code class="highlighter-rouge">input.txt</code> using <code class="highlighter-rouge">File.read/1</code></li>
+  <li>Next, we split the content by newline using <code class="highlighter-rouge">String.split/1</code>.
+Now, we have a list of string representing the frequency.</li>
+  <li>Then, we map through the list with <code class="highlighter-rouge">Enum.map/2</code> and convert the string
+to integer using <code class="highlighter-rouge">String.to_integer/1</code>.</li>
+  <li>Lastly, we call <code class="highlighter-rouge">Enum.sum/2</code> to sum frequencies, which loops through every
+element in the list and add it up.</li>
+</ol>
+
+<p><strong>Performance:</strong>
+It takes around 0.3 seconds to compute the answer.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ time elixir part-1.ex
+
+real	0m0.350s
+user	0m0.321s
+sys	0m0.155s
+</code></pre></div></div>
+
+<p>Part 1, Done.</p>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">Using Markdown for Static Pages in Rails</h1>
      <p class="post-meta">
        <time datetime="2018-11-27T22:04:00+08:00" itemprop="datePublished">
@@ -734,53 +834,6 @@ text-processing.</li>
   <span class="na">auto_open</span><span class="pi">:</span> <span class="no">true</span>
 </code></pre></div>    </div>
   </li>
-</ol>
-
-
-   </div>
-</div>
-    <hr>
-  
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">A note about using &#39;fetch&#39; in JS</h1>
-     <p class="post-meta">
-       <time datetime="2018-04-11T00:00:00+08:00" itemprop="datePublished">
-         
-         Apr 11, 2018
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>Another story about fixing bug. This story is related to the native web
-API <code class="highlighter-rouge">fetch</code>, which is used to make request.</p>
-
-<h3 id="backstory">Backstory</h3>
-<p>After serveral days of having my first production application online,
-my client inform me that, the application has a bug, <em>again</em>.
-The button was not working as expected for one of the users.
-Long story short, we found out that the bug occurs in iOS 10.2.1.
-So, I downloaded the Simulator for iOS 10.2 to start debugging.</p>
-
-<h3 id="issue">Issue</h3>
-<p>It turns out that <code class="highlighter-rouge">fetch</code> is not supported in iOS 10.2. In this
-case, I can:</p>
-<ul>
-  <li>replace <code class="highlighter-rouge">fetch</code> with <code class="highlighter-rouge">axios</code></li>
-  <li>use <code class="highlighter-rouge">fetch</code> polyfill</li>
-</ul>
-
-<p>to solve the issue.</p>
-
-<h3 id="lesson-learned">Lesson Learned</h3>
-<ol>
-  <li><code class="highlighter-rouge">fetch</code> is not supported for iOS 10.2 and below.</li>
-  <li>How to debug a web application using Simulator.</li>
-  <li>Having more information about the environment when the bug occured
-is always helpful.</li>
 </ol>
 
 
