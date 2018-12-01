@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-12-01T23:55:13+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x faster</title><link href="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html" rel="alternate" type="text/html" title="Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x faster" /><published>2018-12-01T22:10:00+08:00</published><updated>2018-12-01T22:10:00+08:00</updated><id>https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2</id><content type="html" xml:base="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html">&lt;p&gt;In the &lt;a href=&quot;/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html&quot;&gt;previous post&lt;/a&gt;, we had briefly discuss about the solution of Part 1. It
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.4">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2018-12-02T00:01:41+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x faster</title><link href="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html" rel="alternate" type="text/html" title="Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x faster" /><published>2018-12-01T22:10:00+08:00</published><updated>2018-12-01T22:10:00+08:00</updated><id>https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2</id><content type="html" xml:base="https://kw7oe.github.io/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html">&lt;p&gt;In the &lt;a href=&quot;/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-1.html&quot;&gt;previous post&lt;/a&gt;, we had briefly discuss about the solution of Part 1. It
 is fairly straightforward. I thought Part 2 is going to be easy too. But man,
 I was wrong. It is a bit tricky.&lt;/p&gt;
 
@@ -13,7 +13,7 @@ improved by 34x faster, see &lt;a href=&quot;#three&quot;&gt;here&lt;/a&gt;.&lt;
 
 &lt;h2 id=&quot;part-2&quot;&gt;Part 2&lt;/h2&gt;
 
-&lt;p&gt;Part 2 still use the same inputs as Part 1.&lt;/p&gt;
+&lt;p&gt;Part 2 still uses the same inputs as Part 1.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-9
 +7 +5
@@ -27,10 +27,10 @@ improved by 34x faster, see &lt;a href=&quot;#three&quot;&gt;here&lt;/a&gt;.&lt;
 -75223
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;But this time the questions and scenario is abit different, which make it
+&lt;p&gt;This time, the question and scenario are abit different, which make it
 tricky.&lt;/p&gt;
 
-&lt;p&gt;The problem descriptions states that:&lt;/p&gt;
+&lt;p&gt;The problem description states that:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;You notice that the device repeats the same frequency change list over and over. To calibrate the device, you need to find the first frequency it reaches twice.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -199,12 +199,12 @@ user	0m16.978s
 sys	0m0.184s
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;At first, I thought I am having a infinity loop and was kind of disappointed as
-it was my forth time I fix my code bug. Then after awhile, I just realized, it
-just take so long to compute the answer.&lt;/p&gt;
+&lt;p&gt;At first, I thought I am having infinity loop and was kind of disappointed as
+it was my forth time fixing the solution. Then, I jrealized, it
+just take a long time to compute the answer.&lt;/p&gt;
 
-&lt;p&gt;After a few hours I solved the problem, while resting, I thought about how to
-improve the performance. Only then I realized why it took so long.&lt;/p&gt;
+&lt;p&gt;After a few hours, I started to think about how to
+improve the performance. Then, I realized why it took so long.&lt;/p&gt;
 
 &lt;h3 id=&quot;improved-solution&quot;&gt;Improved Solution&lt;/h3&gt;
 &lt;p&gt;It is beacuse of the use of &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt;. &lt;code class=&quot;highlighter-rouge&quot;&gt;Enum.member?/2&lt;/code&gt; will iterate through every
