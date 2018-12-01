@@ -15,8 +15,8 @@ plugins:
   - jekyll-paginate
   - jekyll-compose
 
-jekyll_compose:
-  auto_open: true
+# jekyll_compose:
+#   auto_open: true
 
 # Build settings
 markdown: kramdown
