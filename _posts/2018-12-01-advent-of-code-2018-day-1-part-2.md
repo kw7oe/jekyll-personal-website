@@ -21,7 +21,7 @@ Okay, that's the end of some irrelavant stuff. Let's jump straight to the puzzle
 
 ## Part 2
 
-Part 2 still use the same inputs as Part 1.
+Part 2 still uses the same inputs as Part 1.
 
 ```
 -9
@@ -36,10 +36,10 @@ Part 2 still use the same inputs as Part 1.
 -75223
 ```
 
-But this time the questions and scenario is abit different, which make it
+This time, the question and scenario are abit different, which make it
 tricky.
 
-The problem descriptions states that:
+The problem description states that:
 
 ```
 You notice that the device repeats the same frequency change list over and over. To calibrate the device, you need to find the first frequency it reaches twice.
@@ -192,8 +192,6 @@ explanation to help you understand the code _(hopefully)_:
       frequencies to the `reduce_while/3` code block.
 
 
-
-
 **Performance:**
 ```
 $ time elixir part-2.ex
@@ -203,12 +201,12 @@ user	0m16.978s
 sys	0m0.184s
 ```
 
-At first, I thought I am having a infinity loop and was kind of disappointed as
-it was my forth time I fix my code bug. Then after awhile, I just realized, it
-just take so long to compute the answer.
+At first, I thought I am having infinity loop and was kind of disappointed as
+it was my forth time fixing the solution. Then, I jrealized, it
+just take a long time to compute the answer.
 
-After a few hours I solved the problem, while resting, I thought about how to
-improve the performance. Only then I realized why it took so long.
+After a few hours, I started to think about how to
+improve the performance. Then, I realized why it took so long.
 
 ### Improved Solution
 It is beacuse of the use of `List`. `Enum.member?/2` will iterate through every
