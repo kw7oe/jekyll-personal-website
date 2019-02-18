@@ -76,6 +76,51 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">TIL: Indexing `NULL` in Oracle Database</h1>
+     <p class="post-meta">
+       <time datetime="2019-02-18T21:32:00+08:00" itemprop="datePublished">
+         
+         Feb 18, 2019
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>Oracle database does not index a row if all the indexed columns are <code class="highlighter-rouge">NULL</code></p>
+
+<p>For instance, let say we have a <code class="highlighter-rouge">users</code> table where we index <code class="highlighter-rouge">role</code> column to improve the query performance.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">users</span> <span class="k">WHERE</span> <span class="k">role</span> <span class="k">IS</span> <span class="k">NULL</span>
+</code></pre></div></div>
+
+<p>The index does not work for such query in Oracle database. This is because when Oracle database is inserting the new record of <code class="highlighter-rouge">user</code> where the <code class="highlighter-rouge">role</code> is <code class="highlighter-rouge">NULL</code>, it does not add the created row to the index. Hence, the index is not useful when querying with <code class="highlighter-rouge">NULL</code></p>
+
+<h3 id="solutions">Solutions</h3>
+
+<p>Use a constant expression that can never be <code class="highlighter-rouge">NULL</code>.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">users_role</span> <span class="k">ON</span> <span class="n">users</span> <span class="p">(</span><span class="k">role</span><span class="p">,</span> <span class="s1">'user'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>or we can use a concatenated index (multi-column index) and ensure that the the other column of the index must have a <code class="highlighter-rouge">NOT NULL</code> constraint.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">users_role</span> <span class="k">ON</span> <span class="n">users</span> <span class="p">(</span><span class="k">role</span><span class="p">,</span> <span class="n">id</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>For more detailed explanation and source, refer to <a href="https://use-the-index-luke.com/sql/where-clause/null">NULL in Oracle Database</a></p>
+
+<hr />
+<p><small>This post was first appeared in my TIL web application at <a href="https://til.kaiwern.com/posts/4">here</a>.</small></p>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x faster</h1>
      <p class="post-meta">
        <time datetime="2018-12-01T22:10:00+08:00" itemprop="datePublished">
@@ -915,117 +960,6 @@ different and unstructured. This post also covers less topics about using
 Plug compared to Elixir School.
 </small></li>
 </ol>
-
-
-   </div>
-</div>
-    <hr>
-  
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">A note on`application` in mix.exs starting from Elixir 1.4</h1>
-     <p class="post-meta">
-       <time datetime="2018-10-03T21:45:00+08:00" itemprop="datePublished">
-         
-         Oct 3, 2018
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>Starting from Elixir 1.4, we don’t need to specify our application lists in
-<code class="highlighter-rouge">application</code>. It is automatically inferred from our dependencies. <em>(Check the
-release notes <a href="https://elixir-lang.org/blog/2017/01/05/elixir-v1-4-0-released/">here</a>)</em></p>
-
-<p>Do note that <strong>it only automatically infer the application lists if the
-<code class="highlighter-rouge">:applications</code> key is empty.</strong> If you had already declared your it in your
-<code class="highlighter-rouge">mix.exs</code> like this:</p>
-
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
-  <span class="p">[</span>
-    <span class="c1"># Will be automatically inferred starting</span>
-    <span class="c1"># from Elixir 1.4, if it is empty.</span>
-    <span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
-  <span class="p">]</span>
-<span class="k">end</span>
-</code></pre></div></div>
-<p>Be sure to clear it to utilize this feature.</p>
-
-<p>Below are the detailed story on how I came across this.</p>
-
-<p><small><em>Disclaimer: The point of this article is summed up above, skip the part below if you’re busy.</em></small></p>
-
-<hr />
-
-<h3 id="the-story">The Story</h3>
-
-<p>Recently, I have been writing a simple Plug web application and came across the
-need to use an external database.</p>
-
-<p><code class="highlighter-rouge">Ecto</code> and <code class="highlighter-rouge">PostgreSQl</code> is the thing that come up to my mind.</p>
-
-<p>Hence, I went over the <a href="https://hexdocs.pm/ecto/getting-started.html#content">Ecto documentation</a> and run through the setup in the
-application. After going through the steps, and finally run <code class="highlighter-rouge">iex -S mix</code>, an
-error arise.</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...failed to start child: App.Repo
-</code></pre></div></div>
-
-<p>I check my <code class="highlighter-rouge">config.exs</code>. Nothing wrong.</p>
-
-<p>So, I go through the documentation again and again, to check if I miss out anything.
-No, nothing wrong. The documentation didn’t mentioned the need to add <code class="highlighter-rouge">ecto</code>
-and <code class="highlighter-rouge">postgrex</code> in the <code class="highlighter-rouge">application</code>.  After googling around, someone mentioned
-that adding it solve the issues.</p>
-
-<p><em>I tried, it worked.</em></p>
-
-<p>But I don’t know why. <em>The documentation can’t be wrong right?</em></p>
-
-<p>So, I create a new test application and follow the documentation again.</p>
-
-<p><em>And, it works.</em></p>
-
-<p>So, I delete this line of code in my <code class="highlighter-rouge">mix.exs</code>:</p>
-
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
-</code></pre></div></div>
-
-<p><em>And, it works.</em></p>
-
-<h3 id="the-why">The Why</h3>
-<p>Hence, I guess that Mix actaully automatically start the applications needed
-for us. So, I search through the documentations of different version of Mix
-<em>(<a href="https://hexdocs.pm/mix/1.3.4/Mix.Tasks.Compile.App.html#content">1.4.5</a> vs <a href="https://hexdocs.pm/mix/1.3.4/Mix.Tasks.Compile.App.html#content">1.3.4</a>)</em>, and finally found out that since Elixir 1.4,
-Mix has this new feature. It is also mentioned in the <a href="https://elixir-lang.org/blog/2017/01/05/elixir-v1-4-0-released/">release notes of Elixir 1.4</a>.</p>
-
-<p>However there is one condition. <strong>It only automatically infer the applications list if the
-<code class="highlighter-rouge">:applications</code> key is empty.</strong> That explains why it didn’t work in my
-application because I already declared the list manually, as shown below:</p>
-
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
-  <span class="p">[</span>
-    <span class="ss">mod:</span> <span class="p">{</span><span class="no">App</span><span class="o">.</span><span class="no">App</span><span class="p">,</span> <span class="p">[]},</span>
-    <span class="ss">extra_applications:</span> <span class="p">[</span><span class="ss">:logger</span><span class="p">],</span>
-    <span class="c1"># Can be removed for Elixir &gt;= 1.4.</span>
-    <span class="c1"># Since it is automatically inferred.</span>
-    <span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
-  <span class="p">]</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<h3 id="the-lessons">The Lessons</h3>
-
-<ul>
-  <li>Application lists can be automatically inferred in for Elixir &gt;= 1.4</li>
-  <li><em>Documentation can be wrong. But, most of the time, you might be the one who
-are in fault.</em></li>
-  <li>Read release notes.</li>
-</ul>
-
-<p>Thanks for reading through it.</p>
 
 
    </div>

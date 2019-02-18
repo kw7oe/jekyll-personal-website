@@ -76,6 +76,44 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">Register in Vim</h1>
+     <p class="post-meta">
+       <time datetime="2017-10-24T22:05:00+08:00" itemprop="datePublished">
+         
+         Oct 24, 2017
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>For the past months, I have started to use <code class="highlighter-rouge">vim</code> in some occasions. One day, I came across a vim video, <a href="https://www.youtube.com/watch?v=3TX3kV3TICU" target="_blank">“Let Vim Do the Typing”</a>, and discover the use of <strong>register</strong> in <code class="highlighter-rouge">vim</code>. Basically, the concept of register in <code class="highlighter-rouge">vim</code> is very similar to the register in our computer. It is a temporary memory space for <code class="highlighter-rouge">vim</code> to store text.</p>
+
+<h3 id="how-to-use-it">How to use it?</h3>
+<p>In normal mode, <code class="highlighter-rouge">"r</code> will allow us to select the register <code class="highlighter-rouge">r</code>. The charcter after <code class="highlighter-rouge">"</code> is the register you selected. You can choose any register you like from <code class="highlighter-rouge">a-z</code>.To check the content of every register, use the command <code class="highlighter-rouge">:reg</code>. For specific registers, just provide the register name as arguments to the command, e.g <code class="highlighter-rouge">:reg r</code>.</p>
+
+<p>In insert mode, you can insert the content of a register by <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">r</code>. You’ll notice the current cursor will turn into <code class="highlighter-rouge">"</code> when <code class="highlighter-rouge">Ctrl-r</code> is pressed.</p>
+
+<h3 id="basic-usage">Basic Usage</h3>
+<p>We can copy any text and save it to a specific register, which persists even after <code class="highlighter-rouge">vim</code> is quit. For example, we can yanked/copy current link and store to register <code class="highlighter-rouge">e</code> by <code class="highlighter-rouge">"eyy</code>.</p>
+
+<p>We can also paste the content of register <code class="highlighter-rouge">e</code> by <code class="highlighter-rouge">"ep</code>. Or, go into insert mode and <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">e</code> to paste the content of the selected register.</p>
+
+<h3 id="wrapping-up">Wrapping Up</h3>
+<p>This is just a basic introduction of register in <code class="highlighter-rouge">vim</code>. There is still a lots of details and usage of register I didn’t cover in this post. For more details, feel free to refer to the resources below:</p>
+
+<ul>
+  <li><a href="http://www.brianstorti.com/vim-registers/" target="_blank">Vim registers: The basics and beyond</a></li>
+  <li><a href="https://stackoverflow.com/questions/1497958/how-do-i-use-vim-registers" target="_blank">How do I use vim registers?</a></li>
+</ul>
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">Vue.js: Add component on click</h1>
      <p class="post-meta">
        <time datetime="2017-10-17T23:00:00+08:00" itemprop="datePublished">

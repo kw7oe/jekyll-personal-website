@@ -76,6 +76,117 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">A note on`application` in mix.exs starting from Elixir 1.4</h1>
+     <p class="post-meta">
+       <time datetime="2018-10-03T21:45:00+08:00" itemprop="datePublished">
+         
+         Oct 3, 2018
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>Starting from Elixir 1.4, we don’t need to specify our application lists in
+<code class="highlighter-rouge">application</code>. It is automatically inferred from our dependencies. <em>(Check the
+release notes <a href="https://elixir-lang.org/blog/2017/01/05/elixir-v1-4-0-released/">here</a>)</em></p>
+
+<p>Do note that <strong>it only automatically infer the application lists if the
+<code class="highlighter-rouge">:applications</code> key is empty.</strong> If you had already declared your it in your
+<code class="highlighter-rouge">mix.exs</code> like this:</p>
+
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
+  <span class="p">[</span>
+    <span class="c1"># Will be automatically inferred starting</span>
+    <span class="c1"># from Elixir 1.4, if it is empty.</span>
+    <span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+<p>Be sure to clear it to utilize this feature.</p>
+
+<p>Below are the detailed story on how I came across this.</p>
+
+<p><small><em>Disclaimer: The point of this article is summed up above, skip the part below if you’re busy.</em></small></p>
+
+<hr />
+
+<h3 id="the-story">The Story</h3>
+
+<p>Recently, I have been writing a simple Plug web application and came across the
+need to use an external database.</p>
+
+<p><code class="highlighter-rouge">Ecto</code> and <code class="highlighter-rouge">PostgreSQl</code> is the thing that come up to my mind.</p>
+
+<p>Hence, I went over the <a href="https://hexdocs.pm/ecto/getting-started.html#content">Ecto documentation</a> and run through the setup in the
+application. After going through the steps, and finally run <code class="highlighter-rouge">iex -S mix</code>, an
+error arise.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...failed to start child: App.Repo
+</code></pre></div></div>
+
+<p>I check my <code class="highlighter-rouge">config.exs</code>. Nothing wrong.</p>
+
+<p>So, I go through the documentation again and again, to check if I miss out anything.
+No, nothing wrong. The documentation didn’t mentioned the need to add <code class="highlighter-rouge">ecto</code>
+and <code class="highlighter-rouge">postgrex</code> in the <code class="highlighter-rouge">application</code>.  After googling around, someone mentioned
+that adding it solve the issues.</p>
+
+<p><em>I tried, it worked.</em></p>
+
+<p>But I don’t know why. <em>The documentation can’t be wrong right?</em></p>
+
+<p>So, I create a new test application and follow the documentation again.</p>
+
+<p><em>And, it works.</em></p>
+
+<p>So, I delete this line of code in my <code class="highlighter-rouge">mix.exs</code>:</p>
+
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p><em>And, it works.</em></p>
+
+<h3 id="the-why">The Why</h3>
+<p>Hence, I guess that Mix actaully automatically start the applications needed
+for us. So, I search through the documentations of different version of Mix
+<em>(<a href="https://hexdocs.pm/mix/1.3.4/Mix.Tasks.Compile.App.html#content">1.4.5</a> vs <a href="https://hexdocs.pm/mix/1.3.4/Mix.Tasks.Compile.App.html#content">1.3.4</a>)</em>, and finally found out that since Elixir 1.4,
+Mix has this new feature. It is also mentioned in the <a href="https://elixir-lang.org/blog/2017/01/05/elixir-v1-4-0-released/">release notes of Elixir 1.4</a>.</p>
+
+<p>However there is one condition. <strong>It only automatically infer the applications list if the
+<code class="highlighter-rouge">:applications</code> key is empty.</strong> That explains why it didn’t work in my
+application because I already declared the list manually, as shown below:</p>
+
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
+  <span class="p">[</span>
+    <span class="ss">mod:</span> <span class="p">{</span><span class="no">App</span><span class="o">.</span><span class="no">App</span><span class="p">,</span> <span class="p">[]},</span>
+    <span class="ss">extra_applications:</span> <span class="p">[</span><span class="ss">:logger</span><span class="p">],</span>
+    <span class="c1"># Can be removed for Elixir &gt;= 1.4.</span>
+    <span class="c1"># Since it is automatically inferred.</span>
+    <span class="ss">applications:</span> <span class="p">[</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="ss">:plug</span><span class="p">]</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="the-lessons">The Lessons</h3>
+
+<ul>
+  <li>Application lists can be automatically inferred in for Elixir &gt;= 1.4</li>
+  <li><em>Documentation can be wrong. But, most of the time, you might be the one who
+are in fault.</em></li>
+  <li>Read release notes.</li>
+</ul>
+
+<p>Thanks for reading through it.</p>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">Using AWK to extract generated file from jekyll-compose</h1>
      <p class="post-meta">
        <time datetime="2018-09-09T22:25:00+08:00" itemprop="datePublished">
@@ -395,44 +506,6 @@ code base, I get to learn this the hard way.</p>
 
 <p>If you know the other possible use cases of <code class="highlighter-rouge">Array#fetch</code>, feel free to share it out.</p>
 
-
-   </div>
-</div>
-    <hr>
-  
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">Register in Vim</h1>
-     <p class="post-meta">
-       <time datetime="2017-10-24T22:05:00+08:00" itemprop="datePublished">
-         
-         Oct 24, 2017
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>For the past months, I have started to use <code class="highlighter-rouge">vim</code> in some occasions. One day, I came across a vim video, <a href="https://www.youtube.com/watch?v=3TX3kV3TICU" target="_blank">“Let Vim Do the Typing”</a>, and discover the use of <strong>register</strong> in <code class="highlighter-rouge">vim</code>. Basically, the concept of register in <code class="highlighter-rouge">vim</code> is very similar to the register in our computer. It is a temporary memory space for <code class="highlighter-rouge">vim</code> to store text.</p>
-
-<h3 id="how-to-use-it">How to use it?</h3>
-<p>In normal mode, <code class="highlighter-rouge">"r</code> will allow us to select the register <code class="highlighter-rouge">r</code>. The charcter after <code class="highlighter-rouge">"</code> is the register you selected. You can choose any register you like from <code class="highlighter-rouge">a-z</code>.To check the content of every register, use the command <code class="highlighter-rouge">:reg</code>. For specific registers, just provide the register name as arguments to the command, e.g <code class="highlighter-rouge">:reg r</code>.</p>
-
-<p>In insert mode, you can insert the content of a register by <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">r</code>. You’ll notice the current cursor will turn into <code class="highlighter-rouge">"</code> when <code class="highlighter-rouge">Ctrl-r</code> is pressed.</p>
-
-<h3 id="basic-usage">Basic Usage</h3>
-<p>We can copy any text and save it to a specific register, which persists even after <code class="highlighter-rouge">vim</code> is quit. For example, we can yanked/copy current link and store to register <code class="highlighter-rouge">e</code> by <code class="highlighter-rouge">"eyy</code>.</p>
-
-<p>We can also paste the content of register <code class="highlighter-rouge">e</code> by <code class="highlighter-rouge">"ep</code>. Or, go into insert mode and <code class="highlighter-rouge">Ctrl-r</code> + <code class="highlighter-rouge">e</code> to paste the content of the selected register.</p>
-
-<h3 id="wrapping-up">Wrapping Up</h3>
-<p>This is just a basic introduction of register in <code class="highlighter-rouge">vim</code>. There is still a lots of details and usage of register I didn’t cover in this post. For more details, feel free to refer to the resources below:</p>
-
-<ul>
-  <li><a href="http://www.brianstorti.com/vim-registers/" target="_blank">Vim registers: The basics and beyond</a></li>
-  <li><a href="https://stackoverflow.com/questions/1497958/how-do-i-use-vim-registers" target="_blank">How do I use vim registers?</a></li>
-</ul>
 
    </div>
 </div>
