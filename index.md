@@ -6,21 +6,30 @@ title: Home
 ## Hello
 
 Welcome to my blog. Here I write mostly about technical stuff.
-Most of the time, I work on Ruby and Rails, Elixir and JavaScript
-framework such as React and Vue. I use vim as my main text editor,
-and sometimes Sublime Text and Visual Studio Code.
+Most of the time, I work on Ruby and Rails, Elixir and front end stuff.
+I use vim as my main text editor.
 
 
-So,  most of posts will be related to the mentioned
+Most of posts will be related to the mentioned
 technology. Sometimes, I write about random thoughts and experience
 on productivity and learning.
-
-I just started this blog. Hopefully I can be more consistent on
-my writing.
 
 Thanks for reading the blog. Much appreciated.
 
 <em><small>Want to know more about me? Read it [here][1]</small></em>
+
+## Projects
+
+I work on some side projects to learn and solve my personal problems in my
+spare time. Here are some of them:
+
+- [TIL](https://til.kaiwern.com): A Today I learned web application developed
+with Phoenix. It includes basic features like adding post with Markdown and tagging.
+The idea of the application is inspired by [Hashrocket TIL](https://til.hashrocket.com).
+- [Expendere](https://expendere.herokuapp.com): A personal finance management web
+application which includes features like expense tracking, budget and recurring
+transaction (bills). It is developed with Ruby on Rails and a little bit of
+Preact. Due to limited time available, _it is sort of abandoned now_.
 
 
 ## Posts
