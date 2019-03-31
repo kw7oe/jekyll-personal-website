@@ -1,4 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2019-02-18T21:42:48+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">TIL: Indexing `NULL` in Oracle Database</title><link href="https://kw7oe.github.io/til/database%20index/2019/02/18/til-indexing-in-oracle-database.html" rel="alternate" type="text/html" title="TIL: Indexing `NULL` in Oracle Database" /><published>2019-02-18T21:32:00+08:00</published><updated>2019-02-18T21:32:00+08:00</updated><id>https://kw7oe.github.io/til/database%20index/2019/02/18/til-indexing-in-oracle-database</id><content type="html" xml:base="https://kw7oe.github.io/til/database%20index/2019/02/18/til-indexing-in-oracle-database.html">&lt;p&gt;Oracle database does not index a row if all the indexed columns are &lt;code class=&quot;highlighter-rouge&quot;&gt;NULL&lt;/code&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2019-03-31T22:13:53+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">How I keep track of tasks for multiple side projects</title><link href="https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html" rel="alternate" type="text/html" title="How I keep track of tasks for multiple side projects" /><published>2019-03-31T20:51:00+08:00</published><updated>2019-03-31T20:51:00+08:00</updated><id>https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects</id><content type="html" xml:base="https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html">&lt;p&gt;If you are like me, having countless side projects and jumping from one to another
+from time to time, you might also experience &lt;em&gt;ending up losing track of what
+you should do on each side projects.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Keeping track of tasks in all of your side projects isn’t easy without using
+any project management software. However, it might feel overkill for personal
+projects.&lt;/p&gt;
+
+&lt;p&gt;How might one solve it? With a simple &lt;strong&gt;text file and some bash script&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;where-i-left-off-last-time&quot;&gt;Where I left off last time?&lt;/h3&gt;
+
+&lt;p&gt;Every now and then, when I am working on my side projects, I always forget
+what are the last changes I made. Luckily with version control and the
+practice of writing good commit message, I can always use &lt;code class=&quot;highlighter-rouge&quot;&gt;git log&lt;/code&gt; to
+view the past commits to get an overview what I should do next and
+what have been done.&lt;/p&gt;
+
+&lt;p&gt;However, this approach is limited. Sometime, the past commits can’t really
+tell me what should I do next.&lt;/p&gt;
+
+&lt;p&gt;Hence, I use a simple way to keep track of what I need to do in my side
+projects, which is a todo list. To be more accurate, a project based todo list,
+in a simple file.&lt;/p&gt;
+
+&lt;h3 id=&quot;introducing-todo-file&quot;&gt;Introducing &lt;code class=&quot;highlighter-rouge&quot;&gt;.todo&lt;/code&gt; file&lt;/h3&gt;
+
+&lt;p&gt;The idea is straighforward. I write down my tasks in the &lt;code class=&quot;highlighter-rouge&quot;&gt;.todo&lt;/code&gt; file located
+at the root directory of the project.&lt;/p&gt;
+
+&lt;p&gt;To edit it, I just use &lt;code class=&quot;highlighter-rouge&quot;&gt;vim .todo&lt;/code&gt;. Adding tasks or deleting tasks are the
+same as manipulating text. If you’re not a &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; user, you can use any text
+editor you prefer.&lt;/p&gt;
+
+&lt;h3 id=&quot;listing-the-tasks&quot;&gt;Listing the tasks&lt;/h3&gt;
+
+&lt;p&gt;To get what you need to do on each side projects, is simple. The simplest
+apporach is to &lt;code class=&quot;highlighter-rouge&quot;&gt;cat -n .todo&lt;/code&gt;. This command will show your task in your &lt;code class=&quot;highlighter-rouge&quot;&gt;.todo&lt;/code&gt;
+file, numbered.&lt;/p&gt;
+
+&lt;p&gt;In cases where you have wrote a lot of tasks, listing out just like this might
+clutter your terminal. To resolve this, we can use &lt;code class=&quot;highlighter-rouge&quot;&gt;head&lt;/code&gt; to show only the top
+few tasks on the &lt;code class=&quot;highlighter-rouge&quot;&gt;.todo&lt;/code&gt; file. Now our command becomes:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat -n .todo | head -n 5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This command will list the top 5 line of your file. To take it further, you can
+write a bash function and add it to your &lt;code class=&quot;highlighter-rouge&quot;&gt;.bashrc&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;.zshrc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;whattodo&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; .todo
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, everytime I need to know what I need to do for each side projects, I just
+&lt;code class=&quot;highlighter-rouge&quot;&gt;cd&lt;/code&gt; into project directory and run my &lt;code class=&quot;highlighter-rouge&quot;&gt;whattodo&lt;/code&gt; command.&lt;/p&gt;
+
+&lt;h3 id=&quot;benefits&quot;&gt;Benefits&lt;/h3&gt;
+
+&lt;p&gt;No extra dependencies is needed. Since, we use the comamnds that are widely
+available and also cross compatible to every machine Unix based machine.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;There are no silver bullets to manage a project. Different project size, might
+need different toolings and approach. For instance,  this approach is not really
+suitable when the project become too large or complex, where the tasks involved
+consists of different type of work such as bug fixes, adding features and etc.&lt;/p&gt;
+
+&lt;p&gt;For a small, personal side project, I found this method to be quite helpful personally.&lt;/p&gt;</content><author><name></name></author><summary type="html">If you are like me, having countless side projects and jumping from one to another from time to time, you might also experience ending up losing track of what you should do on each side projects.</summary></entry><entry><title type="html">TIL: Indexing `NULL` in Oracle Database</title><link href="https://kw7oe.github.io/til/database%20index/2019/02/18/til-indexing-null-in-oracle-database.html" rel="alternate" type="text/html" title="TIL: Indexing `NULL` in Oracle Database" /><published>2019-02-18T21:32:00+08:00</published><updated>2019-02-18T21:32:00+08:00</updated><id>https://kw7oe.github.io/til/database%20index/2019/02/18/til-indexing-null-in-oracle-database</id><content type="html" xml:base="https://kw7oe.github.io/til/database%20index/2019/02/18/til-indexing-null-in-oracle-database.html">&lt;p&gt;Oracle database does not index a row if all the indexed columns are &lt;code class=&quot;highlighter-rouge&quot;&gt;NULL&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;For instance, let say we have a &lt;code class=&quot;highlighter-rouge&quot;&gt;users&lt;/code&gt; table where we index &lt;code class=&quot;highlighter-rouge&quot;&gt;role&lt;/code&gt; column to improve the query performance.&lt;/p&gt;
 
@@ -1074,49 +1146,4 @@ code base, I get to learn this the hard way.&lt;/p&gt;
   &lt;li&gt;Always write test before refactoring.&lt;/li&gt;
   &lt;li&gt;Using &lt;code class=&quot;highlighter-rouge&quot;&gt;next&lt;/code&gt; in a &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt; return &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;&lt;/li&gt;
   &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Array#compact&lt;/code&gt; can be used to remove &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt; elements.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">While I was refactoring the code base of my client application, I came accross a code block, similar to this:</summary></entry><entry><title type="html">Ruby fetch</title><link href="https://kw7oe.github.io/ruby/2017/11/04/ruby-fetch.html" rel="alternate" type="text/html" title="Ruby fetch" /><published>2017-11-04T22:43:41+08:00</published><updated>2017-11-04T22:43:41+08:00</updated><id>https://kw7oe.github.io/ruby/2017/11/04/ruby-fetch</id><content type="html" xml:base="https://kw7oe.github.io/ruby/2017/11/04/ruby-fetch.html">&lt;p&gt;Today, when I am refactoring a CLI I wrote, I came across a code block  where I check whether an index exists in an array &lt;em&gt;(turns out I don’t actually need it, I can just access the array and check if the value is &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;)&lt;/em&gt;. I went to search of Ruby &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt; documentation to see if such method exists. Then, I came across &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt; while scrolling through the documetantion.&lt;/p&gt;
-
-&lt;h3 id=&quot;arrayfetch&quot;&gt;Array#fetch&lt;/h3&gt;
-
-&lt;p&gt;In Ruby &lt;code class=&quot;highlighter-rouge&quot;&gt;Array&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; is a method that get the value at position &lt;code class=&quot;highlighter-rouge&quot;&gt;index&lt;/code&gt; of an array. The difference between &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;.[]&lt;/code&gt; is &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; throws an &lt;code class=&quot;highlighter-rouge&quot;&gt;IndexError&lt;/code&gt; if the index doesn’t exists.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; 1&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; IndexError: index 4 outside of array bounds: -3...3&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;If we take a look at the Ruby documentation of &lt;a href=&quot;https://ruby-doc.org/core-2.4.0/Array.html#method-i-fetch&quot;&gt;Array#fetch&lt;/a&gt;, we’ll see that &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; has the following definitions:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Object&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Which means, we can also provide a default value as the result if the index isn’t found. For example:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; 0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Or provide a block to be executed if the index is not found:&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;The index '&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;' is not found&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;The index '4' is not found&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;possible-use-case&quot;&gt;Possible Use Case&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt; can be used when we need to provide a default value if the index is not found.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Peter'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Jane'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'John Wick'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'User not found'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;&quot;User not found&quot;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; nil&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;For example, we have a method to allow to search other users &lt;em&gt;(which store in array)&lt;/em&gt; and print out the name as a response. To handle the scenario where the user is not found, we can implement it by providing a default value with &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt;. No additional handling code is required.&lt;/p&gt;
-
-&lt;p&gt;If you know the other possible use cases of &lt;code class=&quot;highlighter-rouge&quot;&gt;Array#fetch&lt;/code&gt;, feel free to share it out.&lt;/p&gt;</content><author><name></name></author><summary type="html">Today, when I am refactoring a CLI I wrote, I came across a code block where I check whether an index exists in an array (turns out I don’t actually need it, I can just access the array and check if the value is nil). I went to search of Ruby Array documentation to see if such method exists. Then, I came across Array#fetch while scrolling through the documetantion.</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">While I was refactoring the code base of my client application, I came accross a code block, similar to this:</summary></entry></feed>

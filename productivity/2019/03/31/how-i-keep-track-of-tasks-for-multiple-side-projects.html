@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>How I keep track of tasks for multiple side projects</title>
+  <meta name="description" content="If you are like me, having countless side projects and jumping from one to another from time to time, you might also experience ending up losing track of wha...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html">
+  <link rel="alternate" type="application/rss+xml" title="kw7oe" href="/feed.xml">
+
+  
+</head>
+
+
+  <body>
+    
+    <header class="site-header" role="banner">
+  <div class="main-col">
+    
+    
+
+    
+      <nav class="navbar" role="navigation"
+        aria-label="main navigation">
+        
+
+<div class="navbar-brand">
+<a href="/"
+   >
+  Home
+</a>
+</div>
+
+        
+
+<div class="navbar-item">
+<a href="/categories"
+   >
+  Categories
+</a>
+</div>
+
+        
+
+<div class="navbar-item">
+<a href="/about"
+   >
+  About
+</a>
+</div>
+
+        
+
+<div class="navbar-item">
+<a href="/resume"
+   >
+  Resume
+</a>
+</div>
+
+      </nav>
+      
+  </div>
+</header>
+
+    
+    <div class="section">
+  <main class="main-col" aria-label="Content">
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">How I keep track of tasks for multiple side projects</h1>
+    <small class="post-meta">
+      <time datetime="2019-03-31T20:51:00+08:00" itemprop="datePublished">
+        
+        Mar 31, 2019
+      </time>
+      </small>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>If you are like me, having countless side projects and jumping from one to another
+from time to time, you might also experience <em>ending up losing track of what
+you should do on each side projects.</em></p>
+
+<p>Keeping track of tasks in all of your side projects isn’t easy without using
+any project management software. However, it might feel overkill for personal
+projects.</p>
+
+<p>How might one solve it? With a simple <strong>text file and some bash script</strong>.</p>
+
+<h3 id="where-i-left-off-last-time">Where I left off last time?</h3>
+
+<p>Every now and then, when I am working on my side projects, I always forget
+what are the last changes I made. Luckily with version control and the
+practice of writing good commit message, I can always use <code class="highlighter-rouge">git log</code> to
+view the past commits to get an overview what I should do next and
+what have been done.</p>
+
+<p>However, this approach is limited. Sometime, the past commits can’t really
+tell me what should I do next.</p>
+
+<p>Hence, I use a simple way to keep track of what I need to do in my side
+projects, which is a todo list. To be more accurate, a project based todo list,
+in a simple file.</p>
+
+<h3 id="introducing-todo-file">Introducing <code class="highlighter-rouge">.todo</code> file</h3>
+
+<p>The idea is straighforward. I write down my tasks in the <code class="highlighter-rouge">.todo</code> file located
+at the root directory of the project.</p>
+
+<p>To edit it, I just use <code class="highlighter-rouge">vim .todo</code>. Adding tasks or deleting tasks are the
+same as manipulating text. If you’re not a <code class="highlighter-rouge">vim</code> user, you can use any text
+editor you prefer.</p>
+
+<h3 id="listing-the-tasks">Listing the tasks</h3>
+
+<p>To get what you need to do on each side projects, is simple. The simplest
+apporach is to <code class="highlighter-rouge">cat -n .todo</code>. This command will show your task in your <code class="highlighter-rouge">.todo</code>
+file, numbered.</p>
+
+<p>In cases where you have wrote a lot of tasks, listing out just like this might
+clutter your terminal. To resolve this, we can use <code class="highlighter-rouge">head</code> to show only the top
+few tasks on the <code class="highlighter-rouge">.todo</code> file. Now our command becomes:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat -n .todo | head -n 5
+</code></pre></div></div>
+
+<p>This command will list the top 5 line of your file. To take it further, you can
+write a bash function and add it to your <code class="highlighter-rouge">.bashrc</code> or <code class="highlighter-rouge">.zshrc</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>whattodo<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">cat</span> <span class="nt">-n</span> .todo
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now, everytime I need to know what I need to do for each side projects, I just
+<code class="highlighter-rouge">cd</code> into project directory and run my <code class="highlighter-rouge">whattodo</code> command.</p>
+
+<h3 id="benefits">Benefits</h3>
+
+<p>No extra dependencies is needed. Since, we use the comamnds that are widely
+available and also cross compatible to every machine Unix based machine.</p>
+
+<hr />
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>There are no silver bullets to manage a project. Different project size, might
+need different toolings and approach. For instance,  this approach is not really
+suitable when the project become too large or complex, where the tasks involved
+consists of different type of work such as bug fixes, adding features and etc.</p>
+
+<p>For a small, personal side project, I found this method to be quite helpful personally.</p>
+
+
+  </div>
+
+  
+    
+
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html';
+      this.page.identifier = 'https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://kw7oe-github-io.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+  
+</article>
+
+  </main>
+</div>
+    
+    <footer class="footer">
+  <div class="main-col">
+    
+      <a class="footer-link" href="https://github.com/kw7oe" target="_blank"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">kw7oe</span></a>
+
+    
+
+    
+      <a class="footer-link" href="https://twitter.com/kw7oe" target="_blank"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">kw7oe</span></a>
+
+    
+  </div>
+</footer>
+
+    <script src="/assets/custom.js"></script> 
+  </body>
+
+</html>

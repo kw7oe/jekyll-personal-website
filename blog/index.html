@@ -76,6 +76,99 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">How I keep track of tasks for multiple side projects</h1>
+     <p class="post-meta">
+       <time datetime="2019-03-31T20:51:00+08:00" itemprop="datePublished">
+         
+         Mar 31, 2019
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p>If you are like me, having countless side projects and jumping from one to another
+from time to time, you might also experience <em>ending up losing track of what
+you should do on each side projects.</em></p>
+
+<p>Keeping track of tasks in all of your side projects isn’t easy without using
+any project management software. However, it might feel overkill for personal
+projects.</p>
+
+<p>How might one solve it? With a simple <strong>text file and some bash script</strong>.</p>
+
+<h3 id="where-i-left-off-last-time">Where I left off last time?</h3>
+
+<p>Every now and then, when I am working on my side projects, I always forget
+what are the last changes I made. Luckily with version control and the
+practice of writing good commit message, I can always use <code class="highlighter-rouge">git log</code> to
+view the past commits to get an overview what I should do next and
+what have been done.</p>
+
+<p>However, this approach is limited. Sometime, the past commits can’t really
+tell me what should I do next.</p>
+
+<p>Hence, I use a simple way to keep track of what I need to do in my side
+projects, which is a todo list. To be more accurate, a project based todo list,
+in a simple file.</p>
+
+<h3 id="introducing-todo-file">Introducing <code class="highlighter-rouge">.todo</code> file</h3>
+
+<p>The idea is straighforward. I write down my tasks in the <code class="highlighter-rouge">.todo</code> file located
+at the root directory of the project.</p>
+
+<p>To edit it, I just use <code class="highlighter-rouge">vim .todo</code>. Adding tasks or deleting tasks are the
+same as manipulating text. If you’re not a <code class="highlighter-rouge">vim</code> user, you can use any text
+editor you prefer.</p>
+
+<h3 id="listing-the-tasks">Listing the tasks</h3>
+
+<p>To get what you need to do on each side projects, is simple. The simplest
+apporach is to <code class="highlighter-rouge">cat -n .todo</code>. This command will show your task in your <code class="highlighter-rouge">.todo</code>
+file, numbered.</p>
+
+<p>In cases where you have wrote a lot of tasks, listing out just like this might
+clutter your terminal. To resolve this, we can use <code class="highlighter-rouge">head</code> to show only the top
+few tasks on the <code class="highlighter-rouge">.todo</code> file. Now our command becomes:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat -n .todo | head -n 5
+</code></pre></div></div>
+
+<p>This command will list the top 5 line of your file. To take it further, you can
+write a bash function and add it to your <code class="highlighter-rouge">.bashrc</code> or <code class="highlighter-rouge">.zshrc</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function </span>whattodo<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">cat</span> <span class="nt">-n</span> .todo
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now, everytime I need to know what I need to do for each side projects, I just
+<code class="highlighter-rouge">cd</code> into project directory and run my <code class="highlighter-rouge">whattodo</code> command.</p>
+
+<h3 id="benefits">Benefits</h3>
+
+<p>No extra dependencies is needed. Since, we use the comamnds that are widely
+available and also cross compatible to every machine Unix based machine.</p>
+
+<hr />
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>There are no silver bullets to manage a project. Different project size, might
+need different toolings and approach. For instance,  this approach is not really
+suitable when the project become too large or complex, where the tasks involved
+consists of different type of work such as bug fixes, adding features and etc.</p>
+
+<p>For a small, personal side project, I found this method to be quite helpful personally.</p>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">TIL: Indexing `NULL` in Oracle Database</h1>
      <p class="post-meta">
        <time datetime="2019-02-18T21:32:00+08:00" itemprop="datePublished">
@@ -747,218 +840,6 @@ Grimm’s rake series as suggested in <code class="highlighter-rouge">rake</code
 
 <ol>
   <li><small>I am sorry if this post is a bit messy. I am still not quite good at writing and structuring lengthy tutorial.</small></li>
-</ol>
-
-
-   </div>
-</div>
-    <hr>
-  
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">Minimal Elixir Web Application with Plug and Cowboy</h1>
-     <p class="post-meta">
-       <time datetime="2018-10-14T15:32:00+08:00" itemprop="datePublished">
-         
-         Oct 14, 2018
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>It is interesting to learn things from scratch. Coming from Ruby
-background, I was curious what is the equivalent of Sinatra in
-Elixir. It’s called Plug. It is what Phoenix build on top of.</p>
-
-<p>Using Sinatra, we can write a quick and simple web server with the following
-code:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'sinatra'</span>
-<span class="nb">require</span> <span class="s1">'json'</span>
-
-<span class="n">get</span> <span class="s1">'/'</span> <span class="k">do</span>
-  <span class="n">content_type</span> <span class="ss">:json</span>
-  <span class="no">JSON</span><span class="p">({</span><span class="ss">message: </span><span class="s2">"Hello World"</span><span class="p">})</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>How can we achive that in Elixir? With <code class="highlighter-rouge">Plug</code> and <code class="highlighter-rouge">Cowboy</code>.</p>
-
-<h2 id="setup">Setup</h2>
-
-<p><em><strong>NOTE</strong>: This article is based on Elixir v1.7.3</em></p>
-
-<p>First of all, let’s create a <code class="highlighter-rouge">mix</code> project and change directory into it.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix new sample_app
-<span class="nb">cd </span>sample_app
-</code></pre></div></div>
-
-<p>Open <code class="highlighter-rouge">mix.exs</code> file with your favourite editor. And add the dependencies as
-follow:</p>
-
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defp</span> <span class="n">deps</span> <span class="k">do</span>
-  <span class="p">[</span>
-    <span class="p">{</span><span class="ss">:cowboy</span><span class="p">,</span> <span class="sd">"</span><span class="s2">~&gt; 2.0"</span><span class="p">},</span>
-    <span class="p">{</span><span class="ss">:plug</span><span class="p">,</span> <span class="sd">"</span><span class="s2">~&gt; 1.0"</span><span class="p">}</span>
-    <span class="c1"># {:dep_from_hexpm, "~&gt; 0.3.0"},</span>
-    <span class="c1"># {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},</span>
-  <span class="p">]</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>We add <code class="highlighter-rouge">Plug</code> and <code class="highlighter-rouge">Cowboy</code> as dependencies because <code class="highlighter-rouge">Cowboy</code> act as  a web server and
-<code class="highlighter-rouge">Plug</code> on the other hand, act as a connection adapter to the web server.</p>
-
-<p>Before we proceed, let’s get all the dependencies first by running the
-following command:</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix deps.get
-</code></pre></div></div>
-
-<h2 id="using-plug">Using Plug</h2>
-<p><code class="highlighter-rouge">Plug</code> can be complicated if we don’t understand it. The
-best way to understand it, is to, read the <a href="https://github.com/elixir-plug/plug#hello-world">documentation</a> <em>(In fact, all the
-steps mentioned above and below are already available in the documentation)</em>.</p>
-
-<p>So to get a taste of how <code class="highlighter-rouge">Plug</code> works, let’s just copy and paste the code from
-the documentation and make some changes. Let’s create <code class="highlighter-rouge">lib/my_plug.ex</code> and
-and add in the code.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch lib/my_plug.ex
-</code></pre></div></div>
-
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defmodule</span> <span class="no">SampleApp</span><span class="o">.</span><span class="no">MyPlug</span> <span class="k">do</span>
-  <span class="kn">import</span> <span class="no">Plug</span><span class="o">.</span><span class="no">Conn</span>
-
-  <span class="k">def</span> <span class="n">init</span><span class="p">(</span><span class="n">options</span><span class="p">)</span> <span class="k">do</span>
-    <span class="c1"># initialize options</span>
-
-    <span class="n">options</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="n">call</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_opts</span><span class="p">)</span> <span class="k">do</span>
-    <span class="n">conn</span>
-    <span class="o">|&gt;</span> <span class="n">put_resp_content_type</span><span class="p">(</span><span class="sd">"</span><span class="s2">text/plain"</span><span class="p">)</span>
-    <span class="o">|&gt;</span> <span class="n">send_resp</span><span class="p">(</span><span class="m">200</span><span class="p">,</span> <span class="sd">"</span><span class="s2">Hello world"</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Let’s try to run the code.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex -S mix
-
-iex(1)&gt; {:ok, _} = Plug.Adapters.Cowboy2.http SampleApp.MyPlug, []
-</code></pre></div></div>
-
-<p>Now let’s go and visit <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>.
-You should be able to see a “Hello World” on your browser.
-We just start the <code class="highlighter-rouge">cowboy</code> web server in <code class="highlighter-rouge">iex</code>, by passing it our <code class="highlighter-rouge">Plug</code> and <code class="highlighter-rouge">[]</code>
-empty arguments.</p>
-
-<h2 id="thats-all">That’s all</h2>
-<p>Yes, you have wrote a simple web server using Elixir.</p>
-
-<p><em>Wait, wait, but how can I run my server through command line? I have to run
-<code class="highlighter-rouge">iex -S mix</code> and start the <code class="highlighter-rouge">Cowboy</code> server manually every time?</em></p>
-
-<p><strong>Nope.</strong> We can make it an OTP application. So that we just need to run <code class="highlighter-rouge">mix
-run --no-halt</code> or <code class="highlighter-rouge">iex -S mix</code> and the <code class="highlighter-rouge">cowboy</code> server will boot up itself.</p>
-
-<h2 id="basic-of-otp-application">Basic of OTP Application</h2>
-
-<p>OTP application is basically a component that has predefined behaviour. It can
-be started, loaded or stopped. To create an OTP application in Elixir, we
-use the <code class="highlighter-rouge">Application</code> module and implements some of the expected behavior. For
-more you can always refer to the documentation of <a href="https://hexdocs.pm/elixir/Application.html">Application</a>.</p>
-
-<p>So let’s create a simple application first.</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch lib/app.ex
-</code></pre></div></div>
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defmodule</span> <span class="no">SampleApp</span><span class="o">.</span><span class="no">App</span> <span class="k">do</span>
-  <span class="kn">use</span> <span class="no">Application</span>
-  <span class="k">def</span> <span class="n">start</span><span class="p">(</span><span class="n">_type</span><span class="p">,</span> <span class="n">_args</span><span class="p">)</span> <span class="k">do</span>
-    <span class="no">IO</span><span class="o">.</span><span class="n">puts</span> <span class="sd">"</span><span class="s2">Starting application"</span>
-    <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="no">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="ss">strategy:</span> <span class="ss">:one_for_one</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Now if you run <code class="highlighter-rouge">mix run --no-halt</code>, you still won’t see the “Starting
-application” output yet. This is because we haven’t configure our <code class="highlighter-rouge">mix.exs</code>
-yet.</p>
-
-<p>To make <code class="highlighter-rouge">mix</code> run our application, we have to add the following code into
-<code class="highlighter-rouge">mix.exs</code>:</p>
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">application</span> <span class="k">do</span>
-  <span class="p">[</span>
-    <span class="ss">extra_applications:</span> <span class="p">[</span><span class="ss">:logger</span><span class="p">],</span>
-    <span class="ss">mod:</span> <span class="p">{</span><span class="no">SampleApp</span><span class="o">.</span><span class="no">App</span><span class="p">,</span> <span class="p">[]}</span> <span class="c1"># Add in this line of code</span>
-  <span class="p">]</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Now, if we run <code class="highlighter-rouge">mix run --no-halt</code>, we can finally see the “Starting
-application…” output. It also means we have sucessfully start an OTP
-application.</p>
-
-<h2 id="starting-cowboy-server-automatically">Starting Cowboy Server automatically</h2>
-
-<p>Remember how we run our <code class="highlighter-rouge">cowboy</code> server in <code class="highlighter-rouge">iex</code>?</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex -S mix
-
-iex(1)&gt; {:ok, _} = Plug.Adapters.Cowboy2.http SampleApp.MyPlug, []
-</code></pre></div></div>
-
-<p>Now after knowing how to start our OTP application with <code class="highlighter-rouge">mix run --no-halt</code> or
-<code class="highlighter-rouge">iex -S mix</code>, we need to start our <code class="highlighter-rouge">cowboy</code> server after our application is
-started.</p>
-
-<p>To do this, we need to modify the <code class="highlighter-rouge">start/2</code> method in the <code class="highlighter-rouge">app.ex</code>.</p>
-<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">start</span><span class="p">(</span><span class="n">_type</span><span class="p">,</span> <span class="n">_args</span><span class="p">)</span> <span class="k">do</span>
-  <span class="n">children</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c1"># Define workers and child supervisors to be supervised</span>
-    <span class="no">Plug</span><span class="o">.</span><span class="no">Adapters</span><span class="o">.</span><span class="no">Cowboy2</span><span class="o">.</span><span class="n">child_spec</span><span class="p">(</span><span class="ss">scheme:</span> <span class="ss">:http</span><span class="p">,</span> <span class="ss">plug:</span> <span class="no">SampleApp</span><span class="o">.</span><span class="no">MyPlug</span><span class="p">,</span> <span class="ss">options:</span> <span class="p">[</span><span class="ss">port:</span> <span class="m">4000</span><span class="p">])</span>
-  <span class="p">]</span>
-
-  <span class="no">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="ss">strategy:</span> <span class="ss">:one_for_one</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>What we are doing here is to specify the child spec of the child process, which
-is our <code class="highlighter-rouge">cowboy</code>. A child specification basically tell the supervisor how to
-start, restart or shutdown the child process. The above code is also mentioned
-in the documentation of Plug under <a href="https://hexdocs.pm/plug/readme.html#supervised-handlers">Supervised handlers</a>.</p>
-
-<p>Now, if we run the <code class="highlighter-rouge">mix run --no-halt</code>, and visit <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>.</p>
-
-<p>Our web application is now online.</p>
-
-<h2 id="summary">Summary</h2>
-
-<p>If you’re a beginner to OTP or Elixir, there are a lots of stuff underneath
-that I didn’t cover well. This is my first blog post on Elixir. It might be lacking.
-So here are some other resources you can refer to:</p>
-
-<ul>
-  <li><a href="https://elixirschool.com/en/lessons/specifics/plug/">Elixir School Plug</a><a href="#one"><sup>1</sup></a></li>
-  <li><a href="https://hexdocs.pm/plug/readme.html">Plug documentation</a></li>
-  <li><a href="https://hexdocs.pm/elixir/Application.html">Application documentation</a></li>
-  <li><a href="https://hexdocs.pm/elixir/Supervisor.html">Supervisor documentation</a></li>
-</ul>
-
-<p><em>The source code of the project is available at <a href="https://github.com/kw7oe/plug_sample_app">GitHub</a>.</em></p>
-
-<hr />
-<p><strong>Footnote</strong></p>
-
-<ol>
-  <li><small id="one">To be honest, <strong>Elixir School does a better job in explaining this topic</strong>.
-The way I’m writing is based on how my thought process flow, so it might be
-different and unstructured. This post also covers less topics about using
-Plug compared to Elixir School.
-</small></li>
 </ol>
 
 
