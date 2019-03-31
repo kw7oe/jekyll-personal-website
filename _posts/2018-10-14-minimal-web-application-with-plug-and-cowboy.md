@@ -3,6 +3,7 @@ layout: post
 title: Minimal Elixir Web Application with Plug and Cowboy
 date: 2018-10-14 15:32 +0800
 categories: Elixir
+comments: true
 ---
 
 It is interesting to learn things from scratch. Coming from Ruby

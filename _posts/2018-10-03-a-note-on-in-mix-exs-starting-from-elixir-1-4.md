@@ -3,6 +3,7 @@ layout: post
 title: A note on`application` in mix.exs starting from Elixir 1.4
 date: 2018-10-03 21:45 +0800
 categories: Elixir
+comments: true
 ---
 
 Starting from Elixir 1.4, we don't need to specify our application lists in

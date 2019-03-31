@@ -3,6 +3,7 @@ layout: post
 title: 'Advent of Code 2018: Day 1 Part 1'
 date: 2018-12-01 21:47 +0800
 categories: AOC Elixir
+comments: true
 ---
 
 Advent of Code (AOC) 2018 has finally arrived. This is the first time I participate

@@ -4,6 +4,7 @@ title: 'Advent of Code 2018: Day 1 Part 2, How I improve my solution by 34x
 faster'
 date: 2018-12-01 22:10 +0800
 categories: AOC Elixir
+comments: true
 ---
 
 In the [previous post][1], we had briefly discuss about the solution of Part 1. It

@@ -3,6 +3,7 @@ layout: post
 title: 'TIL: Indexing `NULL` in Oracle Database'
 date: 2019-02-18 21:32 +0800
 categories: ["til", "database index"]
+comments: true
 ---
 
 Oracle database does not index a row if all the indexed columns are `NULL`
