@@ -395,8 +395,6 @@ pre {
   .content p {
     margin: 0;
     color: #444; }
-    .content p strong {
-      color: #007ea7; }
 
 .task-list-item {
   list-style-type: none; }
