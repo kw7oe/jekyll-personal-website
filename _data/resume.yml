@@ -1,15 +1,17 @@
 name: Kai Wern Choong
 email: choongkwern@gmail.com
 github: kw7oe
-programming_languages: Ruby, Elixir, JavaScript, Swift, Scala, Java
-framework: Rails, Phoenix, React, Vue, iOS Development, Jekyll, GatsbyJS, Akka, Scala Play
+programming_languages: Ruby, Elixir, JavaScript
+framework: Rails, Phoenix, React
 languages: Chinese, English, Malay
+devops: Ansible, Heroku, DigitalOcean
 works:
   - title: Software Developer
     company: Mindworks Interactive
     timeframe: "Sep 2018 - Present"
     descriptions:
-      - Develop Caffebene Malaysia website using GatsbyJS and NetlifyCMS
+      - Develop static website using GatsbyJS and NetlifyCMS
+      - Develop customer solution with Ruby on Rails
   - title: Freelancer
     company: Self-Employed
     timeframe: "April 2018 - June 2018"
@@ -29,14 +31,19 @@ works:
     company: Self-Employed
     timeframe: "March 2017 - December 2017"
     descriptions:
-      - Use static site generator to create static websites for client
-      - Develop a mobile-first application integrated with Paypal Payment Gateway
+      - Develop static websites using Jekyll
+      - Develop a mobile-first Vue with Rails application integrated with Paypal Payment Gateway
 projects:
   - title: Expendere
     stack: Rails, Bulma, Preact, Sass, JavaScript
     descriptions:
       - An expense tracking application.
-      - Launch beta during October 2018 on <a href="https://expendere.herokuapp.com" target="_blank">heroku</a>
+      - Available on <a href="https://expendere.herokuapp.com" target="_blank">heroku</a>
+  - title: TIL
+    stack: Phoenix, Bootstrap, Sass, JavaScript
+    descriptions:
+      - A simple "Today I learn" application.
+      - Available on <a href="https://til.kaiwern.com" target="_blank">til.kaiwern.com</a>
   - title: Student Performance Evaluation System
     stack: Scala, Play, Bootstrap Material UI
     descriptions:
@@ -72,11 +79,11 @@ educations:
     timeframe: "January 2014 - November 2014"
     descriptions:
       - <strong>ATAR:</strong> 89.85
-  - title: High School
-    school: Chung Ling High School
-    timeframe: "2009 - 2013"
-    descriptions:
-      - <strong>SPM:</strong>10A
+  # - title: High School
+  #   school: Chung Ling High School
+  #   timeframe: "2009 - 2013"
+  #   descriptions:
+  #     - <strong>SPM:</strong>10A
 
 
 
