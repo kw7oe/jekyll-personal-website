@@ -4,13 +4,13 @@
   {% include layout/head.html %}
 
   <body>
-    
-    {% include layout/header.html %}
-    
+
+    {% comment %} {% include layout/header.html %} {% endcomment %}
+
     {{ content }}
-    
-    {% include layout/footer.html %}
-    <script src="/assets/custom.js"></script> 
+
+    {% comment %} {% include layout/footer.html %} {% endcomment %}
+    <script src="/assets/custom.js"></script>
   </body>
 
 </html>

@@ -1,8 +1,8 @@
 name: Kai Wern Choong
-email: choongkwern@gmail.com
+email: choongkwern@hotmail.com
 github: kw7oe
-programming_languages: Ruby, Elixir, JavaScript
-framework: Rails, Phoenix, React
+programming_languages: Ruby, Elixir, JavaScript, Swift
+framework: Rails, Phoenix, React, iOS
 languages: Chinese, English, Malay
 devops: Ansible, Heroku, DigitalOcean
 works:
@@ -10,8 +10,8 @@ works:
     company: Mindworks Interactive
     timeframe: "Sep 2018 - Present"
     descriptions:
-      - Develop static website using GatsbyJS and NetlifyCMS
-      - Develop customer solution with Ruby on Rails
+      - Develop static websites using GatsbyJS and NetlifyCMS
+      - Develop application with Ruby on Rails
   - title: Freelancer
     company: Self-Employed
     timeframe: "April 2018 - June 2018"
@@ -22,9 +22,9 @@ works:
     company: FixSensei
     timeframe: "December 2017 - March 2018"
     descriptions:
-      - Refactor codebase
+      - Refactor code base
       - Add in Skylight to profile Rails application performance
-      - Replace the front end of the booking Rails application with React
+      - Replace the front end of the Rails booking application with React
       - Add in Admin Settings API endpoint to allow customization of the booking application
       - Add in coupon features
   - title: Freelancer
@@ -32,50 +32,52 @@ works:
     timeframe: "March 2017 - December 2017"
     descriptions:
       - Develop static websites using Jekyll
-      - Develop a mobile-first Vue with Rails application integrated with Paypal Payment Gateway
+      - Develop a mobile-first Vue with Rails application integrated with PayPal Payment Gateway
 projects:
   - title: Expendere
-    stack: Rails, Bulma, Preact, Sass, JavaScript
+    stack: Rails, Bulma, Sass, Preact
     descriptions:
       - An expense tracking application.
-      - Available on <a href="https://expendere.herokuapp.com" target="_blank">heroku</a>
+      - Use Preact to build custom interactive components such as color picker and weekday picker.
+      - Integrate with Telegram Bot API to allow user record expense through Telegram Bot.
   - title: TIL
     stack: Phoenix, Bootstrap, Sass, JavaScript
     descriptions:
       - A simple "Today I learn" application.
-      - Available on <a href="https://til.kaiwern.com" target="_blank">til.kaiwern.com</a>
+      - Implement user authentication from scratch.
+      - Use `bamboo` with Mailgun to send confirmation email and reset password email.
+      - Use Phoenix Channel and `earmark`  to implement live Markdown preview.
+  - title: Progressus
+    stack: iOS, Swift
+    descriptions:
+      - A iOS application to track your streak, whether is to break a habit or form a good one.
+      - Implement dark mode with different color theme.
+      - Implement custom pie chart to show counter progress.
+      - Use Core Data to store application data.
   - title: Student Performance Evaluation System
     stack: Scala, Play, Bootstrap Material UI
     descriptions:
-      - A student performance evaluations system developed as my Final Year Project in Sunway University.
-      - The system helps lecturers to evaluate student performance based on their attedance and marks in test, assignment and examination.
+      - Final Year Project in Sunway University.
+      - Helps lecturers to evaluate student performance based on their attendance and marks in test, assignment and examination.
   - title: Mittere
     stack: Scala, Akka, ScalaFX
     descriptions:
-      - A chat application devleoped for Distributed System Group Assignment.
-      - Source code available on <a href="https://github.com/kw7oe/mittere" target="_blank">GitHub</a>
+      - A chat application developed during Distributed System subject in Sunway University.
   - title: Darkous
     stack: HTML, CSS, Javascript
     descriptions:
       - A simple weather application using OpenWeatherMap API.
-      - Available on <a href="https://kw7oe.github.io/darkous/" target="_blank">GitHub Pages</a>
-  - title: Progressus
-    stack: iOS, Swift
-    descriptions:
-      - A counter iOS mobile application to track your streak, whether isto break a habit or form a good one.
-      - Published on App Store from August 2017 to February 2018.
-      - Taken down from App Store due to expired Apple Developer Program membership.
 
 educations:
   - title: BSc (Hons) in Computer Science
-    school: Sunway University
+    school: Sunway University, Malaysia
     timeframe: "August 2015 - August 2018"
     descriptions:
       - <strong>CGPA:</strong> 3.89
       - <strong>Overall Average:</strong> 77.56%
-      - Graduate with first-class honours
+      - Graduate with first-class honors
   - title: New South Wales Higher School Certificate (HSC)
-    school: INTI International College Penang
+    school: INTI International College Penang, Malaysia
     timeframe: "January 2014 - November 2014"
     descriptions:
       - <strong>ATAR:</strong> 89.85
