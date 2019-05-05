@@ -6,7 +6,7 @@ title: Home
 ## Hello
 
 Welcome to my blog. Here I write mostly about technical stuff.
-Most of the time, I work on Ruby and Rails, Elixir and front end stuff.
+Most of the time, I work on Ruby and Rails, Elixir, JavaScript and React.
 I use vim as my main text editor.
 
 

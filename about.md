@@ -9,8 +9,7 @@ title: About
 
 Hi, I am Kai Wern Choong.
 
-I work at a small software house in Malaysia as a Software
-Developer. I like to read, learn, code and cook.
+Currently looking for jobs. I like to read, learn, code and cook.
   </div>
 
   <div class="column">
