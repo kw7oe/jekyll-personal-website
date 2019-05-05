@@ -8,10 +8,10 @@ devops: Ansible, Heroku, DigitalOcean
 works:
   - title: Software Developer
     company: Mindworks Interactive
-    timeframe: "Sep 2018 - Present"
+    timeframe: "Sep 2018 - April 2019"
     descriptions:
       - Develop static websites using GatsbyJS and NetlifyCMS
-      - Develop application with Ruby on Rails
+      - Develop an online magazine platform with chat, payment and CMS feature in Rails from scratch
   - title: Freelancer
     company: Self-Employed
     timeframe: "April 2018 - June 2018"
