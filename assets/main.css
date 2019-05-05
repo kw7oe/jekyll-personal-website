@@ -270,7 +270,7 @@
 .text-center {
   text-align: center; }
 
-.sm-text, .content time {
+.sm-text {
   font-size: 0.95em; }
 
 .sx-text {
@@ -382,10 +382,15 @@ pre {
   width: 50%;
   padding: 0.75rem; }
 
+.writeup {
+  font-family: sans-serif; }
+
 .content {
   font-family: sans-serif;
   font-size: 14px;
   color: #222; }
+  .content time {
+    font-size: 0.9em; }
   .content ul {
     margin: 0;
     padding-left: 0.75rem;
