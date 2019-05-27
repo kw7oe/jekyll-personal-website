@@ -1,81 +1,79 @@
 name: Kai Wern Choong
 email: choongkwern@hotmail.com
 github: kw7oe
-programming_languages: Ruby, Elixir, JavaScript, Swift
-framework: Rails, Phoenix, React, iOS
+programming_languages: Ruby, Elixir, JavaScript, Swift, HTML, CSS
+frameworks: Rails, Phoenix, React, iOS, SASS
 languages: Chinese, English, Malay
 devops: Ansible, Heroku, DigitalOcean
+other: Team Leadership, Project Management, Design
 works:
   - title: Software Developer
     company: Mindworks Interactive
     timeframe: "Sep 2018 - April 2019"
     descriptions:
-      - Develop static websites using GatsbyJS and NetlifyCMS
-      - Develop an online magazine platform with chat, payment and CMS feature in Rails from scratch
+      - Develop static websites using GatsbyJS and NetlifyCMS.
+      - Develop an online magazine platform with chat, payment and CMS feature in Rails from scratch.
+      - Planning and writing project requirements.
   - title: Freelancer
     company: Self-Employed
     timeframe: "April 2018 - June 2018"
     descriptions:
-      - Develop Sunway University Student Council Election website with Jekyll
-      - Develop website for a Interior Design company using Jekyll and NetlifyCMS
+      - Develop Sunway University Student Council Election website with Jekyll.
+      - Develop website for a Interior Design company using Jekyll and NetlifyCMS.
   - title: Web Developer Intern
     company: FixSensei
     timeframe: "December 2017 - March 2018"
     descriptions:
-      - Refactor code base
-      - Add in Skylight to profile Rails application performance
-      - Replace the front end of the Rails booking application with React
-      - Add in Admin Settings API endpoint to allow customization of the booking application
-      - Add in coupon features
+      - Refactor code base to improve the code quality.
+      - Integrate Skylight to profile Rails application performance.
+      - Migrate the front end of the application to React.
+      - Implement Admin Settings API endpoint to allow customization of the booking application.
+      - Implement coupon features to allow customers to use coupon during booking to get discount.
   - title: Freelancer
     company: Self-Employed
     timeframe: "March 2017 - December 2017"
     descriptions:
-      - Develop static websites using Jekyll
-      - Develop a mobile-first Vue with Rails application integrated with PayPal Payment Gateway
+      - Develop static websites using Jekyll.
+      - Develop a mobile-first Vue with Rails application integrated with PayPal Payment Gateway.
 projects:
   - title: Expendere
     stack: Rails, Bulma, Sass, Preact
     descriptions:
-      - An expense tracking application.
+      - Expense tracking application.
       - Use Preact to build custom interactive components such as color picker and weekday picker.
       - Integrate with Telegram Bot API to allow user record expense through Telegram Bot.
   - title: TIL
     stack: Phoenix, Bootstrap, Sass, JavaScript
     descriptions:
-      - A simple "Today I learn" application.
+      - Simple "Today I learn" application.
       - Implement user authentication from scratch.
       - Use `bamboo` with Mailgun to send confirmation email and reset password email.
       - Use Phoenix Channel and `earmark`  to implement live Markdown preview.
+      - Deploy to DigitalOcean using Ansible with Distillery.
   - title: Progressus
     stack: iOS, Swift
     descriptions:
-      - A iOS application to track your streak, whether is to break a habit or form a good one.
+      - iOS application to track your streak, whether is to break a habit or form a good one.
       - Implement dark mode with different color theme.
       - Implement custom pie chart to show counter progress.
-      - Use Core Data to store application data.
+      - Integrate with Core Data to store application data.
+      - Write unit and integration test.
   - title: Student Performance Evaluation System
     stack: Scala, Play, Bootstrap Material UI
     descriptions:
       - Final Year Project in Sunway University.
       - Helps lecturers to evaluate student performance based on their attendance and marks in test, assignment and examination.
-  - title: Mittere
-    stack: Scala, Akka, ScalaFX
-    descriptions:
-      - A chat application developed during Distributed System subject in Sunway University.
-  - title: Darkous
-    stack: HTML, CSS, Javascript
-    descriptions:
-      - A simple weather application using OpenWeatherMap API.
+      - Write a mock API server with Ruby and Sinatra for attendance.
+      - Parse CSV file from Blackboard and Excel file and save it to database.
+      - Perform descriptive analysis on data collected.
 
 educations:
   - title: BSc (Hons) in Computer Science
     school: Sunway University, Malaysia
     timeframe: "August 2015 - August 2018"
     descriptions:
-      - <strong>CGPA:</strong> 3.89
-      - <strong>Overall Average:</strong> 77.56%
-      - Graduate with first-class honors
+      - <strong>CGPA:</strong> 3.89 (First Class)
+      - Awarded Jeffrey Cheah Entrance Scholarship
   - title: New South Wales Higher School Certificate (HSC)
     school: INTI International College Penang, Malaysia
     timeframe: "January 2014 - November 2014"
