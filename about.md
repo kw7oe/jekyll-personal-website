@@ -9,7 +9,7 @@ title: About
 
 Hi, I am Kai Wern Choong.
 
-Currently looking for jobs. I like to read, learn, code and cook.
+I like to read, learn, code and cook.
   </div>
 
   <div class="column">
