@@ -1,4 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2019-05-28T09:32:34+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">How I keep track of tasks for multiple side projects</title><link href="https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html" rel="alternate" type="text/html" title="How I keep track of tasks for multiple side projects" /><published>2019-03-31T20:51:00+08:00</published><updated>2019-03-31T20:51:00+08:00</updated><id>https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects</id><content type="html" xml:base="https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html">&lt;p&gt;If you are like me, having countless side projects and jumping from one to another
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2019-05-28T21:11:31+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Send temporary file in Phoenix</title><link href="https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix.html" rel="alternate" type="text/html" title="Send temporary file in Phoenix" /><published>2019-05-28T20:59:00+08:00</published><updated>2019-05-28T20:59:00+08:00</updated><id>https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix</id><content type="html" xml:base="https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix.html">&lt;p&gt;&lt;strong&gt;TLDR:&lt;/strong&gt; Use &lt;code class=&quot;highlighter-rouge&quot;&gt;Phoenix.Controller.send_download/3&lt;/code&gt; to send binary as download
+to your users.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;In Phoenix, there are a couple ways of to send file to your users.
+The most straightforward one is to programmatically create a file and send
+it to user using &lt;code class=&quot;highlighter-rouge&quot;&gt;Plug.Conn.send_file/5&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;export&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Create file&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;test.md&quot;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Hello World&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Send file&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;put_resp_header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;content-disposition&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;~s(attachment; filename=&quot;#{filename}&quot;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;send_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However, this approach &lt;strong&gt;creates a file locally in your production server
+and require some clean up&lt;/strong&gt; after that. &lt;em&gt;(I don’t really know how to delete a file only after the request succeed)&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introducing-send_download3&quot;&gt;Introducing &lt;code class=&quot;highlighter-rouge&quot;&gt;send_download/3&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;Luckily, there is another approach, which is using &lt;code class=&quot;highlighter-rouge&quot;&gt;Phoenix.Controller.send_download/3&lt;/code&gt;.
+This function allow us to send binary directly as a download. Hence, file creation is not needed.&lt;/p&gt;
+
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;export&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;test.md&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# Send file&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;send_download&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:binary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Hello World&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;filename:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For more, refer to the &lt;a href=&quot;https://hexdocs.pm/plug/Plug.Conn.html#send_file/5&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;send_file/5&lt;/code&gt;&lt;/a&gt; and &lt;a href=&quot;https://hexdocs.pm/phoenix/Phoenix.Controller.html#send_download/3&quot;&gt;send_download/3&lt;/a&gt; documentation.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;small&gt;This post was first appeared in my &lt;a href=&quot;https://til.kaiwern.com/posts/54&quot;&gt;TIL web application&lt;/a&gt;.&lt;/small&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">TLDR: Use Phoenix.Controller.send_download/3 to send binary as download to your users.</summary></entry><entry><title type="html">How I keep track of tasks for multiple side projects</title><link href="https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html" rel="alternate" type="text/html" title="How I keep track of tasks for multiple side projects" /><published>2019-03-31T20:51:00+08:00</published><updated>2019-03-31T20:51:00+08:00</updated><id>https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects</id><content type="html" xml:base="https://kw7oe.github.io/productivity/2019/03/31/how-i-keep-track-of-tasks-for-multiple-side-projects.html">&lt;p&gt;If you are like me, having countless side projects and jumping from one to another
 from time to time, you might also experience &lt;em&gt;ending up losing track of what
 you should do on each side projects.&lt;/em&gt;&lt;/p&gt;
 
@@ -1081,69 +1124,4 @@ case, I can:&lt;/p&gt;
   &lt;li&gt;How to debug a web application using Simulator.&lt;/li&gt;
   &lt;li&gt;Having more information about the environment when the bug occured
 is always helpful.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">Another story about fixing bug. This story is related to the native web API fetch, which is used to make request.</summary></entry><entry><title type="html">Using Ruby next in map</title><link href="https://kw7oe.github.io/ruby/2018/03/28/using-ruby-next-in-map.html" rel="alternate" type="text/html" title="Using Ruby next in map" /><published>2018-03-28T00:00:00+08:00</published><updated>2018-03-28T00:00:00+08:00</updated><id>https://kw7oe.github.io/ruby/2018/03/28/using-ruby-next-in-map</id><content type="html" xml:base="https://kw7oe.github.io/ruby/2018/03/28/using-ruby-next-in-map.html">&lt;p&gt;While I was refactoring the code base of my client application,
-I came accross a code block, similar to this:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'status'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IGNORED_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;I think, “Ha, I can replace &lt;code class=&quot;highlighter-rouge&quot;&gt;each&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt; here.”&lt;/p&gt;
-
-&lt;p&gt;I go ahead, and make the changes.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'status'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;IGNORED_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;include?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'value'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;em&gt;Little did I know that,
-this will  break the production system in the future.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;After the application went live, after a few hours, my client
-reported that there were errors in the system disrupting the user from
-using it normally. After some investigation, I found out that it is
-caused by &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;. I patched the error quickly by using &lt;code class=&quot;highlighter-rouge&quot;&gt;compact&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;From something like this:&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# [1, nil, 2, 3]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;to:&lt;/p&gt;
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;compact&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# [1, 2, 3]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;timeslots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Later on, diving into the source code, I found out that the &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;
-is introduced by my own refactored code. It turns out that, inside
-a &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt;, using &lt;code class=&quot;highlighter-rouge&quot;&gt;next&lt;/code&gt; will return &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt; instead of skipping it
-altogether. I only learn this when I came across this
-&lt;a href=&quot;http://code-worrier.com/blog/map-and-next/&quot;&gt;blog article&lt;/a&gt;.
-For example:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Return the value&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; return [1, nil, 3, nil, 5, nil]&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; instead of [1, 3, 5]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Well, thanks myself for not writing test ahead before refactoring the
-code base, I get to learn this the hard way.&lt;/p&gt;
-
-&lt;h3 id=&quot;lesson-learned&quot;&gt;Lesson Learned&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;Always write test before refactoring.&lt;/li&gt;
-  &lt;li&gt;Using &lt;code class=&quot;highlighter-rouge&quot;&gt;next&lt;/code&gt; in a &lt;code class=&quot;highlighter-rouge&quot;&gt;map&lt;/code&gt; return &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Array#compact&lt;/code&gt; can be used to remove &lt;code class=&quot;highlighter-rouge&quot;&gt;nil&lt;/code&gt; elements.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">While I was refactoring the code base of my client application, I came accross a code block, similar to this:</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Another story about fixing bug. This story is related to the native web API fetch, which is used to make request.</summary></entry></feed>

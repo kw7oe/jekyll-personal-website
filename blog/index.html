@@ -67,6 +67,70 @@
     <div class="post">
   <!-- Headeer -->
    <header class="post-header">
+     <h1 class="post-title" itemprop="name headline">Send temporary file in Phoenix</h1>
+     <p class="post-meta">
+       <time datetime="2019-05-28T20:59:00+08:00" itemprop="datePublished">
+         
+         May 28, 2019
+       </time>
+       </p>
+   </header>
+
+   <!-- Main Article -->
+   <div class="post-content" itemprop="articleBody">
+     <p><strong>TLDR:</strong> Use <code class="highlighter-rouge">Phoenix.Controller.send_download/3</code> to send binary as download
+to your users.</p>
+
+<hr />
+
+<p>In Phoenix, there are a couple ways of to send file to your users.
+The most straightforward one is to programmatically create a file and send
+it to user using <code class="highlighter-rouge">Plug.Conn.send_file/5</code>.</p>
+
+<p>For example:</p>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">export</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span> <span class="k">do</span>
+  <span class="c1"># Create file</span>
+  <span class="n">filename</span> <span class="o">=</span> <span class="sd">"</span><span class="s2">test.md"</span>
+  <span class="no">File</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="sd">"</span><span class="s2">Hello World"</span><span class="p">)</span>
+
+  <span class="c1"># Send file</span>
+  <span class="n">conn</span>
+  <span class="o">|&gt;</span> <span class="n">put_resp_header</span><span class="p">(</span><span class="sd">"</span><span class="s2">content-disposition"</span><span class="p">,</span> <span class="sx">~s(attachment; filename="#{filename}")</span><span class="p">)</span>
+  <span class="o">|&gt;</span> <span class="n">send_file</span><span class="p">(</span><span class="m">200</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>However, this approach <strong>creates a file locally in your production server
+and require some clean up</strong> after that. <em>(I don’t really know how to delete a file only after the request succeed)</em></p>
+
+<h2 id="introducing-send_download3">Introducing <code class="highlighter-rouge">send_download/3</code></h2>
+
+<p>Luckily, there is another approach, which is using <code class="highlighter-rouge">Phoenix.Controller.send_download/3</code>.
+This function allow us to send binary directly as a download. Hence, file creation is not needed.</p>
+
+<p>For example:</p>
+<div class="language-elixir highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="n">export</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">filename</span> <span class="o">=</span> <span class="sd">"</span><span class="s2">test.md"</span>
+
+  <span class="c1"># Send file</span>
+  <span class="n">conn</span>
+  <span class="o">|&gt;</span> <span class="n">send_download</span><span class="p">({</span><span class="ss">:binary</span><span class="p">,</span> <span class="sd">"</span><span class="s2">Hello World"</span><span class="p">},</span> <span class="ss">filename:</span> <span class="n">filename</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>For more, refer to the <a href="https://hexdocs.pm/plug/Plug.Conn.html#send_file/5"><code class="highlighter-rouge">send_file/5</code></a> and <a href="https://hexdocs.pm/phoenix/Phoenix.Controller.html#send_download/3">send_download/3</a> documentation.</p>
+
+<hr />
+<p><small>This post was first appeared in my <a href="https://til.kaiwern.com/posts/54">TIL web application</a>.</small></p>
+
+
+   </div>
+</div>
+    <hr>
+  
+    <div class="post">
+  <!-- Headeer -->
+   <header class="post-header">
      <h1 class="post-title" itemprop="name headline">How I keep track of tasks for multiple side projects</h1>
      <p class="post-meta">
        <time datetime="2019-03-31T20:51:00+08:00" itemprop="datePublished">
@@ -615,223 +679,6 @@ sys	0m0.155s
 
 <hr />
 <p><em>Read Part 2 <a href="/aoc/elixir/2018/12/01/advent-of-code-2018-day-1-part-2.html">here</a>.</em></p>
-
-
-   </div>
-</div>
-    <hr>
-  
-    <div class="post">
-  <!-- Headeer -->
-   <header class="post-header">
-     <h1 class="post-title" itemprop="name headline">Using Markdown for Static Pages in Rails</h1>
-     <p class="post-meta">
-       <time datetime="2018-11-27T22:04:00+08:00" itemprop="datePublished">
-         
-         Nov 27, 2018
-       </time>
-       </p>
-   </header>
-
-   <!-- Main Article -->
-   <div class="post-content" itemprop="articleBody">
-     <p>Markdown is great for formatting our writing to be publish as HTML. If you’re a
-developer, you probably used Markdown before. <code class="highlighter-rouge">README</code> of <a href="https://github.com">GitHub</a> repositories
-are mostly written in Markdown.</p>
-
-<p>While developing web applications, there will be static pages such as
-about page and FAQ page. Most of the time, we have to write it in HTML, which can
-be unpleasant.</p>
-
-<p>Luckily, we can still  use Markdown to write the static pages in Rails application
-and compile it into HTML.</p>
-
-<h2 id="general-steps">General Steps</h2>
-
-<p>The steps involved are straightforward.</p>
-
-<ol>
-  <li>Write Markdown</li>
-  <li>Compile the Markdown</li>
-  <li>Rails use the compiled HTML to serve the user.</li>
-</ol>
-
-<p>There are two approaches:</p>
-
-<ol>
-  <li>Compile the Markdown file on runtime, which means, the file is only compiled when
-there is a request.</li>
-  <li>Precompile the Markdown file into <code class="highlighter-rouge">&lt;filename&gt;.html.erb</code> first.</li>
-</ol>
-
-<h2 id="compilation-of-markdown-during-runtime">Compilation of Markdown during runtime</h2>
-
-<p>To compile a Markdown file during runtime in Rails, we need to know how to:</p>
-
-<ul>
-  <li>Compile Markdown file in <code class="highlighter-rouge">ruby</code></li>
-  <li>Render the compiled HTML as views</li>
-  <li>Bind ERB environment if instance variables <code class="highlighter-rouge">@variable</code> is used in the view</li>
-</ul>
-
-<p>To compile a Markdown file is fairly straighforward in <code class="highlighter-rouge">ruby</code>:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># gem install kramdown if not found</span>
-<span class="nb">require</span> <span class="s1">'kramdown'</span>
-
-<span class="n">file</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s1">'about.md'</span><span class="p">)</span>
-<span class="n">html</span> <span class="o">=</span> <span class="no">Kramdown</span><span class="o">::</span><span class="no">Document</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="p">{</span><span class="ss">input: </span><span class="s2">"GFM"</span><span class="p">}).</span><span class="nf">to_html</span>
-<span class="c1"># Configuring {input: "GFM"} to set kramdown to use GFM parser</span>
-<span class="c1"># instead of the defaut one. GFM parser can parse Github Flavour Markdown.</span>
-<span class="nb">p</span> <span class="n">html</span>
-<span class="c1">#=&gt; &lt;html&gt;...&lt;/html&gt;</span>
-</code></pre></div></div>
-
-<p>To use it in a Rails application:</p>
-
-<p>Add <code class="highlighter-rouge">kramdown</code> to <code class="highlighter-rouge">Gemfile</code></p>
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'kramdown'</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
-<span class="c1"># require: false since we are going to require it only</span>
-<span class="c1"># when we need it</span>
-</code></pre></div></div>
-
-<p>In the <code class="highlighter-rouge">app/views/pages/about.md</code>:</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### Hi, &lt;%= @name %&gt;
-</code></pre></div></div>
-
-<p>In the <code class="highlighter-rouge">app/views/pages/about.html.erb</code>:</p>
-<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%=</span> <span class="n">raw</span> <span class="vi">@content</span> <span class="cp">%&gt;</span>
-# We want the raw output of the @content instead of escaped
-</code></pre></div></div>
-
-<p>In the <code class="highlighter-rouge">app/controllers/pages_controller.rb</code>:</p>
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'kramdown'</span>
-
-<span class="k">class</span> <span class="nc">PagesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="k">def</span> <span class="nf">about</span>
-    <span class="n">file_path</span> <span class="o">=</span> <span class="n">lookup_context</span><span class="p">.</span><span class="nf">find_template</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">controller_path</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">action_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-      <span class="p">.</span><span class="nf">identifier</span><span class="p">.</span><span class="nf">sub</span><span class="p">(</span><span class="s2">".html.erb"</span><span class="p">,</span> <span class="s2">".md"</span><span class="p">)</span>
-    <span class="vi">@name</span> <span class="o">=</span> <span class="s2">"Kai"</span>
-
-    <span class="c1"># Compiled with ERB</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="no">ERB</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
-      <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-    <span class="p">).</span><span class="nf">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span>
-
-    <span class="c1"># Convert MD to HTML</span>
-    <span class="vi">@content</span> <span class="o">=</span> <span class="no">Kramdown</span><span class="o">::</span><span class="no">Document</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">{</span><span class="ss">input: </span><span class="s2">"GFM"</span><span class="p">}).</span><span class="nf">to_html</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>All the views file are self-explanatory, so let’s just focus on the controller.</p>
-
-<p>First of all, we need to get the <code class="highlighter-rouge">md</code> file in our controller. We can achieive
-it by hardcoding it like <code class="highlighter-rouge">file_path = "../views/pages/about.md"</code>. But it is
-better to make it dynamically look up the right <code class="highlighter-rouge">md</code> file depending on the
-action of the controller.</p>
-
-<p>So we use:</p>
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">template</span> <span class="o">=</span> <span class="n">lookup_context</span><span class="p">.</span><span class="nf">find_template</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">controller_path</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">action_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="c1">#=&gt; app/views/pages/about.html.erb</span>
-<span class="n">template</span><span class="p">.</span><span class="nf">identifier</span>
-<span class="c1">#=&gt; "/Users/.../app/views/pages/about.html.erb"</span>
-<span class="n">template</span><span class="p">.</span><span class="nf">identifier</span><span class="p">.</span><span class="nf">sub</span><span class="p">(</span><span class="s2">".html.erb"</span><span class="p">,</span> <span class="s2">".md"</span><span class="p">)</span>
-<span class="c1">#=&gt; "/Users/.../app/views/pages/about.md"</span>
-</code></pre></div></div>
-
-<p>How I know I should use this method to lookup for the file? Google search leads me to this <a href="https://stackoverflow.com/questions/34126212/get-path-of-corresponding-controller-action-view-file">Stackoverflow</a> question and answer.</p>
-
-<p>After that, we need to compile the <code class="highlighter-rouge">md</code> file first with <code class="highlighter-rouge">ERB</code> since we are <code class="highlighter-rouge">erb</code> syntax. After that, we just need to convert the result to HTML using <code class="highlighter-rouge">kramdown</code>.</p>
-
-<p>The benefit of this approach is:</p>
-
-<ul>
-  <li>Don’t need to manually compile the <code class="highlighter-rouge">md</code> files.</li>
-  <li>Can be used to compile dynamic Markdown files.</li>
-</ul>
-
-<h2 id="precompile-the-markdown-file">Precompile the Markdown file</h2>
-
-<p>Another approach, is more troublesome, but has less overhead, since the server don’t need to recompile the same Markdown file everytime someone visit to the page.</p>
-
-<p>Instead of compile during runtime, we compile manually everytime after we
-update our Markdown file. Rails just serve the <code class="highlighter-rouge">.html.erb</code> that we
-converted from the Markdown files to the visitors.</p>
-
-<p>The steps taken are:</p>
-
-<ul>
-  <li>Find all the <code class="highlighter-rouge">.md</code> files in <code class="highlighter-rouge">app/views/pages</code></li>
-  <li>Compile every <code class="highlighter-rouge">.md</code> files to <code class="highlighter-rouge">.html.erb</code></li>
-</ul>
-
-<p>To do that, we can write a <code class="highlighter-rouge">rake</code> task. Add the following code into your
-<code class="highlighter-rouge">Rakefile</code>.</p>
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Get all files in /app/views/page ending with md</span>
-<span class="no">SOURCE_FILES</span> <span class="o">=</span> <span class="no">Rake</span><span class="o">::</span><span class="no">FileList</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"app/views/pages/*md"</span><span class="p">)</span>
-
-<span class="c1"># Define a task</span>
-<span class="n">task</span> <span class="ss">:compile_md</span> <span class="o">=&gt;</span> <span class="no">SOURCE_FILES</span><span class="p">.</span><span class="nf">pathmap</span><span class="p">(</span><span class="s2">"%X.html.erb"</span><span class="p">)</span>
-
-<span class="c1"># Define rule for the task</span>
-<span class="n">rule</span> <span class="s1">'.html.erb'</span> <span class="o">=&gt;</span> <span class="no">SOURCE_FILES</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
-  <span class="nb">require</span> <span class="s1">'kramdown'</span>
-  <span class="n">content</span> <span class="o">=</span> <span class="no">Kramdown</span><span class="o">::</span><span class="no">Document</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="nf">source</span><span class="p">),</span> <span class="p">{</span><span class="ss">input: </span><span class="s2">"GFM"</span><span class="p">}).</span><span class="nf">to_html</span>
-  <span class="no">File</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>This code block is a bit tricky. To summarize, what it does is scan through all
-the <code class="highlighter-rouge">.md</code> files located in <code class="highlighter-rouge">/app/views/page</code> and compile it into <code class="highlighter-rouge">.html.erb</code> if
-any changes is made.</p>
-
-<p>We can then run <code class="highlighter-rouge">rake compile_md</code> to manually compile our Markdown file into
-<code class="highlighter-rouge">erb</code> file after we updated our Markdown file.</p>
-
-<p>With this approach, do note that we did not handle <code class="highlighter-rouge">erb</code> syntax. Hence, there
-is a gotcha. If you need to use <code class="highlighter-rouge">erb</code> syntax, you need to write plain <code class="highlighter-rouge">html</code>
-instead. To demonstrate:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### Hello
-
-This is my first sentence.
-
-Total view:
-{::nomarkdown}
-&lt;span&gt;&lt;%= view_count %&gt;&lt;/span&gt;
-{:/nomarkdown}
-</code></pre></div></div>
-
-<p>The benefits of this approach is:</p>
-
-<ul>
-  <li>Compilation of Markdown does not happen during runtime. Hence, save some
-computation time.</li>
-</ul>
-
-<h2 id="summary">Summary</h2>
-
-<p>That’s all. I know there are a lot of magic happening on the <code class="highlighter-rouge">rake</code> task I wrote above.</p>
-
-<p>To further understand the <code class="highlighter-rouge">rake</code> task, I would suggest these tutorials from Avdi
-Grimm’s rake series as suggested in <code class="highlighter-rouge">rake</code> README:</p>
-
-<ul>
-  <li><a href="http://www.virtuouscode.com/2014/04/21/rake-part-1-basics/">Rake Basics</a></li>
-  <li><a href="http://www.virtuouscode.com/2014/04/22/rake-part-2-file-lists/">Rake File Lists</a></li>
-  <li><a href="http://www.virtuouscode.com/2014/04/23/rake-part-3-rules/">Rake Rules</a></li>
-</ul>
-
-<p>A sample application for this post can be found at my <a href="https://github.com/kw7oe/sample-md-static-pages">Github</a>.</p>
-
-<hr />
-
-<p><strong>Footnote</strong></p>
-
-<ol>
-  <li><small>I am sorry if this post is a bit messy. I am still not quite good at writing and structuring lengthy tutorial.</small></li>
-</ol>
 
 
    </div>
