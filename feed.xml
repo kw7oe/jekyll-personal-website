@@ -1,4 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2019-06-03T18:03:48+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Send temporary file in Phoenix</title><link href="https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix.html" rel="alternate" type="text/html" title="Send temporary file in Phoenix" /><published>2019-05-28T20:59:00+08:00</published><updated>2019-05-28T20:59:00+08:00</updated><id>https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix</id><content type="html" xml:base="https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix.html">&lt;p&gt;&lt;strong&gt;TLDR:&lt;/strong&gt; Use &lt;code class=&quot;highlighter-rouge&quot;&gt;Phoenix.Controller.send_download/3&lt;/code&gt; to send binary as download
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kw7oe.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kw7oe.github.io/" rel="alternate" type="text/html" /><updated>2019-06-03T18:06:19+08:00</updated><id>https://kw7oe.github.io/feed.xml</id><title type="html">kw7oe</title><subtitle>To be figured out soon.</subtitle><entry><title type="html">Using Tesseract OCR in Elixir/Phoenix</title><link href="https://kw7oe.github.io/elixir/phoenix/2019/06/03/using-tesseract-ocr-in-elixir-phoenix.html" rel="alternate" type="text/html" title="Using Tesseract OCR in Elixir/Phoenix" /><published>2019-06-03T18:04:00+08:00</published><updated>2019-06-03T18:04:00+08:00</updated><id>https://kw7oe.github.io/elixir/phoenix/2019/06/03/using-tesseract-ocr-in-elixir-phoenix</id><content type="html" xml:base="https://kw7oe.github.io/elixir/phoenix/2019/06/03/using-tesseract-ocr-in-elixir-phoenix.html">&lt;p&gt;Lately, I am exploring the use of OCR in &lt;a href=&quot;https://expendere.herokuapp.com&quot;&gt;Expendere&lt;/a&gt; (my expense tracking
+application) and came across &lt;a href=&quot;https://github.com/tesseract-ocr/tesseract&quot;&gt;Tesseract OCR&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;At the time of writing this blog post, there is no native binding of Tesseract OCR in Elixir.
+However, there are two Elixir wrapper available on GitHub:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/dannnylo/tesseract-ocr-elixir&quot;&gt;tesseract-ocr-elixir&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bchase/tesseract-elixir&quot;&gt;tesseract-elixir&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Both wrapper use &lt;code class=&quot;highlighter-rouge&quot;&gt;System.cmd/3&lt;/code&gt; to invoke the &lt;code class=&quot;highlighter-rouge&quot;&gt;tesseract&lt;/code&gt; command line
+interface and return the results of the executed command.&lt;/p&gt;
+
+&lt;p&gt;Seeing there are wrappers available out there, I quickly grab one and scaffold
+a Phoenix application to test it out.&lt;/p&gt;
+
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;In this code example, I will be using wrapper from &lt;a href=&quot;https://github.com/dannnylo/tesseract-ocr-elixir&quot;&gt;tesseract-ocr-elixir&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;mix.exs&lt;/code&gt;, add &lt;code class=&quot;highlighter-rouge&quot;&gt;tesseract-ocr-elixir&lt;/code&gt; as dependency:&lt;/p&gt;
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deps&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:tesseract_ocr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;~&amp;gt; 0.1.0&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;page_controller.ex&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OcrWeb&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;PageController&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OcrWeb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:controller&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;index.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;%{&lt;/span&gt;&lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;upload&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Plug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Upload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;upload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;TesseractOcr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;upload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;show.html&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;result:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;router.ex&lt;/code&gt;, add this under &lt;code class=&quot;highlighter-rouge&quot;&gt;scope &quot;/&quot;&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;language-elixir highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;PageController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:index&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;sd&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/upload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;PageController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;templates/page/index.html.eex&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-eex&quot;&gt;&amp;lt;%= form_for @conn, Routes.page_path(@conn, :create),
+                    [multipart: true], fn f-&amp;gt; %&amp;gt;
+    &amp;lt;%= file_input f, :upload, class: &quot;form-control&quot; %&amp;gt;
+    &amp;lt;%= submit &quot;Upload&quot;, class: &quot;btn btn-primary&quot; %&amp;gt;
+&amp;lt;% end %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In &lt;code class=&quot;highlighter-rouge&quot;&gt;templates/page/show.html.eex&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-eex&quot;&gt;&amp;lt;h1&amp;gt;Result:&amp;lt;/h1&amp;gt;
+
+&amp;lt;%= @result %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Demo&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/image/tesseract-demo.gif&quot; alt=&quot;Demo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Voila, a simple OCR application is done. The demo application is available at &lt;a href=&quot;https://github.com/kw7oe/phoenix-ocr-demo&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Lately, I am exploring the use of OCR in Expendere (my expense tracking application) and came across Tesseract OCR.</summary></entry><entry><title type="html">Send temporary file in Phoenix</title><link href="https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix.html" rel="alternate" type="text/html" title="Send temporary file in Phoenix" /><published>2019-05-28T20:59:00+08:00</published><updated>2019-05-28T20:59:00+08:00</updated><id>https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix</id><content type="html" xml:base="https://kw7oe.github.io/phoenix/2019/05/28/send-temporary-file-in-phoenix.html">&lt;p&gt;&lt;strong&gt;TLDR:&lt;/strong&gt; Use &lt;code class=&quot;highlighter-rouge&quot;&gt;Phoenix.Controller.send_download/3&lt;/code&gt; to send binary as download
 to your users.&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -1098,30 +1166,4 @@ text-processing.&lt;/li&gt;
   &lt;span class=&quot;na&quot;&gt;auto_open&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">Recently, I have been using jekyll to make notes. I use jekyll-compose gem to create post using command line. However, the auto open generated file features isn’t working in my machine after the setup.</summary></entry><entry><title type="html">A note about using ‘fetch’ in JS</title><link href="https://kw7oe.github.io/javascript/2018/04/11/a-note-about-using-fetch-in-js.html" rel="alternate" type="text/html" title="A note about using 'fetch' in JS" /><published>2018-04-11T00:00:00+08:00</published><updated>2018-04-11T00:00:00+08:00</updated><id>https://kw7oe.github.io/javascript/2018/04/11/a-note-about-using-fetch-in-js</id><content type="html" xml:base="https://kw7oe.github.io/javascript/2018/04/11/a-note-about-using-fetch-in-js.html">&lt;p&gt;Another story about fixing bug. This story is related to the native web
-API &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt;, which is used to make request.&lt;/p&gt;
-
-&lt;h3 id=&quot;backstory&quot;&gt;Backstory&lt;/h3&gt;
-&lt;p&gt;After serveral days of having my first production application online,
-my client inform me that, the application has a bug, &lt;em&gt;again&lt;/em&gt;.
-The button was not working as expected for one of the users.
-Long story short, we found out that the bug occurs in iOS 10.2.1.
-So, I downloaded the Simulator for iOS 10.2 to start debugging.&lt;/p&gt;
-
-&lt;h3 id=&quot;issue&quot;&gt;Issue&lt;/h3&gt;
-&lt;p&gt;It turns out that &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; is not supported in iOS 10.2. In this
-case, I can:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;replace &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;axios&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;use &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; polyfill&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;to solve the issue.&lt;/p&gt;
-
-&lt;h3 id=&quot;lesson-learned&quot;&gt;Lesson Learned&lt;/h3&gt;
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; is not supported for iOS 10.2 and below.&lt;/li&gt;
-  &lt;li&gt;How to debug a web application using Simulator.&lt;/li&gt;
-  &lt;li&gt;Having more information about the environment when the bug occured
-is always helpful.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><summary type="html">Another story about fixing bug. This story is related to the native web API fetch, which is used to make request.</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Recently, I have been using jekyll to make notes. I use jekyll-compose gem to create post using command line. However, the auto open generated file features isn’t working in my machine after the setup.</summary></entry></feed>
