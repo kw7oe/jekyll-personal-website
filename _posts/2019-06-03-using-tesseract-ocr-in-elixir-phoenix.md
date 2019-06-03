@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Using Tesseract OCR in Elixir
-categories: elixir
+title: Using Tesseract OCR in Elixir/Phoenix
+categories: elixir phoenix
+date: 2019-06-03 18:04 +0800
 ---
-
 Lately, I am exploring the use of OCR in [Expendere][1] (my expense tracking
 application) and came across [Tesseract OCR][2].
 
