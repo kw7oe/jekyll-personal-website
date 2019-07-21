@@ -7,7 +7,7 @@ title: Resume
 <div class="content">
   <div class="text-center">
     <h1>{{ data.name }}</h1>
-    <p>{{ data.email }} • +6019 5587609 • github.com/{{ data.github }}</p>
+    <p>{{ data.email }} • github.com/{{ data.github }}</p>
   </div>
   <div>
     <h3>Skills</h3>
