@@ -283,7 +283,7 @@
   box-sizing: border-box; }
 
 body, html {
-  font-family: "Slabo 27px", serif;
+  font-family: sans-serif;
   line-height: 1.5;
   font-size: 18px;
   padding: 0;
@@ -291,6 +291,9 @@ body, html {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0; }
+
+h2 {
+  margin-bottom: 0.5em; }
 
 hr {
   border: none;
