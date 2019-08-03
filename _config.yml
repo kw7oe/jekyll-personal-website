@@ -1,12 +1,11 @@
 title: kw7oe
 description: >- # this means to ignore newlines until "baseurl:"
-  To be figured out soon.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://kw7oe.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: kw7oe
 github_username:  kw7oe
-disqus:
-  shortname: kw7oe-github-io
+# disqus:
+#   shortname: kw7oe-github-io
 
 
 plugins:
