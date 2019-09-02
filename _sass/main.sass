@@ -196,6 +196,25 @@ pre
   box-sizing: border-box
   padding: 0
 
+.post-lists
+  .post-entry
+    display: flex
+
+    p
+      margin: 0
+
+    p + a
+      margin-left: 8px
+
+@media only screen and (max-width: 375px)
+  .post-lists
+    .post-entry
+      flex-direction: column
+      margin-bottom: 8px
+
+      p + a
+        margin-left: 0px
+
 @media only screen and (max-width: 768px)
   .columns
     flex-direction: column
@@ -205,3 +224,4 @@ pre
   .main-col
     width: 90%
     margin-left: 5%
+

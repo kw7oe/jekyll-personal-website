@@ -4,6 +4,15 @@ title: "Deploying Phoenix 1.4 Application with Ansible and Vagrant"
 categories: phoenix elixir deployment ansible vagrant
 ---
 
+Alternative:
+- Setting up build server
+- Setting up production server
+- Using mix release
+- Configure Pheonix app
+- Build script
+- Deploy script
+
+Orignal:
 - Tools involved:
     - Ansible
     - Distillery to build release

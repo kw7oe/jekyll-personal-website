@@ -37,11 +37,11 @@ Preact. Due to limited time available, _it is sort of abandoned now_.
 
 
 ## Posts
-<table class="table">
-{% for post in site.posts %}
-{% include component/post_title.html post=post %}
-{% endfor %}
-</table>
+<div class="post-lists">
+  {% for post in site.posts %}
+    {% include component/post_title.html post=post %}
+  {% endfor %}
+</div>
 
 <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
 
